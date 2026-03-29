@@ -1,0 +1,107 @@
+[project]
+name = "django-adminx"
+version = "0.1.0a1"
+description = "Performance-oriented Django admin extensions."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+keywords = []
+authors = [{ name = "Oliver Haas", email = "ohaas@e1plus.de" }]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Framework :: Django",
+  "Framework :: Django :: 5.2",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+dependencies = ["Django>=5.2,<7"]
+
+[project.urls]
+Changelog = "https://oliverhaas.github.io/django-adminx/reference/changelog/"
+Documentation = "https://oliverhaas.github.io/django-adminx/"
+Homepage = "https://github.com/oliverhaas/django-adminx"
+Repository = "https://github.com/oliverhaas/django-adminx.git"
+
+[dependency-groups]
+dev = [
+  "django-stubs==6.0.1",
+  "mypy==1.19.1",
+  "pre-commit==4.5.1",
+  "pytest==9.0.2",
+  "pytest-cov==7.1.0",
+  "pytest-django==4.12.0",
+  "pytest-xdist==3.8.0",
+  "ruff==0.15.8",
+]
+docs = ["mike==2.1.4", "mkdocs==1.6.1", "mkdocs-material==9.7.6"]
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_adminx"]
+
+[tool.hatch.build.targets.sdist]
+include = ["django_adminx", "LICENSE", "README.md"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+fix = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["COM812", "D", "E501", "EM", "TRY003"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+  "ANN",
+  "ARG",
+  "F841",
+  "FBT",
+  "PLR2004",
+  "PT006",
+  "PT011",
+  "PT013",
+  "PT018",
+  "RUF012",
+  "RUF059",
+  "S101",
+  "S105",
+  "S106",
+]
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+pretty = true
+python_version = "3.12"
+show_error_codes = true
+show_error_context = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.django-stubs]
+django_settings_module = "tests.settings.base"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "settings.base"
+addopts = "--cov=django_adminx --cov-report=term-missing --cov-report=xml --no-cov-on-fail"
+pythonpath = ["tests"]
+testpaths = ["tests"]
+xfail_strict = true
+
+[tool.coverage.run]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+precision = 2
+skip_covered = true
