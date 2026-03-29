@@ -77,5 +77,5 @@ class SmartPaginatorMixin:
     estimate and displaying "1000 results (1000 total)" would be misleading.
     """
 
-    paginator = EstimatedCountPaginator
+    paginator: type[EstimatedCountPaginator] = EstimatedCountPaginator
     show_full_result_count = False

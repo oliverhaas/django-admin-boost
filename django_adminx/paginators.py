@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from django.core.paginator import Paginator
 from django.db import connections
 from django.db.models import QuerySet
@@ -25,12 +27,12 @@ class EstimatedCountPaginator(Paginator):
     """
 
     @cached_property
-    def count(self) -> int:  # type: ignore[override]
+    def count(self) -> int:
         """Return the total number of objects, using an estimate when possible."""
         queryset = self.object_list
 
         if not isinstance(queryset, QuerySet):
-            return len(queryset)  # type: ignore[arg-type]
+            return len(self.object_list)
 
         if self._can_use_estimate(queryset):
             estimate = self._get_estimate(queryset)
@@ -39,7 +41,7 @@ class EstimatedCountPaginator(Paginator):
 
         return queryset.count()
 
-    def _can_use_estimate(self, queryset: QuerySet) -> bool:  # type: ignore[type-arg]
+    def _can_use_estimate(self, queryset: QuerySet[Any]) -> bool:
         """Return True if we can safely use pg_class.reltuples."""
         connection = connections[queryset.db]
         if connection.vendor != "postgresql":
@@ -49,9 +51,11 @@ class EstimatedCountPaginator(Paginator):
         # would be inaccurate.
         return not queryset.query.where
 
-    def _get_estimate(self, queryset: QuerySet) -> float | None:  # type: ignore[type-arg]
+    def _get_estimate(self, queryset: QuerySet[Any]) -> float | None:
         """Read the row-count estimate from pg_class.reltuples."""
-        table_name = queryset.query.model._meta.db_table  # type: ignore[union-attr]  # noqa: SLF001
+        model = queryset.query.model
+        assert model is not None  # noqa: S101
+        table_name = model._meta.db_table  # noqa: SLF001
         connection = connections[queryset.db]
 
         with connection.cursor() as cursor:
