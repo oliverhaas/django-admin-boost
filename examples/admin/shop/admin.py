@@ -1,4 +1,4 @@
-import django_adminx as admin
+import django_adminx.admin as admin
 
 from .models import Category, Customer, Order, OrderItem, Product, ProductImage, Tag
 

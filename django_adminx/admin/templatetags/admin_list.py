@@ -13,15 +13,15 @@ from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import gettext as _
 
-from django_adminx.templatetags.admin_urls import add_preserved_filters
-from django_adminx.utils import (
+from django_adminx.admin.templatetags.admin_urls import add_preserved_filters
+from django_adminx.admin.utils import (
     display_for_field,
     display_for_value,
     get_fields_from_path,
     label_for_field,
     lookup_field,
 )
-from django_adminx.views.main import (
+from django_adminx.admin.views.main import (
     ALL_VAR,
     IS_FACETS_VAR,
     IS_POPUP_VAR,

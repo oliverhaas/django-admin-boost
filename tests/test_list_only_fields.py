@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 from django.urls import resolve
 
-import django_adminx as admin
-from django_adminx import ModelAdmin
+from django_adminx import admin
+from django_adminx.admin import ModelAdmin
 from tests.testapp.models import Article
 
 

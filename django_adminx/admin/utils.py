@@ -417,7 +417,7 @@ def help_text_for_field(name, model):
 
 
 def display_for_field(value, field, empty_value_display, avoid_link=False):
-    from django_adminx.templatetags.admin_list import _boolean_icon
+    from django_adminx.admin.templatetags.admin_list import _boolean_icon
 
     if field.name == "password" and field.model == get_user_model():
         return render_password_as_hash(value)
@@ -458,7 +458,7 @@ def display_for_field(value, field, empty_value_display, avoid_link=False):
 
 
 def display_for_value(value, empty_value_display, boolean=False):
-    from django_adminx.templatetags.admin_list import _boolean_icon
+    from django_adminx.admin.templatetags.admin_list import _boolean_icon
 
     if boolean:
         return _boolean_icon(value)

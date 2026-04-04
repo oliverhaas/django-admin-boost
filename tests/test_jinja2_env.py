@@ -2,7 +2,7 @@
 
 import pytest
 
-from django_adminx.jinja2_env import (
+from django_adminx.admin.jinja2_env import (
     _admin_urlname,
     _admin_urlquote,
     _get_admin_log,

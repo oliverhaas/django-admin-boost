@@ -1,4 +1,4 @@
-import django_adminx as admin
+from django_adminx import admin
 
 from .models import Article, Category
 

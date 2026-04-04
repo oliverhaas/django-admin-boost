@@ -1,60 +1,14 @@
-from django.utils.module_loading import autodiscover_modules
+"""django-adminx: Performance-oriented Django admin extensions.
 
-from django_adminx.decorators import action, display, register
-from django_adminx.filters import (
-    AllValuesFieldListFilter,
-    BooleanFieldListFilter,
-    ChoicesFieldListFilter,
-    DateFieldListFilter,
-    EmptyFieldListFilter,
-    FieldListFilter,
-    ListFilter,
-    RelatedFieldListFilter,
-    RelatedOnlyFieldListFilter,
-    SimpleListFilter,
-)
+Standalone mixins and paginators that work with stock django.contrib.admin.
+For the full Jinja2-compatible admin replacement, use ``django_adminx.adminx``.
+"""
 
-# django-adminx extras
 from django_adminx.mixins import ListOnlyFieldsMixin, SmartPaginatorMixin
-from django_adminx.options import (
-    HORIZONTAL,
-    VERTICAL,
-    ModelAdmin,
-    ShowFacets,
-    StackedInline,
-    TabularInline,
-)
 from django_adminx.paginators import EstimatedCountPaginator
-from django_adminx.sites import AdminSite, site
 
 __all__ = [
-    "HORIZONTAL",
-    "VERTICAL",
-    "AdminSite",
-    "AllValuesFieldListFilter",
-    "BooleanFieldListFilter",
-    "ChoicesFieldListFilter",
-    "DateFieldListFilter",
-    "EmptyFieldListFilter",
     "EstimatedCountPaginator",
-    "FieldListFilter",
-    "ListFilter",
     "ListOnlyFieldsMixin",
-    "ModelAdmin",
-    "RelatedFieldListFilter",
-    "RelatedOnlyFieldListFilter",
-    "ShowFacets",
-    "SimpleListFilter",
     "SmartPaginatorMixin",
-    "StackedInline",
-    "TabularInline",
-    "action",
-    "autodiscover",
-    "display",
-    "register",
-    "site",
 ]
-
-
-def autodiscover() -> None:
-    autodiscover_modules("admin", register_to=site)

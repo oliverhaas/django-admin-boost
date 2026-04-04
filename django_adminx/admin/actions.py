@@ -8,9 +8,9 @@ from django.template.response import TemplateResponse
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
-from django_adminx import helpers
-from django_adminx.decorators import action
-from django_adminx.utils import model_ngettext
+from django_adminx.admin import helpers
+from django_adminx.admin.decorators import action
+from django_adminx.admin.utils import model_ngettext
 
 
 @action(

@@ -17,15 +17,15 @@ from django.utils.text import Truncator, capfirst
 from django.utils.translation import get_language, get_language_bidi, gettext, ngettext
 from markupsafe import Markup
 
-from django_adminx.jinja2_helpers import select_admin_template
-from django_adminx.models import LogEntry
-from django_adminx.templatetags.admin_list import (
+from django_adminx.admin.jinja2_helpers import select_admin_template
+from django_adminx.admin.models import LogEntry
+from django_adminx.admin.templatetags.admin_list import (
     admin_actions as _raw_admin_actions,
 )
-from django_adminx.templatetags.admin_list import (
+from django_adminx.admin.templatetags.admin_list import (
     admin_list_filter as _raw_admin_list_filter,
 )
-from django_adminx.templatetags.admin_list import (
+from django_adminx.admin.templatetags.admin_list import (
     date_hierarchy,
     pagination,
     paginator_number,
@@ -35,16 +35,16 @@ from django_adminx.templatetags.admin_list import (
     results,
     search_form,
 )
-from django_adminx.templatetags.admin_modify import (
+from django_adminx.admin.templatetags.admin_modify import (
     cell_count,
 )
-from django_adminx.templatetags.admin_modify import (
+from django_adminx.admin.templatetags.admin_modify import (
     prepopulated_fields_js as _raw_prepopulated_fields_js,
 )
-from django_adminx.templatetags.admin_modify import (
+from django_adminx.admin.templatetags.admin_modify import (
     submit_row as _raw_submit_row,
 )
-from django_adminx.templatetags.admin_urls import (
+from django_adminx.admin.templatetags.admin_urls import (
     add_preserved_filters as _raw_add_preserved_filters,
 )
 

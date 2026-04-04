@@ -7,7 +7,8 @@ from unittest.mock import MagicMock, patch
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from django_adminx import EstimatedCountPaginator, ModelAdmin
+from django_adminx import EstimatedCountPaginator
+from django_adminx.admin import ModelAdmin
 from tests.testapp.models import Article
 
 

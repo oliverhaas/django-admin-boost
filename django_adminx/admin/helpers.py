@@ -16,7 +16,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
-from django_adminx.utils import (
+from django_adminx.admin.utils import (
     display_for_field,
     flatten_fieldsets,
     help_text_for_field,
@@ -265,7 +265,7 @@ class AdminReadonlyField:
             return str(remote_obj)
 
     def contents(self):
-        from django_adminx.templatetags.admin_list import _boolean_icon
+        from django_adminx.admin.templatetags.admin_list import _boolean_icon
 
         field, obj, model_admin = (
             self.field["field"],
