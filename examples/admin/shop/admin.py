@@ -1,6 +1,4 @@
-from django.contrib import admin
-
-from django_adminx import BaseModelAdmin
+import django_adminx as admin
 
 from .models import Category, Customer, Order, OrderItem, Product, ProductImage, Tag
 
@@ -24,7 +22,7 @@ class OrderItemInline(admin.TabularInline):
 
 
 @admin.register(Category)
-class CategoryAdmin(BaseModelAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ["name", "slug", "sort_order"]
     list_editable = ["sort_order"]
     prepopulated_fields = {"slug": ("name",)}
@@ -32,13 +30,13 @@ class CategoryAdmin(BaseModelAdmin):
 
 
 @admin.register(Tag)
-class TagAdmin(BaseModelAdmin):
+class TagAdmin(admin.ModelAdmin):
     list_display = ["name"]
     search_fields = ["name"]
 
 
 @admin.register(Product)
-class ProductAdmin(BaseModelAdmin):
+class ProductAdmin(admin.ModelAdmin):
     list_display = ["name", "sku", "category", "price", "stock", "status", "is_featured", "created_at"]
     list_only_fields = ["id", "name", "sku", "category_id", "price", "stock", "status", "is_featured", "created_at"]
     list_filter = ["status", "is_featured", "category", "tags"]
@@ -57,7 +55,7 @@ class ProductAdmin(BaseModelAdmin):
 
 
 @admin.register(Customer)
-class CustomerAdmin(BaseModelAdmin):
+class CustomerAdmin(admin.ModelAdmin):
     list_display = ["email", "first_name", "last_name", "phone", "created_at"]
     list_only_fields = ["id", "email", "first_name", "last_name", "phone", "created_at"]
     search_fields = ["email", "first_name", "last_name"]
@@ -65,7 +63,7 @@ class CustomerAdmin(BaseModelAdmin):
 
 
 @admin.register(Order)
-class OrderAdmin(BaseModelAdmin):
+class OrderAdmin(admin.ModelAdmin):
     list_display = ["__str__", "customer", "status", "created_at"]
     list_only_fields = ["id", "customer_id", "status", "created_at"]
     list_filter = ["status", "created_at"]

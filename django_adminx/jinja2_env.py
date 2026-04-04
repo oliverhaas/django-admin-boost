@@ -10,10 +10,32 @@ import jinja2
 from django.templatetags.static import static
 from django.urls import NoReverseMatch, reverse
 from django.utils.dateformat import format as dateformat
-from django.utils.text import capfirst
+from django.utils.formats import date_format, localize
+from django.utils.html import conditional_escape
+from django.utils.text import Truncator, capfirst
 from django.utils.translation import get_language, get_language_bidi, gettext, ngettext
+from markupsafe import Markup
 
+from django_adminx.jinja2_helpers import select_admin_template
 from django_adminx.models import LogEntry
+from django_adminx.templatetags.admin_list import (
+    admin_actions,
+    admin_list_filter,
+    date_hierarchy,
+    pagination,
+    paginator_number,
+    result_headers,
+    result_hidden_fields,
+    result_list,
+    results,
+    search_form,
+)
+from django_adminx.templatetags.admin_modify import (
+    cell_count,
+    prepopulated_fields_js,
+    submit_row,
+)
+from django_adminx.templatetags.admin_urls import add_preserved_filters
 
 
 def environment(**options: object) -> jinja2.Environment:
@@ -36,12 +58,31 @@ def environment(**options: object) -> jinja2.Environment:
 
     env.globals.update(
         {
+            # Core helpers
             "get_current_language": get_language,
             "get_current_language_bidi": get_language_bidi,
             "get_admin_log": _get_admin_log,
             "now": _now,
             "static": static,
             "url": _url,
+            # Template hierarchy helper
+            "select_admin_template": select_admin_template,
+            # admin_list templatetag functions
+            "admin_actions": admin_actions,
+            "admin_list_filter": admin_list_filter,
+            "date_hierarchy": date_hierarchy,
+            "pagination": pagination,
+            "paginator_number": paginator_number,
+            "result_headers": result_headers,
+            "result_hidden_fields": result_hidden_fields,
+            "result_list": result_list,
+            "results": results,
+            "search_form": search_form,
+            # admin_modify templatetag functions
+            "prepopulated_fields_js": prepopulated_fields_js,
+            "submit_row": submit_row,
+            # admin_urls templatetag functions
+            "add_preserved_filters": add_preserved_filters,
         },
     )
 
@@ -50,6 +91,11 @@ def environment(**options: object) -> jinja2.Environment:
             "admin_urlname": _admin_urlname,
             "admin_urlquote": _admin_urlquote,
             "capfirst": capfirst,
+            "cell_count": cell_count,
+            "date": _date_filter,
+            "truncatewords": _truncatewords,
+            "unlocalize": _unlocalize,
+            "unordered_list": _unordered_list,
             "urlencode_path": _urlencode_path,
             "yesno": _yesno,
         },
@@ -121,3 +167,57 @@ def _admin_urlquote(value: str) -> str:
 def _urlencode_path(value: str) -> str:
     """Percent-encode a path for use in URL comparisons."""
     return quote(str(value), safe="/")
+
+
+def _date_filter(value: Any, arg: str = "DATETIME_FORMAT") -> str:  # noqa: ANN401
+    """Port of Django's ``date`` template filter."""
+    if value is None:
+        return ""
+    return date_format(value, arg)
+
+
+def _truncatewords(value: str, arg: int | str = 15) -> str:
+    """Port of Django's ``truncatewords`` template filter."""
+    try:
+        length = int(arg)
+    except (ValueError, TypeError):
+        return str(value)
+    return Truncator(value).words(length, truncate=" \u2026")
+
+
+def _unlocalize(value: Any) -> str:  # noqa: ANN401
+    """Port of Django's ``unlocalize`` template filter.
+
+    Forces a value into its non-localized string representation.
+    """
+    return str(localize(value, use_l10n=False))
+
+
+def _unordered_list(value: list[Any]) -> str:
+    """Port of Django's ``unordered_list`` template filter.
+
+    Recursively takes a self-nested list and returns an HTML unordered list
+    (without the opening/closing ``<ul>`` tags).
+    """
+
+    def _helper(items: list[Any]) -> list[str]:
+        output: list[str] = []
+        for item in items:
+            if isinstance(item, (list, tuple)):
+                if output:
+                    last = output.pop()
+                    last = last.removesuffix("</li>")
+                    output.append(last)
+                    output.append("<ul>")
+                    output.extend(_helper(list(item)))
+                    output.append("</ul>")
+                    output.append("</li>")
+                else:
+                    output.append("<ul>")
+                    output.extend(_helper(list(item)))
+                    output.append("</ul>")
+            else:
+                output.append(f"<li>{conditional_escape(item)}</li>")
+        return output
+
+    return Markup("\n".join(_helper(value)))  # noqa: S704

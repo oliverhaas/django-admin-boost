@@ -1,0 +1,5 @@
+<p class="datetime">
+  {% set parent_widget = widget %}
+  <label {% if parent_widget.attrs.id %}for="{{ parent_widget.subwidgets.0.attrs.id }}"{% endif %}>{{ date_label }}</label> {% set widget = parent_widget.subwidgets.0 %}{% include widget.template_name %}<br>
+  <label {% if parent_widget.attrs.id %}for="{{ parent_widget.subwidgets.1.attrs.id }}"{% endif %}>{{ time_label }}</label> {% set widget = parent_widget.subwidgets.1 %}{% include widget.template_name %}
+</p>

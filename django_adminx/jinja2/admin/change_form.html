@@ -1,0 +1,109 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}{% if errors %}{{ gettext("Error:") }} {% endif %}{{ super() }}{% endblock %}
+{% block extrahead %}{{ super() }}
+<script src="{{ url('admin:jsi18n') }}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ super() }}<link rel="stylesheet" href="{{ static('admin/css/forms.css') }}">{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ super() }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{{ url('admin:index') }}">{{ gettext('Home') }}</a>
+&rsaquo; <a href="{{ url('admin:app_list', app_label=opts.app_label) }}">{{ opts.app_config.verbose_name }}</a>
+&rsaquo; {% if has_view_permission %}<a href="{{ url(opts|admin_urlname('changelist')) }}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+&rsaquo; {% if add %}{% trans name=opts.verbose_name %}Add {{ name }}{% endtrans %}{% else %}{{ original|truncatewords("18") }}{% endif %}
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}<div id="content-main">
+{% block object_tools %}
+{% if change and not is_popup %}
+  <ul class="object-tools">
+    {% block object_tools_items %}
+      {# change_form_object_tools inclusion tag #}
+      {% include "admin/change_form_object_tools.html" %}
+    {% endblock %}
+  </ul>
+{% endif %}
+{% endblock %}
+<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>{{ csrf_input }}{% block form_top %}{% endblock %}
+<div>
+{% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+{% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+{% if save_on_top %}{% block submit_buttons_top %}
+  {% set _sr = submit_row(context) %}
+  {% set can_change = _sr.can_change %}
+  {% set show_delete_link = _sr.show_delete_link %}
+  {% set show_save_as_new = _sr.show_save_as_new %}
+  {% set show_save_and_add_another = _sr.show_save_and_add_another %}
+  {% set show_save_and_continue = _sr.show_save_and_continue %}
+  {% set show_save = _sr.show_save %}
+  {% set show_close = _sr.show_close %}
+  {% include "admin/submit_line.html" %}
+{% endblock %}{% endif %}
+{% if errors %}
+    <p class="errornote">
+    {% trans count=errors|length %}Please correct the error below.{% pluralize %}Please correct the errors below.{% endtrans %}
+    </p>
+    {{ adminform.form.non_field_errors }}
+{% endif %}
+
+{% block field_sets %}
+{% for fieldset in adminform %}
+  {% set heading_level = 2 %}
+  {% set prefix = "fieldset" %}
+  {% set id_prefix = 0 %}
+  {% set id_suffix = loop.index0 %}
+  {% include "admin/includes/fieldset.html" %}
+{% endfor %}
+{% endblock %}
+
+{% block after_field_sets %}{% endblock %}
+
+{% block inline_field_sets %}
+{% for inline_admin_formset in inline_admin_formsets %}
+    {% include inline_admin_formset.opts.template %}
+{% endfor %}
+{% endblock %}
+
+{% block after_related_objects %}{% endblock %}
+
+{% block submit_buttons_bottom %}
+  {% set _sr = submit_row(context) %}
+  {% set can_change = _sr.can_change %}
+  {% set show_delete_link = _sr.show_delete_link %}
+  {% set show_save_as_new = _sr.show_save_as_new %}
+  {% set show_save_and_add_another = _sr.show_save_and_add_another %}
+  {% set show_save_and_continue = _sr.show_save_and_continue %}
+  {% set show_save = _sr.show_save %}
+  {% set show_close = _sr.show_close %}
+  {% include "admin/submit_line.html" %}
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+    <script id="django-admin-form-add-constants"
+            src="{{ static('admin/js/change_form.js') }}"
+            {% if adminform and add %}
+                data-model-name="{{ opts.model_name }}"
+            {% endif %}
+            async>
+    </script>
+{% endblock %}
+
+{# JavaScript for prepopulated fields #}
+{% set _pp = prepopulated_fields_js(context) %}
+{% set prepopulated_fields = _pp.prepopulated_fields %}
+{% set prepopulated_fields_json = _pp.prepopulated_fields_json %}
+{% include "admin/prepopulated_fields_js.html" %}
+
+</div>
+</form></div>
+{% endblock %}
