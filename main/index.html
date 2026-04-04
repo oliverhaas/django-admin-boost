@@ -271,6 +271,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -287,6 +305,75 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#two-ways-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two ways to use it
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two ways to use it">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-admin-replacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full admin replacement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standalone-mixins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standalone mixins
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-included" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's included
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -486,6 +573,64 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#two-ways-to-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two ways to use it
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two ways to use it">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-admin-replacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full admin replacement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standalone-mixins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standalone mixins
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-included" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's included
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -505,7 +650,69 @@
 
 
 <h1 id="django-adminx">Django AdminX<a class="headerlink" href="#django-adminx" title="Permanent link">&para;</a></h1>
-<p>Performance-oriented Django admin extensions. Drop-in compatible with the standard admin — no rewrites, no vendor lock-in.</p>
+<p>Drop-in replacement for <code>django.contrib.admin</code> that works with Jinja2 (and DTL). Ships standalone performance mixins you can use with the stock Django admin too.</p>
+<h2 id="two-ways-to-use-it">Two ways to use it<a class="headerlink" href="#two-ways-to-use-it" title="Permanent link">&para;</a></h2>
+<h3 id="full-admin-replacement">Full admin replacement<a class="headerlink" href="#full-admin-replacement" title="Permanent link">&para;</a></h3>
+<p>Replace <code>django.contrib.admin</code> entirely. All admin pages render via Jinja2 by default, with DTL fallback.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;django_adminx.admin&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">django_adminx.admin</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">admin</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nd">@admin</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">list_only_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="standalone-mixins">Standalone mixins<a class="headerlink" href="#standalone-mixins" title="Permanent link">&para;</a></h3>
+<p>Keep stock Django admin, just add performance optimizations.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelAdmin</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_adminx</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListOnlyFieldsMixin</span><span class="p">,</span> <span class="n">EstimatedCountPaginator</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">ListOnlyFieldsMixin</span><span class="p">,</span> <span class="n">ModelAdmin</span><span class="p">):</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">list_only_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">]</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">paginator</span> <span class="o">=</span> <span class="n">EstimatedCountPaginator</span>
+</code></pre></div>
+<h2 id="whats-included">What's included<a class="headerlink" href="#whats-included" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Standalone</th>
+<th>Full admin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ListOnlyFieldsMixin</code> — automatic <code>.only()</code> on changelist querysets</td>
+<td>Yes</td>
+<td>Baked in</td>
+</tr>
+<tr>
+<td><code>SmartPaginatorMixin</code> — PostgreSQL estimated counts</td>
+<td>Yes</td>
+<td>Baked in</td>
+</tr>
+<tr>
+<td><code>EstimatedCountPaginator</code> — <code>pg_class.reltuples</code> paginator</td>
+<td>Yes</td>
+<td>Baked in</td>
+</tr>
+<tr>
+<td>Jinja2 admin templates (all 50)</td>
+<td>—</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>DTL admin templates (fallback)</td>
+<td>—</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Drop-in <code>ModelAdmin</code>, <code>AdminSite</code>, <code>register</code></td>
+<td>—</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 
 
 
