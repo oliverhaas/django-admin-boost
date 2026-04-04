@@ -11,7 +11,6 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
-    "modeltranslation",
     "django_adminx.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -74,11 +73,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 USE_TZ = True
 USE_I18N = True
 
-LANGUAGES = [
-    ("en", "English"),
-    ("de", "German"),
-]
-
-MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True

@@ -1,35 +1,79 @@
+import importlib
+import sys
 import types
 
 from django.apps import AppConfig
-from django.core import checks
 from django.utils.translation import gettext_lazy as _
 
-from django_adminx.admin.checks import check_admin_app, check_dependencies
+# ---------------------------------------------------------------------------
+# Make ``django.contrib.admin`` resolve to ``django_adminx.admin``.
+#
+# We insert placeholder modules into sys.modules at import time so that
+# ``from django.contrib.admin.models import LogEntry`` (or any submodule)
+# doesn't crash with RuntimeError before the app registry is ready.
+#
+# In ``ready()``, we replace all placeholders with our real modules.
+# ---------------------------------------------------------------------------
+
+_DJANGO_ADMIN_SUBMODULES = [
+    "actions",
+    "checks",
+    "decorators",
+    "exceptions",
+    "filters",
+    "forms",
+    "helpers",
+    "models",
+    "options",
+    "sites",
+    "utils",
+    "widgets",
+]
+
+_DJANGO_ADMIN_SUBPACKAGES = {
+    "templatetags": ["admin_list", "admin_modify", "admin_urls", "base", "log"],
+    "views": ["autocomplete", "decorators", "main"],
+}
 
 
-def _make_django_admin_importable() -> None:
-    """Ensure ``import django.contrib.admin.models`` doesn't crash.
+def _install_placeholders() -> None:
+    """Pre-populate sys.modules with placeholders for django.contrib.admin.
 
-    When ``django.contrib.admin`` is not in INSTALLED_APPS, importing its
-    ``models`` module triggers a RuntimeError because Django's LogEntry
-    model class can't resolve its app_label.
-
-    We insert a placeholder module into ``sys.modules`` so that
-    ``from django.contrib.admin.models import LogEntry`` resolves without
-    actually loading the original module. Once our app is ready, the
-    ``ready()`` method replaces this placeholder with our real models.
+    This prevents RuntimeError/ImportError when third-party code does
+    ``from django.contrib.admin.models import LogEntry`` before the app
+    registry is ready.  All placeholders are replaced with real modules
+    in ``SimpleAdminConfig.ready()``.
     """
-    import sys  # noqa: PLC0415
+    # Top-level package placeholder
+    if "django.contrib.admin" not in sys.modules:
+        pkg = types.ModuleType("django.contrib.admin")
+        pkg.__package__ = "django.contrib.admin"
+        pkg.__path__ = []
+        sys.modules["django.contrib.admin"] = pkg
 
-    key = "django.contrib.admin.models"
-    if key not in sys.modules:
-        # Create a placeholder module that will be replaced in ready()
-        placeholder = types.ModuleType(key)
-        placeholder.__package__ = "django.contrib.admin"
-        sys.modules[key] = placeholder
+    for name in _DJANGO_ADMIN_SUBMODULES:
+        key = f"django.contrib.admin.{name}"
+        if key not in sys.modules:
+            mod = types.ModuleType(key)
+            mod.__package__ = "django.contrib.admin"
+            sys.modules[key] = mod
+
+    for pkg_name, children in _DJANGO_ADMIN_SUBPACKAGES.items():
+        pkg_key = f"django.contrib.admin.{pkg_name}"
+        if pkg_key not in sys.modules:
+            pkg = types.ModuleType(pkg_key)
+            pkg.__package__ = pkg_key
+            pkg.__path__ = []
+            sys.modules[pkg_key] = pkg
+        for child in children:
+            child_key = f"{pkg_key}.{child}"
+            if child_key not in sys.modules:
+                mod = types.ModuleType(child_key)
+                mod.__package__ = pkg_key
+                sys.modules[child_key] = mod
 
 
-_make_django_admin_importable()
+_install_placeholders()
 
 
 class SimpleAdminConfig(AppConfig):
@@ -42,51 +86,35 @@ class SimpleAdminConfig(AppConfig):
     verbose_name = _("Administration")
 
     def ready(self) -> None:
+        from django.core import checks  # noqa: PLC0415
+
+        from django_adminx.admin.checks import check_admin_app, check_dependencies  # noqa: PLC0415
+
         checks.register(check_dependencies, checks.Tags.admin)
         checks.register(check_admin_app, checks.Tags.admin)
-        self._patch_django_admin()
+        self._redirect_django_admin()
 
-    def _patch_django_admin(self) -> None:
-        """Redirect ``django.contrib.admin`` references to our implementation.
+    def _redirect_django_admin(self) -> None:
+        """Replace all placeholders with our real modules.
 
-        Third-party apps (including ``django.contrib.auth``) import from
-        ``django.contrib.admin`` and register models on its ``site`` singleton.
-        Without these patches, those registrations land on Django's site instead
-        of ours, and ``isinstance`` checks in Django's ``@register`` decorator
-        fail because our ``AdminSite`` is a separate class.
-
-        These patches are unavoidable because:
-
-        1. **Site singleton (patches 1-2):** Django's ``@admin.register()``
-           decorator lazy-imports ``from django.contrib.admin.sites import site``
-           at call time. We must redirect this reference so third-party model
-           registrations land on our site.
-
-        2. **AdminSite class (patches 3-4):** The same decorator does
-           ``isinstance(admin_site, AdminSite)`` using Django's class. Since our
-           AdminSite is a standalone copy (not a subclass), this check fails
-           without the patch.
-
-        3. **Models module (patch 5):** Replace the placeholder
-           ``django.contrib.admin.models`` with our real models so that
-           ``from django.contrib.admin.models import LogEntry`` works.
+        After this, ``from django.contrib.admin import ModelAdmin`` returns
+        our ModelAdmin, ``from django.contrib.admin.models import LogEntry``
+        returns our LogEntry, etc.
         """
-        import sys  # noqa: PLC0415
+        import django_adminx.admin as our_admin  # noqa: PLC0415
 
-        import django.contrib.admin as django_admin  # noqa: PLC0415
-        import django.contrib.admin.sites as django_admin_sites  # noqa: PLC0415
+        sys.modules["django.contrib.admin"] = our_admin
 
-        from django_adminx.admin import models as our_models  # noqa: PLC0415
-        from django_adminx.admin.sites import AdminSite, site  # noqa: PLC0415
+        for name in _DJANGO_ADMIN_SUBMODULES:
+            mod = importlib.import_module(f"django_adminx.admin.{name}")
+            sys.modules[f"django.contrib.admin.{name}"] = mod
 
-        django_admin.site = site  # type: ignore[assignment]
-        django_admin_sites.site = site  # type: ignore[assignment]
-        django_admin_sites.AdminSite = AdminSite  # type: ignore[misc,assignment]
-        django_admin.AdminSite = AdminSite  # type: ignore[misc,assignment]
-
-        # Replace placeholder with our real models module
-        sys.modules["django.contrib.admin.models"] = our_models
-        django_admin.models = our_models
+        for pkg_name, children in _DJANGO_ADMIN_SUBPACKAGES.items():
+            pkg = importlib.import_module(f"django_adminx.admin.{pkg_name}")
+            sys.modules[f"django.contrib.admin.{pkg_name}"] = pkg
+            for child in children:
+                mod = importlib.import_module(f"django_adminx.admin.{pkg_name}.{child}")
+                sys.modules[f"django.contrib.admin.{pkg_name}.{child}"] = mod
 
 
 class AdminConfig(SimpleAdminConfig):
