@@ -66,13 +66,8 @@ def environment(**options: object) -> jinja2.Environment:
     env = jinja2.Environment(**options)  # type: ignore[arg-type]  # noqa: S701
     env.add_extension("jinja2.ext.i18n")
 
-    # Make Django's SafeString recognized as safe by Jinja2's autoescaper.
-    # Jinja2 checks hasattr(value, '__html__') to skip escaping.
-    # Django's SafeString doesn't have __html__, so we add it.
-    from django.utils.safestring import SafeData  # noqa: PLC0415
-
-    if not hasattr(SafeData, "__html__"):
-        SafeData.__html__ = str  # type: ignore[assignment]
+    # Django >=5.1 provides SafeData.__html__() natively, so Jinja2's
+    # autoescaper correctly recognizes mark_safe() output. No patching needed.
     env.install_gettext_callables(gettext, ngettext, newstyle=True)  # type: ignore[attr-defined]
 
     env.globals.update(

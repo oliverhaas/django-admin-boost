@@ -20,22 +20,33 @@ class SimpleAdminConfig(AppConfig):
         self._patch_django_admin()
 
     def _patch_django_admin(self) -> None:
-        """Make django.contrib.admin.site point to our site singleton.
+        """Redirect ``django.contrib.admin`` references to our implementation.
 
-        Third-party apps (including django.contrib.auth) import from
-        django.contrib.admin and register models on its ``site`` object.
-        We redirect that singleton so registrations land on our AdminSite.
+        Third-party apps (including ``django.contrib.auth``) import from
+        ``django.contrib.admin`` and register models on its ``site`` singleton.
+        Without these patches, those registrations land on Django's site instead
+        of ours, and ``isinstance`` checks in Django's ``@register`` decorator
+        fail because our ``AdminSite`` is a separate class.
+
+        These patches are unavoidable because:
+
+        1. **Site singleton (patches 1-2):** Django's ``@admin.register()``
+           decorator lazy-imports ``from django.contrib.admin.sites import site``
+           at call time. We must redirect this reference so third-party model
+           registrations land on our site.
+
+        2. **AdminSite class (patches 3-4):** The same decorator does
+           ``isinstance(admin_site, AdminSite)`` using Django's class. Since our
+           AdminSite is a standalone copy (not a subclass), this check fails
+           without the patch.
         """
         import django.contrib.admin as django_admin  # noqa: PLC0415
         import django.contrib.admin.sites as django_admin_sites  # noqa: PLC0415
 
         from django_adminx.admin.sites import AdminSite, site  # noqa: PLC0415
 
-        # Redirect Django's admin site singleton to ours
         django_admin.site = site  # type: ignore[assignment]
         django_admin_sites.site = site  # type: ignore[assignment]
-
-        # Make isinstance checks pass for our AdminSite
         django_admin_sites.AdminSite = AdminSite  # type: ignore[misc,assignment]
         django_admin.AdminSite = AdminSite  # type: ignore[misc,assignment]
 

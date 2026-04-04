@@ -43,5 +43,6 @@ nav:
   - Home: index.md
   - Getting Started:
       - Installation: getting-started/installation.md
+      - Migrating from django.contrib.admin: getting-started/migrating.md
   - Reference:
       - Changelog: reference/changelog.md
