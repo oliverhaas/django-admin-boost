@@ -1,0 +1,16 @@
+<div class="submit-row">
+{% block submit_row %}
+{% if show_save %}<input type="submit" value="{{ gettext('Save') }}" class="default" name="_save">{% endif %}
+{% if show_save_as_new %}<input type="submit" value="{{ gettext('Save as new') }}" name="_saveasnew">{% endif %}
+{% if show_save_and_add_another %}<input type="submit" value="{{ gettext('Save and add another') }}" name="_addanother">{% endif %}
+{% if show_save_and_continue %}<input type="submit" value="{% if can_change %}{{ gettext('Save and continue editing') }}{% else %}{{ gettext('Save and view') }}{% endif %}" name="_continue">{% endif %}
+{% if show_close %}
+    {% set changelist_url = url(opts|admin_urlname('changelist'), silent=True) %}
+    <a role="button" href="{{ add_preserved_filters(changelist_url) }}" class="closelink">{{ gettext('Close') }}</a>
+{% endif %}
+{% if show_delete_link and original %}
+    {% set delete_url = url(opts|admin_urlname('delete'), original.pk|admin_urlquote, silent=True) %}
+    <a role="button" href="{{ add_preserved_filters(delete_url) }}" class="deletelink">{{ gettext("Delete") }}</a>
+{% endif %}
+{% endblock %}
+</div>

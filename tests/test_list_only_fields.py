@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
-from django.contrib import admin
-from django.contrib.admin import ModelAdmin
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 from django.urls import resolve
 
-from django_adminx import BaseModelAdmin, ListOnlyFieldsMixin
+from django_adminx import admin
+from django_adminx.admin import ModelAdmin
 from tests.testapp.models import Article
 
 
@@ -23,7 +22,7 @@ class ListOnlyFieldsChangelistTest(TestCase):
         self.factory = RequestFactory()
         self.site = admin.AdminSite()
 
-        class TestArticleAdmin(BaseModelAdmin):
+        class TestArticleAdmin(ModelAdmin):
             list_display = ["title", "status", "created_at"]
             list_only_fields = ["id", "title", "status", "created_at"]
 
@@ -68,7 +67,7 @@ class ListOnlyFieldsChangeViewTest(TestCase):
         self.factory = RequestFactory()
         self.site = admin.AdminSite()
 
-        class TestArticleAdmin(BaseModelAdmin):
+        class TestArticleAdmin(ModelAdmin):
             list_only_fields = ["id", "title"]
 
         self.model_admin = TestArticleAdmin(Article, self.site)
@@ -105,7 +104,7 @@ class ListOnlyFieldsNotSetTest(TestCase):
         self.factory = RequestFactory()
         self.site = admin.AdminSite()
 
-        class PlainArticleAdmin(BaseModelAdmin):
+        class PlainArticleAdmin(ModelAdmin):
             pass  # no list_only_fields
 
         self.model_admin = PlainArticleAdmin(Article, self.site)
@@ -150,7 +149,7 @@ class ListOnlyFieldsMixinStandaloneTest(TestCase):
         self.factory = RequestFactory()
         self.site = admin.AdminSite()
 
-        class CustomAdmin(ListOnlyFieldsMixin, ModelAdmin):
+        class CustomAdmin(ModelAdmin):
             list_only_fields = ["id", "title", "status"]
 
         self.model_admin = CustomAdmin(Article, self.site)

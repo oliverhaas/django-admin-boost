@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="{{ url('admin:index') }}">{{ gettext('Home') }}</a></div>{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+
+<p>{{ gettext("Thanks for spending some quality time with the web site today.") }}</p>
+
+<p><a href="{{ url('admin:index') }}">{{ gettext('Log in again') }}</a></p>
+
+{% endblock %}

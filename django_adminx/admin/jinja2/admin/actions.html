@@ -1,0 +1,22 @@
+<div class="actions">
+  {% block actions %}
+    {% block actions_form %}
+    {% for field in action_form %}{% if field.label %}<label>{{ field.label }} {{ field }}</label>{% else %}{{ field }}{% endif %}{% endfor %}
+    {% endblock %}
+    {% block actions_submit %}
+    <button type="submit" class="button" name="index" value="{{ action_index|default(0) }}">{{ gettext("Run") }}</button>
+    {% endblock %}
+    {% block actions_counter %}
+    {% if actions_selection_counter %}
+        <span class="action-counter" data-actions-icnt="{{ cl.result_list|length }}">{{ selection_note }}</span>
+        {% if cl.result_count != cl.result_list|length %}
+        <span class="all hidden">{{ selection_note_all }}</span>
+        <span class="question hidden">
+            <a role="button" href="#" title="{{ gettext("Click here to select the objects across all pages") }}">{% trans total_count=cl.result_count %}Select all {{ total_count }} {{ module_name }}{% endtrans %}</a>
+        </span>
+        <span class="clear hidden"><a role="button" href="#">{{ gettext("Clear selection") }}</a></span>
+        {% endif %}
+    {% endif %}
+    {% endblock %}
+  {% endblock %}
+</div>
