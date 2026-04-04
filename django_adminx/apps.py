@@ -32,12 +32,12 @@ class SimpleAdminConfig(AppConfig):
         from django_adminx.sites import AdminSite, site  # noqa: PLC0415
 
         # Redirect Django's admin site singleton to ours
-        django_admin.site = site
-        django_admin_sites.site = site
+        django_admin.site = site  # type: ignore[assignment]
+        django_admin_sites.site = site  # type: ignore[assignment]
 
         # Make isinstance checks pass for our AdminSite
-        django_admin_sites.AdminSite = AdminSite
-        django_admin.AdminSite = AdminSite
+        django_admin_sites.AdminSite = AdminSite  # type: ignore[misc,assignment]
+        django_admin.AdminSite = AdminSite  # type: ignore[misc,assignment]
 
 
 class AdminConfig(SimpleAdminConfig):
@@ -47,4 +47,4 @@ class AdminConfig(SimpleAdminConfig):
 
     def ready(self) -> None:
         super().ready()
-        self.module.autodiscover()
+        self.module.autodiscover()  # type: ignore[union-attr]

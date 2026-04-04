@@ -113,6 +113,28 @@ show_error_context = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 
+
+[[tool.mypy.overrides]]
+# Copied from Django — not our code to type-check
+module = [
+  "django_adminx.actions",
+  "django_adminx.checks",
+  "django_adminx.decorators",
+  "django_adminx.exceptions",
+  "django_adminx.filters",
+  "django_adminx.forms",
+  "django_adminx.helpers",
+  "django_adminx.models",
+  "django_adminx.options",
+  "django_adminx.sites",
+  "django_adminx.utils",
+  "django_adminx.widgets",
+  "django_adminx.views.*",
+  "django_adminx.templatetags.*",
+  "django_adminx.migrations.*",
+]
+ignore_errors = true
+
 [tool.django-stubs]
 django_settings_module = "tests.settings.base"
 
