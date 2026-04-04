@@ -1,0 +1,19 @@
+[project]
+name = "django-adminx-example-full"
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = [
+  "django-adminx[jinja2]",
+  "django-import-export>=4.0",
+  "django-modeltranslation>=0.19",
+]
+
+[tool.uv.sources]
+django-adminx = { path = "../../", editable = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["catalog"]
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
