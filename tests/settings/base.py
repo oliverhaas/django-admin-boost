@@ -3,7 +3,7 @@ SECRET_KEY = "test-secret-key"
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.admin",
+    "django_adminx",
     "django.contrib.sessions",
     "django.contrib.messages",
     "tests.testapp",

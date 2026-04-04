@@ -4,11 +4,10 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
-from django.contrib.admin import ModelAdmin
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from django_adminx import BaseModelAdmin, EstimatedCountPaginator, SmartPaginatorMixin
+from django_adminx import EstimatedCountPaginator, ModelAdmin
 from tests.testapp.models import Article
 
 
@@ -164,21 +163,11 @@ class EstimatedCountPaginatorNonQuerysetTest(TestCase):
 class SmartPaginatorMixinTest(TestCase):
     """Test that SmartPaginatorMixin sets the right class attributes."""
 
-    def test_mixin_sets_paginator(self) -> None:
-        class MyAdmin(SmartPaginatorMixin, ModelAdmin):
-            pass
+    def test_model_admin_has_estimated_paginator(self) -> None:
+        assert ModelAdmin.paginator is EstimatedCountPaginator
 
-        assert MyAdmin.paginator is EstimatedCountPaginator
-
-    def test_mixin_sets_show_full_result_count_false(self) -> None:
-        class MyAdmin(SmartPaginatorMixin, ModelAdmin):
-            pass
-
-        assert MyAdmin.show_full_result_count is False
-
-    def test_base_model_admin_has_smart_paginator(self) -> None:
-        assert BaseModelAdmin.paginator is EstimatedCountPaginator
-        assert BaseModelAdmin.show_full_result_count is False
+    def test_model_admin_has_show_full_result_count_false(self) -> None:
+        assert ModelAdmin.show_full_result_count is False
 
 
 class SmartPaginatorAdminIntegrationTest(TestCase):

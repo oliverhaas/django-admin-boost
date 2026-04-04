@@ -1,11 +1,9 @@
-from django.contrib import admin
-
-from django_adminx import BaseModelAdmin
+import django_adminx as admin
 
 from .models import Article
 
 
 @admin.register(Article)
-class ArticleAdmin(BaseModelAdmin):
+class ArticleAdmin(admin.ModelAdmin):
     list_display = ["title", "status", "created_at"]
     list_only_fields = ["id", "title", "status", "created_at"]

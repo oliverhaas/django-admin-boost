@@ -61,7 +61,25 @@ include = ["django_adminx", "LICENSE", "README.md"]
 target-version = "py313"
 line-length = 120
 fix = true
-extend-exclude = ["examples"]
+extend-exclude = [
+  "examples",
+  # Copied from Django — not our code to lint
+  "django_adminx/actions.py",
+  "django_adminx/checks.py",
+  "django_adminx/decorators.py",
+  "django_adminx/exceptions.py",
+  "django_adminx/filters.py",
+  "django_adminx/forms.py",
+  "django_adminx/helpers.py",
+  "django_adminx/models.py",
+  "django_adminx/options.py",
+  "django_adminx/sites.py",
+  "django_adminx/utils.py",
+  "django_adminx/widgets.py",
+  "django_adminx/views/",
+  "django_adminx/templatetags/",
+  "django_adminx/migrations/",
+]
 
 [tool.ruff.lint]
 select = ["ALL"]

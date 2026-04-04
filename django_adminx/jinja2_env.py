@@ -7,12 +7,13 @@ from typing import Any
 from urllib.parse import quote
 
 import jinja2
-from django.contrib.admin.models import LogEntry
 from django.templatetags.static import static
 from django.urls import NoReverseMatch, reverse
 from django.utils.dateformat import format as dateformat
 from django.utils.text import capfirst
 from django.utils.translation import get_language, get_language_bidi, gettext, ngettext
+
+from django_adminx.models import LogEntry
 
 
 def environment(**options: object) -> jinja2.Environment:
