@@ -1,12 +1,13 @@
 import django_adminx.admin as admin
 from import_export.admin import ImportExportModelAdmin
+from simple_history.admin import SimpleHistoryAdmin
 
 from .models import Category, Product
 from .resources import CategoryResource, ProductResource
 
 
 @admin.register(Category)
-class CategoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class CategoryAdmin(SimpleHistoryAdmin, ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = CategoryResource
     list_display = ["name", "slug"]
     prepopulated_fields = {"slug": ("name",)}
@@ -14,7 +15,7 @@ class CategoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(Product)
-class ProductAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class ProductAdmin(SimpleHistoryAdmin, ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = ProductResource
     list_display = ["name", "sku", "category", "price", "stock", "status", "is_featured", "created_at"]
     list_filter = ["status", "is_featured", "category"]

@@ -2,7 +2,11 @@
 name = "django-adminx-example-full"
 version = "0.0.0"
 requires-python = ">=3.12"
-dependencies = ["django-adminx[jinja2]", "django-import-export>=4.0"]
+dependencies = [
+  "django-adminx[jinja2]",
+  "django-import-export>=4.0",
+  "django-simple-history>=3.0",
+]
 
 [tool.uv.sources]
 django-adminx = { path = "../../", editable = true }
