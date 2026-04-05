@@ -62,7 +62,7 @@ class ListFieldsMixin:
             )
 
         if self.list_only_fields is not None:
-            pk_name = self.opts.pk.name  # type: ignore[union-attr]
+            pk_name = self.opts.pk.name  # type: ignore[attr-defined]
             fields = {pk_name, *self.list_only_fields}
             return qs.only(*fields)
 
@@ -77,7 +77,7 @@ class ListFieldsMixin:
 
     def _resolve_list_display_fields(self) -> set[str]:
         """Resolve ``list_display`` entries to concrete model field names."""
-        pk_name = self.opts.pk.name  # type: ignore[union-attr]
+        pk_name = self.opts.pk.name  # type: ignore[attr-defined]
         fields = {pk_name}
 
         for entry in self.list_display:  # type: ignore[attr-defined]
@@ -90,7 +90,7 @@ class ListFieldsMixin:
             if isinstance(entry, str):
                 # Check if it's a concrete model field
                 try:
-                    field = self.opts.get_field(entry)  # type: ignore[union-attr]
+                    field = self.opts.get_field(entry)  # type: ignore[attr-defined]
                 except Exception:  # noqa: BLE001
                     # Not a model field — could be a method on the ModelAdmin
                     # or model. Check if it's a method on self.
