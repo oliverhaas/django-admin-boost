@@ -68,7 +68,7 @@ from django_adminx.admin.utils import (
     unquote,
 )
 from django_adminx.admin.widgets import AutocompleteSelect, AutocompleteSelectMultiple
-from django_adminx.mixins import ListOnlyFieldsMixin, SmartPaginatorMixin
+from django_adminx.mixins import ListFieldsMixin, SmartPaginatorMixin
 
 IS_POPUP_VAR = "_popup"
 TO_FIELD_VAR = "_to_field"
@@ -626,7 +626,7 @@ class BaseModelAdmin(metaclass=forms.MediaDefiningClass):
         return request.user.has_module_perms(self.opts.app_label)
 
 
-class ModelAdmin(SmartPaginatorMixin, ListOnlyFieldsMixin, BaseModelAdmin):
+class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, BaseModelAdmin):
     """Encapsulate all admin options and functionality for a given model."""
 
     list_display = ("__str__",)

@@ -1,4 +1,4 @@
-"""Tests for the list_only_fields feature."""
+"""Tests for list_only_fields (explicit whitelist mode of ListFieldsMixin)."""
 
 from __future__ import annotations
 
@@ -32,16 +32,13 @@ class ListOnlyFieldsChangelistTest(TestCase):
         """Create a request that looks like a changelist request."""
         request = self.factory.get("/admin/testapp/article/")
         request.user = self.superuser
-        # Resolve so resolver_match is set
         request.resolver_match = resolve("/admin/testapp/article/")
         return request
 
     def test_only_applied_on_changelist(self) -> None:
         request = self._make_changelist_request()
         qs = self.model_admin.get_queryset(request)
-        # Django sets query.deferred_loading when .only() is used
         deferred_fields, is_defer = qs.query.deferred_loading
-        # .only() sets is_defer=False (immediate loading) with the listed fields
         assert is_defer is False, "Expected .only() to be applied (deferred_loading mode)"
         assert set(deferred_fields) == {"id", "title", "status", "created_at"}
 
@@ -79,7 +76,6 @@ class ListOnlyFieldsChangeViewTest(TestCase):
         request.resolver_match = resolve(f"/admin/testapp/article/{article.pk}/change/")
         qs = self.model_admin.get_queryset(request)
         deferred_fields, is_defer = qs.query.deferred_loading
-        # No .only() means deferred_loading is (frozenset(), True) by default
         assert is_defer is True
         assert len(deferred_fields) == 0
 
@@ -93,8 +89,8 @@ class ListOnlyFieldsChangeViewTest(TestCase):
         assert len(deferred_fields) == 0
 
 
-class ListOnlyFieldsNotSetTest(TestCase):
-    """Test that when list_only_fields is not set, get_queryset is a no-op."""
+class ListOnlyFieldsOptOutTest(TestCase):
+    """Test that list_defer_fields=[] opts out of all optimization."""
 
     @classmethod
     def setUpTestData(cls) -> None:
@@ -104,41 +100,34 @@ class ListOnlyFieldsNotSetTest(TestCase):
         self.factory = RequestFactory()
         self.site = admin.AdminSite()
 
+    def test_defer_empty_disables_optimization(self) -> None:
         class PlainArticleAdmin(ModelAdmin):
-            pass  # no list_only_fields
+            list_defer_fields = []  # opt-out
 
-        self.model_admin = PlainArticleAdmin(Article, self.site)
-
-    def test_no_only_when_attribute_not_set(self) -> None:
+        model_admin = PlainArticleAdmin(Article, self.site)
         request = self.factory.get("/admin/testapp/article/")
         request.user = self.superuser
         request.resolver_match = resolve("/admin/testapp/article/")
-        qs = self.model_admin.get_queryset(request)
+        qs = model_admin.get_queryset(request)
         deferred_fields, is_defer = qs.query.deferred_loading
-        # Default queryset — no .only() applied
         assert is_defer is True
         assert len(deferred_fields) == 0
 
-    def test_no_only_when_attribute_is_none(self) -> None:
-        self.model_admin.list_only_fields = None
+    def test_only_empty_means_pk_only(self) -> None:
+        class PkOnlyAdmin(ModelAdmin):
+            list_only_fields = []
+
+        model_admin = PkOnlyAdmin(Article, self.site)
         request = self.factory.get("/admin/testapp/article/")
         request.user = self.superuser
         request.resolver_match = resolve("/admin/testapp/article/")
-        qs = self.model_admin.get_queryset(request)
+        qs = model_admin.get_queryset(request)
         deferred_fields, is_defer = qs.query.deferred_loading
-        assert is_defer is True
-
-    def test_no_only_when_attribute_is_empty(self) -> None:
-        self.model_admin.list_only_fields = []
-        request = self.factory.get("/admin/testapp/article/")
-        request.user = self.superuser
-        request.resolver_match = resolve("/admin/testapp/article/")
-        qs = self.model_admin.get_queryset(request)
-        deferred_fields, is_defer = qs.query.deferred_loading
-        assert is_defer is True
+        assert is_defer is False
+        assert set(deferred_fields) == {"id"}
 
 
-class ListOnlyFieldsMixinStandaloneTest(TestCase):
+class ListFieldsMixinStandaloneTest(TestCase):
     """Test using the mixin directly with a custom ModelAdmin."""
 
     @classmethod

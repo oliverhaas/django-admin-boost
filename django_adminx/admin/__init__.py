@@ -41,7 +41,7 @@ from django_adminx.admin.options import (
 from django_adminx.admin.sites import AdminSite, site
 
 # Re-export standalone mixins for convenience
-from django_adminx.mixins import ListOnlyFieldsMixin, SmartPaginatorMixin
+from django_adminx.mixins import ListFieldsMixin, SmartPaginatorMixin
 from django_adminx.paginators import EstimatedCountPaginator
 
 __all__ = [
@@ -55,8 +55,8 @@ __all__ = [
     "EmptyFieldListFilter",
     "EstimatedCountPaginator",
     "FieldListFilter",
+    "ListFieldsMixin",
     "ListFilter",
-    "ListOnlyFieldsMixin",
     "ModelAdmin",
     "RelatedFieldListFilter",
     "RelatedOnlyFieldListFilter",

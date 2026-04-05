@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from typing import TYPE_CHECKING, Any
 
+from django.core.exceptions import ImproperlyConfigured
+
 from django_adminx.paginators import EstimatedCountPaginator
 
 if TYPE_CHECKING:
@@ -14,56 +16,109 @@ if TYPE_CHECKING:
 _UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", re.IGNORECASE)
 
 
-class ListOnlyFieldsMixin:
+class ListFieldsMixin:
     """
-    ModelAdmin mixin that applies `.only()` to changelist querysets.
+    ModelAdmin mixin that optimises changelist querysets by limiting fetched columns.
 
-    Set ``list_only_fields`` to a list of field names that the list view needs.
-    On changelist requests the queryset will be narrowed with ``.only(*list_only_fields)``,
-    reducing the number of columns fetched from the database.
+    Three modes of operation:
 
-    The optimisation is skipped for add/change views so that all fields remain
-    available for editing.
+    1. **Explicit whitelist** — set ``list_only_fields`` to a list of field names.
+       The queryset will use ``.only(pk, *list_only_fields)``.
+       An empty list means ``.only(pk)``.
+
+    2. **Explicit blacklist** — set ``list_defer_fields`` to a list of field names.
+       The queryset will use ``.defer(*list_defer_fields)``.
+       An empty list disables the optimisation entirely (opt-out escape hatch).
+
+    3. **Auto mode** (default) — when neither attribute is set, ``list_display``
+       is inspected to determine which concrete model fields are needed, and
+       ``.only(pk, *resolved_fields)`` is applied.
+
+    Setting both ``list_only_fields`` and ``list_defer_fields`` raises
+    ``ImproperlyConfigured``.
+
+    The optimisation is only applied on changelist requests; add/change views
+    always get the full queryset.
 
     Example::
 
-        class BookAdmin(ListOnlyFieldsMixin, admin.ModelAdmin):
+        class BookAdmin(ListFieldsMixin, admin.ModelAdmin):
             list_only_fields = ["id", "title", "status", "created_at"]
     """
 
     list_only_fields: list[str] | None = None
+    list_defer_fields: list[str] | None = None
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         qs: QuerySet[Any] = super().get_queryset(request)  # type: ignore[misc]
 
-        if self.list_only_fields and self._is_changelist_request(request):
-            qs = qs.only(*self.list_only_fields)
+        if not self._is_changelist_request(request):
+            return qs
 
-        return qs
+        if self.list_only_fields is not None and self.list_defer_fields is not None:
+            raise ImproperlyConfigured(
+                f"Cannot set both list_only_fields and list_defer_fields on "
+                f"{self.__class__.__name__}. Use one or the other.",
+            )
+
+        if self.list_only_fields is not None:
+            pk_name = self.opts.pk.name  # type: ignore[union-attr]
+            fields = {pk_name, *self.list_only_fields}
+            return qs.only(*fields)
+
+        if self.list_defer_fields is not None:
+            if not self.list_defer_fields:
+                return qs  # empty list = opt-out
+            return qs.defer(*self.list_defer_fields)
+
+        # Auto mode: resolve list_display to concrete fields
+        fields = self._resolve_list_display_fields()
+        return qs.only(*fields)
+
+    def _resolve_list_display_fields(self) -> set[str]:
+        """Resolve ``list_display`` entries to concrete model field names."""
+        pk_name = self.opts.pk.name  # type: ignore[union-attr]
+        fields = {pk_name}
+
+        for entry in self.list_display:  # type: ignore[attr-defined]
+            if entry == "__str__":
+                # __str__ contributes only pk
+                continue
+            if callable(entry) and not isinstance(entry, str):
+                # A callable object (not a string) — skip
+                continue
+            if isinstance(entry, str):
+                # Check if it's a concrete model field
+                try:
+                    field = self.opts.get_field(entry)  # type: ignore[union-attr]
+                except Exception:  # noqa: BLE001
+                    # Not a model field — could be a method on the ModelAdmin
+                    # or model. Check if it's a method on self.
+                    if hasattr(self, entry) and callable(getattr(self, entry)):
+                        continue
+                    # Could be a model method/property — skip
+                    continue
+                # For ForeignKey fields, Django stores the _id column
+                if hasattr(field, "attname"):
+                    fields.add(field.attname)
+                else:
+                    fields.add(entry)
+
+        return fields
 
     def _is_changelist_request(self, request: HttpRequest) -> bool:
         """Return True when *request* targets the changelist (not add/change)."""
-        # The resolver_match is set by Django's URL dispatcher. For the
-        # changelist the url name ends with ``_changelist``.  Add and change
-        # views use ``_add`` and ``_change`` respectively.
         resolver = getattr(request, "resolver_match", None)
         if resolver is not None:
             url_name: str = resolver.url_name or ""
             return url_name.endswith("_changelist")
 
-        # Fallback: inspect the path.  Changelist lives at the model root URL
-        # (e.g. /admin/app/model/), while change views contain an object PK
-        # segment and add views end with ``/add/``.
         path = request.path
         if path.endswith(("/add/", "/change/")):
             return False
-        # A path ending with "/<pk>/" is a change view — check for a numeric
-        # or UUID-ish last segment.
         parts = [p for p in path.rstrip("/").split("/") if p]
         if parts:
             last = parts[-1]
-            # If the last segment looks like a PK (digits or UUID), it's a
-            # change view.
             if last.isdigit() or _UUID_RE.match(last):
                 return False
         return True

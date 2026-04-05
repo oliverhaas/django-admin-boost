@@ -38,7 +38,6 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ["name", "sku", "category", "price", "stock", "status", "is_featured", "created_at"]
-    list_only_fields = ["id", "name", "sku", "category_id", "price", "stock", "status", "is_featured", "created_at"]
     list_filter = ["status", "is_featured", "category", "tags"]
     list_editable = ["status", "is_featured"]
     search_fields = ["name", "sku", "description"]
@@ -57,7 +56,6 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ["email", "first_name", "last_name", "phone", "created_at"]
-    list_only_fields = ["id", "email", "first_name", "last_name", "phone", "created_at"]
     search_fields = ["email", "first_name", "last_name"]
     readonly_fields = ["created_at"]
 
@@ -65,7 +63,6 @@ class CustomerAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ["__str__", "customer", "status", "created_at"]
-    list_only_fields = ["id", "customer_id", "status", "created_at"]
     list_filter = ["status", "created_at"]
     search_fields = ["customer__email", "customer__last_name"]
     raw_id_fields = ["customer"]
