@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://oliverhaas.github.io/django-adminx/main/getting-started/migrating/">
+        <link rel="canonical" href="https://oliverhaas.github.io/django-admin-boost/main/getting-started/migrating/">
       
       
         <link rel="prev" href="../installation/">
@@ -198,13 +198,13 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/oliverhaas/django-adminx" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/oliverhaas/django-admin-boost" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
-    oliverhaas/django-adminx
+    oliverhaas/django-admin-boost
   </div>
 </a>
       </div>
@@ -244,13 +244,13 @@
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/oliverhaas/django-adminx" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/oliverhaas/django-admin-boost" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
-    oliverhaas/django-adminx
+    oliverhaas/django-admin-boost
   </div>
 </a>
     </div>
@@ -433,10 +433,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-install-django-adminx" class="md-nav__link">
+  <a href="#1-install-django-admin-boost" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Install django-adminx
+        1. Install django-admin-boost
       
     </span>
   </a>
@@ -639,10 +639,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-install-django-adminx" class="md-nav__link">
+  <a href="#1-install-django-admin-boost" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Install django-adminx
+        1. Install django-admin-boost
       
     </span>
   </a>
@@ -736,15 +736,15 @@
 
 
 <h1 id="migrating-from-djangocontribadmin">Migrating from django.contrib.admin<a class="headerlink" href="#migrating-from-djangocontribadmin" title="Permanent link">&para;</a></h1>
-<p>This guide covers switching from Django's built-in admin to <code>django_adminx.admin</code>. The migration is designed to be zero-friction — your existing <code>ModelAdmin</code> classes, templates, and third-party admin packages continue to work without changes.</p>
-<h2 id="1-install-django-adminx">1. Install django-adminx<a class="headerlink" href="#1-install-django-adminx" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">pip install django-adminx[jinja2]</span>
+<p>This guide covers switching from Django's built-in admin to <code>django_admin_boost.admin</code>. The migration is designed to be zero-friction — your existing <code>ModelAdmin</code> classes, templates, and third-party admin packages continue to work without changes.</p>
+<h2 id="1-install-django-admin-boost">1. Install django-admin-boost<a class="headerlink" href="#1-install-django-admin-boost" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">pip install django-admin-boost[jinja2]</span>
 </code></pre></div>
 <h2 id="2-update-settingspy">2. Update settings.py<a class="headerlink" href="#2-update-settingspy" title="Permanent link">&para;</a></h2>
-<p>Replace <code>django.contrib.admin</code> with <code>django_adminx.admin</code> in <code>INSTALLED_APPS</code>:</p>
+<p>Replace <code>django.contrib.admin</code> with <code>django_admin_boost.admin</code> in <code>INSTALLED_APPS</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="c1"># &quot;django.contrib.admin&quot;,       # remove this</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="s2">&quot;django_adminx.admin&quot;</span><span class="p">,</span>          <span class="c1"># add this</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="s2">&quot;django_admin_boost.admin&quot;</span><span class="p">,</span>          <span class="c1"># add this</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="s2">&quot;django.contrib.auth&quot;</span><span class="p">,</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="s2">&quot;django.contrib.contenttypes&quot;</span><span class="p">,</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="s2">&quot;django.contrib.sessions&quot;</span><span class="p">,</span>
@@ -759,7 +759,7 @@
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;django.template.backends.jinja2.Jinja2&quot;</span><span class="p">,</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="s2">&quot;APP_DIRS&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="p">{</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>            <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="s2">&quot;django_adminx.admin.jinja2_env.environment&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>            <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="s2">&quot;django_admin_boost.admin.jinja2_env.environment&quot;</span><span class="p">,</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>            <span class="s2">&quot;context_processors&quot;</span><span class="p">:</span> <span class="p">[</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>                <span class="s2">&quot;django.template.context_processors.request&quot;</span><span class="p">,</span>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>                <span class="s2">&quot;django.contrib.auth.context_processors.auth&quot;</span><span class="p">,</span>
@@ -780,13 +780,13 @@
 <a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>    <span class="p">},</span>
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="p">]</span>
 </code></pre></div>
-<p>If you don't want Jinja2, just keep the DTL backend — django-adminx works with both.</p>
+<p>If you don't want Jinja2, just keep the DTL backend — django-admin-boost works with both.</p>
 <h2 id="3-update-adminpy-imports">3. Update admin.py imports<a class="headerlink" href="#3-update-adminpy-imports" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Before</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">admin</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># After</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">django_adminx.admin</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">admin</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">django_admin_boost.admin</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">admin</span>
 </code></pre></div>
 <p>Everything else stays the same — <code>@admin.register()</code>, <code>admin.ModelAdmin</code>, <code>admin.TabularInline</code>, <code>admin.site</code>, etc.</p>
 <h2 id="4-update-urlspy-optional">4. Update urls.py (optional)<a class="headerlink" href="#4-update-urlspy-optional" title="Permanent link">&para;</a></h2>
@@ -794,15 +794,15 @@
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">admin</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># After (optional — the old import still works via monkey-patching)</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_adminx.admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">site</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_admin_boost.admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">site</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;admin/&quot;</span><span class="p">,</span> <span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>
 <a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">]</span>
 </code></pre></div>
-<p>The old <code>from django.contrib import admin</code> / <code>admin.site.urls</code> pattern continues to work because <code>django_adminx.admin</code> redirects Django's admin site singleton. But using the direct import is cleaner.</p>
+<p>The old <code>from django.contrib import admin</code> / <code>admin.site.urls</code> pattern continues to work because <code>django_admin_boost.admin</code> redirects Django's admin site singleton. But using the direct import is cleaner.</p>
 <h2 id="thats-it">That's it<a class="headerlink" href="#thats-it" title="Permanent link">&para;</a></h2>
-<p>No database migrations needed — <code>django_adminx.admin</code> shares the same <code>django_admin_log</code> table.</p>
+<p>No database migrations needed — <code>django_admin_boost.admin</code> shares the same <code>django_admin_log</code> table.</p>
 <p>No template changes needed — your custom admin templates continue to work (DTL templates are found via the DTL backend fallback).</p>
 <p>Third-party admin packages (<code>django-import-export</code>, <code>django-debug-toolbar</code>, etc.) continue to work — they register on Django's admin site singleton, which is redirected to ours.</p>
 <h2 id="what-you-get">What you get<a class="headerlink" href="#what-you-get" title="Permanent link">&para;</a></h2>
@@ -814,15 +814,15 @@
 </ul>
 <h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h2>
 <p><strong>Do I need to keep <code>django.contrib.admin</code> in INSTALLED_APPS?</strong>
-No. Remove it entirely. <code>django_adminx.admin</code> is a complete standalone replacement.</p>
+No. Remove it entirely. <code>django_admin_boost.admin</code> is a complete standalone replacement.</p>
 <p><strong>Will my existing admin log entries be preserved?</strong>
-Yes. <code>django_adminx.admin</code> uses the same <code>django_admin_log</code> database table.</p>
+Yes. <code>django_admin_boost.admin</code> uses the same <code>django_admin_log</code> database table.</p>
 <p><strong>What about <code>django.contrib.auth</code>'s User/Group admin?</strong>
 They register automatically on our admin site via the monkey-patched singleton. You'll see Users and Groups in the admin as usual.</p>
-<p><strong>Can I use django-adminx's mixins without the full replacement?</strong>
-Yes. Just <code>pip install django-adminx</code> (no <code>[jinja2]</code> extra needed) and use the mixins directly with stock Django admin:</p>
+<p><strong>Can I use django-admin-boost's mixins without the full replacement?</strong>
+Yes. Just <code>pip install django-admin-boost</code> (no <code>[jinja2]</code> extra needed) and use the mixins directly with stock Django admin:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelAdmin</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_adminx</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListOnlyFieldsMixin</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_admin_boost</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListOnlyFieldsMixin</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyAdmin</span><span class="p">(</span><span class="n">ListOnlyFieldsMixin</span><span class="p">,</span> <span class="n">ModelAdmin</span><span class="p">):</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">list_only_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
