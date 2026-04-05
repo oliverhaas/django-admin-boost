@@ -1,12 +1,10 @@
 from django.db import models
-from simple_history.models import HistoricalRecords
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
-    history = HistoricalRecords()
 
     class Meta:
         verbose_name_plural = "categories"
@@ -32,7 +30,6 @@ class Product(models.Model):
     is_featured = models.BooleanField(default=False)
     stock = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    history = HistoricalRecords()
 
     class Meta:
         ordering = ["-created_at"]

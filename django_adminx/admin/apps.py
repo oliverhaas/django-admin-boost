@@ -94,6 +94,7 @@ class SimpleAdminConfig(AppConfig):
         checks.register(check_dependencies, checks.Tags.admin)
         checks.register(check_admin_app, checks.Tags.admin)
         self._redirect_django_admin()
+        self._monkeypatch_generics()
         self._ensure_admin_locale()
 
     def _redirect_django_admin(self) -> None:
@@ -103,9 +104,15 @@ class SimpleAdminConfig(AppConfig):
         our ModelAdmin, ``from django.contrib.admin.models import LogEntry``
         returns our LogEntry, etc.
         """
+        import django.contrib  # noqa: PLC0415
+
         import django_adminx.admin as our_admin  # noqa: PLC0415
 
         sys.modules["django.contrib.admin"] = our_admin
+        # Also update the parent-package attribute so that
+        # ``from django.contrib import admin`` returns our module
+        # (Python checks the parent's attribute before sys.modules).
+        django.contrib.admin = our_admin  # type: ignore[attr-defined]
 
         for name in _DJANGO_ADMIN_SUBMODULES:
             mod = importlib.import_module(f"django_adminx.admin.{name}")
@@ -117,6 +124,20 @@ class SimpleAdminConfig(AppConfig):
             for child in children:
                 mod = importlib.import_module(f"django_adminx.admin.{pkg_name}.{child}")
                 sys.modules[f"django.contrib.admin.{pkg_name}.{child}"] = mod
+
+    def _monkeypatch_generics(self) -> None:
+        """Make our admin classes subscriptable for type-checking tools.
+
+        Third-party packages like ``django-modeltranslation`` use
+        ``BaseModelAdmin[_ModelT]`` at class definition time.  Since our
+        classes are copies (not the originals that ``django-stubs-ext``
+        patches), we pass them via ``extra_classes``.
+        """
+        import django_stubs_ext  # noqa: PLC0415
+
+        from django_adminx.admin.options import BaseModelAdmin, ModelAdmin  # noqa: PLC0415
+
+        django_stubs_ext.monkeypatch(extra_classes=[BaseModelAdmin, ModelAdmin])
 
     def _ensure_admin_locale(self) -> None:
         """Ensure Django's admin translation catalogue is still discoverable.

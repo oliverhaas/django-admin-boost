@@ -272,6 +272,7 @@ version = "0.1.0a1"
 source = { editable = "." }
 dependencies = [
     { name = "django" },
+    { name = "django-stubs-ext" },
 ]
 
 [package.optional-dependencies]
@@ -301,6 +302,7 @@ docs = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=5.2,<7" },
+    { name = "django-stubs-ext", specifier = ">=5.0" },
     { name = "jinja2", marker = "extra == 'jinja2'", specifier = ">=3.1" },
 ]
 provides-extras = ["jinja2"]

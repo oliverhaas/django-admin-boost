@@ -40,6 +40,7 @@ version = "0.1.0a1"
 source = { editable = "../../" }
 dependencies = [
     { name = "django" },
+    { name = "django-stubs-ext" },
 ]
 
 [package.optional-dependencies]
@@ -50,6 +51,7 @@ jinja2 = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=5.2,<7" },
+    { name = "django-stubs-ext", specifier = ">=5.0" },
     { name = "jinja2", marker = "extra == 'jinja2'", specifier = ">=3.1" },
 ]
 provides-extras = ["jinja2"]
@@ -81,8 +83,6 @@ dependencies = [
     { name = "django-adminx", extra = ["jinja2"] },
     { name = "django-import-export" },
     { name = "django-modeltranslation" },
-    { name = "django-simple-history" },
-    { name = "django-stubs-ext" },
 ]
 
 [package.metadata]
@@ -90,8 +90,6 @@ requires-dist = [
     { name = "django-adminx", extras = ["jinja2"], editable = "../../" },
     { name = "django-import-export", specifier = ">=4.0" },
     { name = "django-modeltranslation", specifier = ">=0.20.2" },
-    { name = "django-simple-history", specifier = ">=3.0" },
-    { name = "django-stubs-ext", specifier = ">=6.0" },
 ]
 
 [[package]]
@@ -119,18 +117,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/62/aa/3492ab6250e0c87e26f2f4fd522e4c9b214da871bfe4089a13888a802c6e/django_modeltranslation-0.20.2.tar.gz", hash = "sha256:d687bdcae9305dcdc8d644b75f1d687f355073e82049f4b9c4ba0feb347a0980", size = 81589, upload-time = "2026-03-01T15:59:07.262Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/79/46/6c1edcab4233baa02cc6cfaf43e01ccc0c28757f9450171e54d790512e21/django_modeltranslation-0.20.2-py3-none-any.whl", hash = "sha256:964385c3cf3a584f564e995f2e9ff0e961d0297ef04ff51821ac529e12064290", size = 98257, upload-time = "2026-03-01T15:59:06.09Z" },
-]
-
-[[package]]
-name = "django-simple-history"
-version = "3.11.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a8/11/410049f1454b99a78f719d3403fc89437c2a38ee092e939d5ab8d4846738/django_simple_history-3.11.0.tar.gz", hash = "sha256:2c587479cf2c3071e9aa555d0d11b73676994db4910770958f57659ade2deffe", size = 234862, upload-time = "2025-12-11T13:50:55.022Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6e/c2/e9854a3438cfc80891ab4d3826b7c61a0fe5ba3a4da89104a8f5c9afb5df/django_simple_history-3.11.0-py3-none-any.whl", hash = "sha256:f3c298db49e418ffce7fb709a5e83108452ea2179ec5c4b9232484c25427192a", size = 81868, upload-time = "2025-12-11T13:50:53.71Z" },
 ]
 
 [[package]]

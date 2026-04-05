@@ -22,7 +22,7 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Typing :: Typed",
 ]
-dependencies = ["Django>=5.2,<7"]
+dependencies = ["Django>=5.2,<7", "django-stubs-ext>=5.0"]
 
 [project.optional-dependencies]
 jinja2 = ["Jinja2>=3.1"]

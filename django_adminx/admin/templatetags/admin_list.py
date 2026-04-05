@@ -508,12 +508,17 @@ def search_form_tag(parser, token):
 @register.simple_tag
 def admin_list_filter(cl, spec):
     tpl = get_template(spec.template)
-    return tpl.render(
-        {
-            "title": spec.title,
-            "choices": list(spec.choices(cl)),
-            "spec": spec,
-        },
+    # mark_safe is needed because get_template() may resolve to a Jinja2
+    # template whose render() returns a plain str (not SafeString).  Without
+    # this, the DTL autoescape in the parent template escapes the HTML.
+    return mark_safe(
+        tpl.render(
+            {
+                "title": spec.title,
+                "choices": list(spec.choices(cl)),
+                "spec": spec,
+            },
+        ),
     )
 
 

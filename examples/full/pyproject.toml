@@ -6,8 +6,6 @@ dependencies = [
   "django-adminx[jinja2]",
   "django-import-export>=4.0",
   "django-modeltranslation>=0.20.2",
-  "django-simple-history>=3.0",
-  "django-stubs-ext>=6.0",
 ]
 
 [tool.uv.sources]

@@ -11,6 +11,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
+    "modeltranslation",
     "django_adminx.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -18,7 +19,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "import_export",
-    "simple_history",
     "catalog",
 ]
 
@@ -28,7 +28,6 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "urls"
@@ -75,5 +74,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 USE_TZ = True
 USE_I18N = True
 
+LANGUAGE_CODE = "en"
+
+LANGUAGES = [
+    ("en", "English"),
+    ("de", "German"),
+    ("fr", "French"),
+    ("es", "Spanish"),
+]
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
