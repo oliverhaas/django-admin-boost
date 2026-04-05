@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import datetime
 from typing import Any
 from urllib.parse import quote
 
 import jinja2
 from django.templatetags.static import static
 from django.urls import NoReverseMatch, reverse
+from django.utils import timezone
 from django.utils.dateformat import format as dateformat
 from django.utils.encoding import iri_to_uri
 from django.utils.formats import date_format, localize
@@ -58,7 +59,7 @@ def environment(**options: object) -> jinja2.Environment:
             "BACKEND": "django.template.backends.jinja2.Jinja2",
             "APP_DIRS": True,
             "OPTIONS": {
-                "environment": "django_adminx.jinja2_env.environment",
+                "environment": "django_adminx.admin.jinja2_env.environment",
                 ...
             },
         }]
@@ -124,10 +125,13 @@ def environment(**options: object) -> jinja2.Environment:
 # ---------------------------------------------------------------------------
 
 
-def _url(viewname: str, *args: object, silent: bool = False, **kwargs: object) -> str:
+@jinja2.pass_context
+def _url(context: Any, viewname: str, *args: object, silent: bool = False, **kwargs: object) -> str:  # noqa: ANN401
     """Wrap ``reverse()``, optionally catching ``NoReverseMatch``."""
     try:
-        return reverse(viewname, args=args, kwargs=kwargs)
+        request = context.get("request") if context else None
+        current_app = getattr(request, "current_app", None) if request else None
+        return reverse(viewname, args=args, kwargs=kwargs, current_app=current_app)
     except NoReverseMatch:
         if silent:
             return ""
@@ -136,7 +140,7 @@ def _url(viewname: str, *args: object, silent: bool = False, **kwargs: object) -
 
 def _now(format_string: str) -> str:
     """Return the current datetime formatted with Django's dateformat."""
-    return dateformat(datetime.now(tz=UTC), format_string)
+    return dateformat(datetime.now(tz=timezone.get_current_timezone()), format_string)
 
 
 def _get_admin_log(limit: int = 10, user: object = None) -> object:
@@ -244,9 +248,12 @@ def _urlencode_path(value: str) -> str:
 
 def _date_filter(value: Any, arg: str = "DATETIME_FORMAT") -> str:  # noqa: ANN401
     """Port of Django's ``date`` template filter."""
-    if value is None:
+    if value in (None, ""):
         return ""
-    return date_format(value, arg)
+    try:
+        return date_format(value, arg)
+    except AttributeError:
+        return ""
 
 
 def _truncatewords(value: str, arg: int | str = 15) -> str:

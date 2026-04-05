@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import TYPE_CHECKING, Any
 
 from django_adminx.paginators import EstimatedCountPaginator
@@ -9,6 +10,8 @@ from django_adminx.paginators import EstimatedCountPaginator
 if TYPE_CHECKING:
     from django.db.models import QuerySet
     from django.http import HttpRequest
+
+_UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", re.IGNORECASE)
 
 
 class ListOnlyFieldsMixin:
@@ -61,7 +64,7 @@ class ListOnlyFieldsMixin:
             last = parts[-1]
             # If the last segment looks like a PK (digits or UUID), it's a
             # change view.
-            if last.isdigit():
+            if last.isdigit() or _UUID_RE.match(last):
                 return False
         return True
 

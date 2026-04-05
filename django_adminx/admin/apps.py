@@ -1,6 +1,7 @@
 import importlib
 import sys
 import types
+from pathlib import Path
 
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
@@ -93,6 +94,7 @@ class SimpleAdminConfig(AppConfig):
         checks.register(check_dependencies, checks.Tags.admin)
         checks.register(check_admin_app, checks.Tags.admin)
         self._redirect_django_admin()
+        self._ensure_admin_locale()
 
     def _redirect_django_admin(self) -> None:
         """Replace all placeholders with our real modules.
@@ -115,6 +117,24 @@ class SimpleAdminConfig(AppConfig):
             for child in children:
                 mod = importlib.import_module(f"django_adminx.admin.{pkg_name}.{child}")
                 sys.modules[f"django.contrib.admin.{pkg_name}.{child}"] = mod
+
+    def _ensure_admin_locale(self) -> None:
+        """Ensure Django's admin translation catalogue is still discoverable.
+
+        Since this app replaces ``django.contrib.admin`` in the app registry,
+        Django's ``all_locale_paths()`` no longer finds the original admin
+        locale directory.  We add it to ``LOCALE_PATHS`` so translations for
+        admin-specific strings (e.g. "Save and continue editing") still work.
+        """
+        import django  # noqa: PLC0415
+        from django.conf import settings  # noqa: PLC0415
+
+        admin_locale = Path(django.__file__).parent / "contrib" / "admin" / "locale"
+        if admin_locale.is_dir():
+            admin_locale_str = str(admin_locale)
+            locale_paths = list(getattr(settings, "LOCALE_PATHS", []))
+            if admin_locale_str not in locale_paths:
+                settings.LOCALE_PATHS = [*locale_paths, admin_locale_str]
 
 
 class AdminConfig(SimpleAdminConfig):

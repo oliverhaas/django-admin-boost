@@ -1,13 +1,16 @@
 """Tests for the Jinja2 environment factory."""
 
+from datetime import UTC
+
 import pytest
+from django.test import RequestFactory, override_settings
 
 from django_adminx.admin.jinja2_env import (
     _admin_urlname,
     _admin_urlquote,
+    _date_filter,
     _get_admin_log,
     _now,
-    _url,
     _yesno,
     environment,
 )
@@ -36,19 +39,44 @@ class TestEnvironmentFactory:
 
 
 class TestUrlGlobal:
+    def _render_url(self, template_str, context=None):
+        """Render a Jinja2 template string using the admin environment."""
+        env = environment(autoescape=True)
+        template = env.from_string(template_str)
+        return template.render(context or {})
+
     def test_resolves_admin_index(self):
-        result = _url("admin:index")
+        result = self._render_url('{{ url("admin:index") }}')
         assert result == "/admin/"
 
     def test_raises_on_missing_view(self):
         from django.urls import NoReverseMatch
 
         with pytest.raises(NoReverseMatch):
-            _url("nonexistent-view-name")
+            self._render_url('{{ url("nonexistent-view-name") }}')
 
     def test_silent_returns_empty_on_missing_view(self):
-        result = _url("nonexistent-view-name", silent=True)
+        result = self._render_url('{{ url("nonexistent-view-name", silent=True) }}')
         assert result == ""
+
+    def test_passes_current_app_from_request(self):
+        """Issue #3: _url must pass current_app to reverse() for custom admin sites."""
+        from unittest.mock import patch
+
+        env = environment(autoescape=True)
+        factory = RequestFactory()
+        request = factory.get("/")
+        request.current_app = "my_custom_admin"
+
+        template = env.from_string('{{ url("admin:index") }}')
+        with patch("django_adminx.admin.jinja2_env.reverse", return_value="/custom/") as mock_reverse:
+            result = template.render({"request": request})
+
+        mock_reverse.assert_called_once()
+        call_kwargs = mock_reverse.call_args
+        assert call_kwargs.kwargs.get("current_app") == "my_custom_admin", (
+            f"Expected current_app='my_custom_admin' to be passed to reverse(), but got: {call_kwargs}"
+        )
 
 
 class TestNowGlobal:
@@ -57,6 +85,22 @@ class TestNowGlobal:
         # UTC offset like "+0000" or "+00:00"
         assert isinstance(result, str)
         assert len(result) > 0
+
+    @override_settings(TIME_ZONE="America/New_York", USE_TZ=True)
+    def test_respects_server_timezone(self):
+        """Issue #1: _now must use the server timezone, not hardcoded UTC."""
+        from django.utils import timezone
+
+        timezone.activate("America/New_York")
+        try:
+            result = _now("e")  # timezone name, e.g. "EST" or "EDT"
+            # Should NOT be "UTC"
+            assert result != "UTC", (
+                "_now returned timezone 'UTC' but TIME_ZONE is 'America/New_York' — "
+                "expected an Eastern timezone like 'EST' or 'EDT'"
+            )
+        finally:
+            timezone.deactivate()
 
 
 class TestYesnoFilter:
@@ -94,6 +138,23 @@ class TestAdminUrlquoteFilter:
 
     def test_preserves_safe_chars(self):
         assert _admin_urlquote("hello") == "hello"
+
+
+class TestDateFilter:
+    def test_none_returns_empty(self):
+        assert _date_filter(None) == ""
+
+    def test_empty_string_returns_empty(self):
+        """Issue #6: _date_filter must handle empty strings like Django's date filter."""
+        result = _date_filter("")
+        assert result == "", f"Expected empty string for empty input, got AttributeError or '{result}'"
+
+    def test_formats_datetime(self):
+        from datetime import datetime
+
+        dt = datetime(2024, 6, 15, 12, 0, 0, tzinfo=UTC)
+        result = _date_filter(dt, "Y-m-d")
+        assert result == "2024-06-15"
 
 
 @pytest.mark.django_db
