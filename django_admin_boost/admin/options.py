@@ -48,15 +48,15 @@ from django.utils.translation import ngettext
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import RedirectView
 
-from django_adminx.admin import helpers, widgets
-from django_adminx.admin.checks import (
+from django_admin_boost.admin import helpers, widgets
+from django_admin_boost.admin.checks import (
     BaseModelAdminChecks,
     InlineModelAdminChecks,
     ModelAdminChecks,
 )
-from django_adminx.admin.exceptions import DisallowedModelAdminToField, NotRegistered
-from django_adminx.admin.templatetags.admin_urls import add_preserved_filters
-from django_adminx.admin.utils import (
+from django_admin_boost.admin.exceptions import DisallowedModelAdminToField, NotRegistered
+from django_admin_boost.admin.templatetags.admin_urls import add_preserved_filters
+from django_admin_boost.admin.utils import (
     NestedObjects,
     construct_change_message,
     flatten_fieldsets,
@@ -67,8 +67,8 @@ from django_adminx.admin.utils import (
     quote,
     unquote,
 )
-from django_adminx.admin.widgets import AutocompleteSelect, AutocompleteSelectMultiple
-from django_adminx.mixins import ListFieldsMixin, SmartPaginatorMixin
+from django_admin_boost.admin.widgets import AutocompleteSelect, AutocompleteSelectMultiple
+from django_admin_boost.mixins import ListFieldsMixin, SmartPaginatorMixin
 
 IS_POPUP_VAR = "_popup"
 TO_FIELD_VAR = "_to_field"
@@ -446,7 +446,7 @@ class BaseModelAdmin(metaclass=forms.MediaDefiningClass):
         return self.sortable_by if self.sortable_by is not None else self.get_list_display(request)
 
     def lookup_allowed(self, lookup, value, request):
-        from django_adminx.admin.filters import SimpleListFilter
+        from django_admin_boost.admin.filters import SimpleListFilter
 
         model = self.model
         # Check FKey lookups that are allowed, so that popups produced by
@@ -822,7 +822,7 @@ class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, BaseModelAdmin):
         """
         Return the ChangeList class for use on the changelist page.
         """
-        from django_adminx.admin.views.main import ChangeList
+        from django_admin_boost.admin.views.main import ChangeList
 
         return ChangeList
 
@@ -925,7 +925,7 @@ class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, BaseModelAdmin):
 
         The default implementation creates an admin LogEntry object.
         """
-        from django_adminx.admin.models import ADDITION, LogEntry
+        from django_admin_boost.admin.models import ADDITION, LogEntry
 
         return LogEntry.objects.log_actions(
             user_id=request.user.pk,
@@ -941,7 +941,7 @@ class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, BaseModelAdmin):
 
         The default implementation creates an admin LogEntry object.
         """
-        from django_adminx.admin.models import CHANGE, LogEntry
+        from django_admin_boost.admin.models import CHANGE, LogEntry
 
         return LogEntry.objects.log_actions(
             user_id=request.user.pk,
@@ -958,7 +958,7 @@ class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, BaseModelAdmin):
 
         The default implementation creates admin LogEntry objects.
         """
-        from django_adminx.admin.models import DELETION, LogEntry
+        from django_admin_boost.admin.models import DELETION, LogEntry
 
         return LogEntry.objects.log_actions(
             user_id=request.user.pk,
@@ -1948,7 +1948,7 @@ class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, BaseModelAdmin):
         """
         The 'change list' admin view for this model.
         """
-        from django_adminx.admin.views.main import ERROR_FLAG
+        from django_admin_boost.admin.views.main import ERROR_FLAG
 
         app_label = self.opts.app_label
         if not self.has_view_or_change_permission(request):
@@ -2208,8 +2208,8 @@ class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, BaseModelAdmin):
 
     def history_view(self, request, object_id, extra_context=None):
         "The 'history' admin view for this model."
-        from django_adminx.admin.models import LogEntry
-        from django_adminx.admin.views.main import PAGE_VAR
+        from django_admin_boost.admin.models import LogEntry
+        from django_admin_boost.admin.views.main import PAGE_VAR
 
         # First check if the user can see this history.
         model = self.model

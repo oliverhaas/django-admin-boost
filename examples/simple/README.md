@@ -1,6 +1,6 @@
 # Simple Example
 
-Basic shop project using `django_adminx.admin` with Jinja2 templates. No third-party admin packages.
+Basic shop project using `django_admin_boost.admin` with Jinja2 templates. No third-party admin packages.
 
 ## Setup
 

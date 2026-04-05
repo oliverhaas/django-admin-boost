@@ -3,7 +3,7 @@ from django.core.exceptions import FieldDoesNotExist, PermissionDenied
 from django.http import Http404, JsonResponse
 from django.views.generic.list import BaseListView
 
-from django_adminx.admin.exceptions import NotRegistered
+from django_admin_boost.admin.exceptions import NotRegistered
 
 
 class AutocompleteJsonView(BaseListView):

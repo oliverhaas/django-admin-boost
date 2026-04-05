@@ -1,6 +1,6 @@
 # Full Example
 
-`django_adminx.admin` with third-party admin packages:
+`django_admin_boost.admin` with third-party admin packages:
 
 - **django-import-export** — CSV/Excel import & export from the admin
 - **django-modeltranslation** — translatable fields with tabbed UI

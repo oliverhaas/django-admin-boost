@@ -4,7 +4,7 @@ from django import template
 from django.urls import Resolver404, get_script_prefix, resolve
 from django.utils.http import urlencode
 
-from django_adminx.admin.utils import quote
+from django_admin_boost.admin.utils import quote
 
 register = template.Library()
 
@@ -54,11 +54,11 @@ def add_preserved_filters(context, url, popup=False, to_field=None):
         merged_qs.update(preserved_filters)
 
     if popup:
-        from django_adminx.admin.options import IS_POPUP_VAR
+        from django_admin_boost.admin.options import IS_POPUP_VAR
 
         merged_qs[IS_POPUP_VAR] = 1
     if to_field:
-        from django_adminx.admin.options import TO_FIELD_VAR
+        from django_admin_boost.admin.options import TO_FIELD_VAR
 
         merged_qs[TO_FIELD_VAR] = to_field
 

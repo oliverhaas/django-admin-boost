@@ -1,15 +1,15 @@
-# django-adminx
+# django-admin-boost
 
-[![PyPI version](https://img.shields.io/pypi/v/django-adminx.svg?style=flat)](https://pypi.org/project/django-adminx/)
-[![Python versions](https://img.shields.io/pypi/pyversions/django-adminx.svg)](https://pypi.org/project/django-adminx/)
-[![CI](https://github.com/oliverhaas/django-adminx/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverhaas/django-adminx/actions/workflows/ci.yml)
+[![PyPI version](https://img.shields.io/pypi/v/django-admin-boost.svg?style=flat)](https://pypi.org/project/django-admin-boost/)
+[![Python versions](https://img.shields.io/pypi/pyversions/django-admin-boost.svg)](https://pypi.org/project/django-admin-boost/)
+[![CI](https://github.com/oliverhaas/django-admin-boost/actions/workflows/ci.yml/badge.svg)](https://github.com/oliverhaas/django-admin-boost/actions/workflows/ci.yml)
 
 Drop-in replacement for `django.contrib.admin` that works with Jinja2 (and DTL). Ships standalone performance mixins you can use with the stock Django admin too.
 
 ## Features
 
 - **Jinja2 admin templates** — all 50 admin templates converted, with DTL fallback
-- **Full drop-in replacement** — swap `django.contrib.admin` for `django_adminx.admin` and everything just works
+- **Full drop-in replacement** — swap `django.contrib.admin` for `django_admin_boost.admin` and everything just works
 - **Standalone performance mixins** — use `ListOnlyFieldsMixin` or `EstimatedCountPaginator` with stock Django admin, no full replacement needed
 - **`list_only_fields`** — automatic `.only()` on changelist querysets
 - **Smart paginator** — uses PostgreSQL's `pg_class.reltuples` for fast estimated counts on large tables
@@ -21,7 +21,7 @@ Drop-in replacement for `django.contrib.admin` that works with Jinja2 (and DTL).
 ```python
 # settings.py
 INSTALLED_APPS = [
-    "django_adminx.admin",
+    "django_admin_boost.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     ...
@@ -32,7 +32,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "django_adminx.admin.jinja2_env.environment",
+            "environment": "django_admin_boost.admin.jinja2_env.environment",
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -56,7 +56,7 @@ TEMPLATES = [
 
 ```python
 # admin.py
-import django_adminx.admin as admin
+import django_admin_boost.admin as admin
 
 @admin.register(MyModel)
 class MyModelAdmin(admin.ModelAdmin):
@@ -74,7 +74,7 @@ INSTALLED_APPS = ["django.contrib.admin", ...]
 ```python
 # admin.py
 from django.contrib.admin import ModelAdmin
-from django_adminx import ListOnlyFieldsMixin, EstimatedCountPaginator
+from django_admin_boost import ListOnlyFieldsMixin, EstimatedCountPaginator
 
 class MyModelAdmin(ListOnlyFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name", "status"]
@@ -84,18 +84,18 @@ class MyModelAdmin(ListOnlyFieldsMixin, ModelAdmin):
 ## Installation
 
 ```console
-pip install django-adminx
+pip install django-admin-boost
 ```
 
 For Jinja2 support:
 
 ```console
-pip install django-adminx[jinja2]
+pip install django-admin-boost[jinja2]
 ```
 
 ## Documentation
 
-Full documentation at [oliverhaas.github.io/django-adminx](https://oliverhaas.github.io/django-adminx/)
+Full documentation at [oliverhaas.github.io/django-admin-boost](https://oliverhaas.github.io/django-admin-boost/)
 
 ## License
 

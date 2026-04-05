@@ -21,9 +21,9 @@ from django.views.decorators.common import no_append_slash
 from django.views.decorators.csrf import csrf_protect
 from django.views.i18n import JavaScriptCatalog
 
-from django_adminx.admin import ModelAdmin, actions
-from django_adminx.admin.exceptions import AlreadyRegistered, NotRegistered
-from django_adminx.admin.views.autocomplete import AutocompleteJsonView
+from django_admin_boost.admin import ModelAdmin, actions
+from django_admin_boost.admin.exceptions import AlreadyRegistered, NotRegistered
+from django_admin_boost.admin.views.autocomplete import AutocompleteJsonView
 
 all_sites = WeakSet()
 
@@ -235,7 +235,7 @@ class AdminSite:
                 if request.path == reverse("admin:logout", current_app=self.name):
                     index_path = reverse("admin:index", current_app=self.name)
                     return HttpResponseRedirect(index_path)
-                # Inner import to prevent django_adminx (app) from
+                # Inner import to prevent django_admin_boost (app) from
                 # importing django.contrib.auth.models.User (unrelated model).
                 from django.contrib.auth.views import redirect_to_login
 
@@ -350,7 +350,7 @@ class AdminSite:
         """
         from django.contrib.auth.views import PasswordChangeView
 
-        from django_adminx.admin.forms import AdminPasswordChangeForm
+        from django_admin_boost.admin.forms import AdminPasswordChangeForm
 
         url = reverse("admin:password_change_done", current_app=self.name)
         defaults = {
@@ -384,7 +384,7 @@ class AdminSite:
         `extra_context` is unused but present for consistency with the other
         admin views.
         """
-        return JavaScriptCatalog.as_view(packages=["django_adminx.admin"])(request)
+        return JavaScriptCatalog.as_view(packages=["django_admin_boost.admin"])(request)
 
     def logout(self, request, extra_context=None):
         """
@@ -421,10 +421,10 @@ class AdminSite:
 
         # Since this module gets imported in the application's root package,
         # it cannot import models from other applications at the module level,
-        # and django_adminx.forms eventually imports User.
+        # and django_admin_boost.forms eventually imports User.
         from django.contrib.auth.views import LoginView
 
-        from django_adminx.admin.forms import AdminAuthenticationForm
+        from django_admin_boost.admin.forms import AdminAuthenticationForm
 
         context = {
             **self.each_context(request),
@@ -596,7 +596,7 @@ class AdminSite:
         )
 
     def get_log_entries(self, request):
-        from django_adminx.admin.models import LogEntry
+        from django_admin_boost.admin.models import LogEntry
 
         return LogEntry.objects.select_related("content_type", "user")
 

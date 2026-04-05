@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from django.core.exceptions import ImproperlyConfigured
 
-from django_adminx.paginators import EstimatedCountPaginator
+from django_admin_boost.paginators import EstimatedCountPaginator
 
 if TYPE_CHECKING:
     from django.db.models import QuerySet
@@ -126,7 +126,7 @@ class ListFieldsMixin:
 
 class SmartPaginatorMixin:
     """
-    ModelAdmin mixin that uses :class:`~django_adminx.paginators.EstimatedCountPaginator`.
+    ModelAdmin mixin that uses :class:`~django_admin_boost.paginators.EstimatedCountPaginator`.
 
     On PostgreSQL this avoids expensive ``COUNT(*)`` queries for unfiltered
     changelist views by reading the row estimate from ``pg_class.reltuples``.

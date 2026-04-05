@@ -198,7 +198,7 @@ class ForeignKeyRawIdWidget(forms.TextInput):
         return url_params_from_lookup_dict(limit_choices_to)
 
     def url_parameters(self):
-        from django_adminx.admin.views.main import TO_FIELD_VAR
+        from django_admin_boost.admin.views.main import TO_FIELD_VAR
 
         params = self.base_url_parameters()
         params.update({TO_FIELD_VAR: self.rel.get_related_field().name})
@@ -333,7 +333,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
         )
 
     def get_context(self, name, value, attrs):
-        from django_adminx.admin.views.main import IS_POPUP_VAR, TO_FIELD_VAR
+        from django_admin_boost.admin.views.main import IS_POPUP_VAR, TO_FIELD_VAR
 
         rel_opts = self.rel.model._meta
         info = (rel_opts.app_label, rel_opts.model_name)

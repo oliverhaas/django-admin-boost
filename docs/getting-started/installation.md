@@ -1,22 +1,22 @@
 # Installation
 
 ```console
-pip install django-adminx
+pip install django-admin-boost
 ```
 
 For Jinja2 support:
 
 ```console
-pip install django-adminx[jinja2]
+pip install django-admin-boost[jinja2]
 ```
 
 ## Full admin replacement
 
-Replace `django.contrib.admin` with `django_adminx.admin` in your settings:
+Replace `django.contrib.admin` with `django_admin_boost.admin` in your settings:
 
 ```python
 INSTALLED_APPS = [
-    "django_adminx.admin",
+    "django_admin_boost.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -30,7 +30,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "django_adminx.admin.jinja2_env.environment",
+            "environment": "django_admin_boost.admin.jinja2_env.environment",
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -52,10 +52,10 @@ TEMPLATES = [
 ]
 ```
 
-Then use `django_adminx.admin` instead of `django.contrib.admin` in your admin modules:
+Then use `django_admin_boost.admin` instead of `django.contrib.admin` in your admin modules:
 
 ```python
-import django_adminx.admin as admin
+import django_admin_boost.admin as admin
 
 @admin.register(MyModel)
 class MyModelAdmin(admin.ModelAdmin):
@@ -75,7 +75,7 @@ INSTALLED_APPS = [
 
 ```python
 from django.contrib.admin import ModelAdmin
-from django_adminx import ListOnlyFieldsMixin, EstimatedCountPaginator
+from django_admin_boost import ListOnlyFieldsMixin, EstimatedCountPaginator
 
 class MyModelAdmin(ListOnlyFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name", "status"]

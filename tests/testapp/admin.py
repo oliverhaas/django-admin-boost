@@ -1,4 +1,4 @@
-from django_adminx import admin
+from django_admin_boost import admin
 
 from .models import Article, Category
 

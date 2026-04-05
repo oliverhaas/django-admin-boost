@@ -1,4 +1,4 @@
-from django_adminx.admin import site
+from django_admin_boost.admin import site
 from django.urls import path
 
 urlpatterns = [

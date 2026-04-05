@@ -7,8 +7,8 @@ from pathlib import Path
 from django.contrib.auth.models import User
 from django.test import RequestFactory, TestCase
 
-from django_adminx import admin
-from django_adminx.admin import ModelAdmin
+from django_admin_boost import admin
+from django_admin_boost.admin import ModelAdmin
 from tests.testapp.models import Article
 
 
@@ -16,26 +16,26 @@ class DocstringAccuracyTest(TestCase):
     """Issues #4 and #5: docstrings must reference correct module paths."""
 
     def test_jinja2_env_docstring_has_correct_path(self):
-        """Issue #4: jinja2_env.environment docstring must use 'django_adminx.admin.jinja2_env.environment'."""
-        from django_adminx.admin.jinja2_env import environment
+        """Issue #4: jinja2_env.environment docstring must use 'django_admin_boost.admin.jinja2_env.environment'."""
+        from django_admin_boost.admin.jinja2_env import environment
 
         docstring = environment.__doc__
-        assert "django_adminx.admin.jinja2_env.environment" in docstring, (
-            f"Docstring contains wrong path. Expected 'django_adminx.admin.jinja2_env.environment' but got: {docstring}"
+        assert "django_admin_boost.admin.jinja2_env.environment" in docstring, (
+            f"Docstring contains wrong path. Expected 'django_admin_boost.admin.jinja2_env.environment' but got: {docstring}"
         )
-        assert "django_adminx.jinja2_env.environment" not in docstring.replace(
-            "django_adminx.admin.jinja2_env.environment",
+        assert "django_admin_boost.jinja2_env.environment" not in docstring.replace(
+            "django_admin_boost.admin.jinja2_env.environment",
             "",
-        ), "Docstring still contains the wrong path 'django_adminx.jinja2_env.environment'"
+        ), "Docstring still contains the wrong path 'django_admin_boost.jinja2_env.environment'"
 
     def test_top_level_init_docstring_has_correct_module(self):
-        """Issue #5: __init__.py docstring must reference 'django_adminx.admin', not 'django_adminx.adminx'."""
-        import django_adminx
+        """Issue #5: __init__.py docstring must reference 'django_admin_boost.admin', not 'django_admin_boost.adminx'."""
+        import django_admin_boost
 
-        docstring = django_adminx.__doc__
-        assert "django_adminx.admin" in docstring
-        assert "django_adminx.adminx" not in docstring, (
-            "Docstring references non-existent module 'django_adminx.adminx'. Should be 'django_adminx.admin'."
+        docstring = django_admin_boost.__doc__
+        assert "django_admin_boost.admin" in docstring
+        assert "django_admin_boost.adminx" not in docstring, (
+            "Docstring references non-existent module 'django_admin_boost.adminx'. Should be 'django_admin_boost.admin'."
         )
 
 

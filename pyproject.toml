@@ -1,5 +1,5 @@
 [project]
-name = "django-adminx"
+name = "django-admin-boost"
 version = "0.1.0a1"
 description = "Performance-oriented Django admin extensions."
 readme = "README.md"
@@ -28,10 +28,10 @@ dependencies = ["Django>=5.2,<7", "django-stubs-ext>=5.0"]
 jinja2 = ["Jinja2>=3.1"]
 
 [project.urls]
-Changelog = "https://oliverhaas.github.io/django-adminx/reference/changelog/"
-Documentation = "https://oliverhaas.github.io/django-adminx/"
-Homepage = "https://github.com/oliverhaas/django-adminx"
-Repository = "https://github.com/oliverhaas/django-adminx.git"
+Changelog = "https://oliverhaas.github.io/django-admin-boost/reference/changelog/"
+Documentation = "https://oliverhaas.github.io/django-admin-boost/"
+Homepage = "https://github.com/oliverhaas/django-admin-boost"
+Repository = "https://github.com/oliverhaas/django-admin-boost.git"
 
 [dependency-groups]
 dev = [
@@ -53,10 +53,10 @@ build-backend = "hatchling.build"
 requires = ["hatchling"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["django_adminx"]
+packages = ["django_admin_boost"]
 
 [tool.hatch.build.targets.sdist]
-include = ["django_adminx", "LICENSE", "README.md"]
+include = ["django_admin_boost", "LICENSE", "README.md"]
 
 [tool.ruff]
 target-version = "py313"
@@ -65,21 +65,21 @@ fix = true
 extend-exclude = [
   "examples",
   # Copied from Django — not our code to lint
-  "django_adminx/admin/actions.py",
-  "django_adminx/admin/checks.py",
-  "django_adminx/admin/decorators.py",
-  "django_adminx/admin/exceptions.py",
-  "django_adminx/admin/filters.py",
-  "django_adminx/admin/forms.py",
-  "django_adminx/admin/helpers.py",
-  "django_adminx/admin/models.py",
-  "django_adminx/admin/options.py",
-  "django_adminx/admin/sites.py",
-  "django_adminx/admin/utils.py",
-  "django_adminx/admin/widgets.py",
-  "django_adminx/admin/views/",
-  "django_adminx/admin/templatetags/",
-  "django_adminx/admin/migrations/",
+  "django_admin_boost/admin/actions.py",
+  "django_admin_boost/admin/checks.py",
+  "django_admin_boost/admin/decorators.py",
+  "django_admin_boost/admin/exceptions.py",
+  "django_admin_boost/admin/filters.py",
+  "django_admin_boost/admin/forms.py",
+  "django_admin_boost/admin/helpers.py",
+  "django_admin_boost/admin/models.py",
+  "django_admin_boost/admin/options.py",
+  "django_admin_boost/admin/sites.py",
+  "django_admin_boost/admin/utils.py",
+  "django_admin_boost/admin/widgets.py",
+  "django_admin_boost/admin/views/",
+  "django_admin_boost/admin/templatetags/",
+  "django_admin_boost/admin/migrations/",
 ]
 
 [tool.ruff.lint]
@@ -121,21 +121,21 @@ warn_unused_ignores = true
 [[tool.mypy.overrides]]
 # Copied from Django — not our code to type-check
 module = [
-  "django_adminx.admin.actions",
-  "django_adminx.admin.checks",
-  "django_adminx.admin.decorators",
-  "django_adminx.admin.exceptions",
-  "django_adminx.admin.filters",
-  "django_adminx.admin.forms",
-  "django_adminx.admin.helpers",
-  "django_adminx.admin.models",
-  "django_adminx.admin.options",
-  "django_adminx.admin.sites",
-  "django_adminx.admin.utils",
-  "django_adminx.admin.widgets",
-  "django_adminx.admin.views.*",
-  "django_adminx.admin.templatetags.*",
-  "django_adminx.admin.migrations.*",
+  "django_admin_boost.admin.actions",
+  "django_admin_boost.admin.checks",
+  "django_admin_boost.admin.decorators",
+  "django_admin_boost.admin.exceptions",
+  "django_admin_boost.admin.filters",
+  "django_admin_boost.admin.forms",
+  "django_admin_boost.admin.helpers",
+  "django_admin_boost.admin.models",
+  "django_admin_boost.admin.options",
+  "django_admin_boost.admin.sites",
+  "django_admin_boost.admin.utils",
+  "django_admin_boost.admin.widgets",
+  "django_admin_boost.admin.views.*",
+  "django_admin_boost.admin.templatetags.*",
+  "django_admin_boost.admin.migrations.*",
 ]
 ignore_errors = true
 
@@ -144,7 +144,7 @@ django_settings_module = "tests.settings.base"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "settings.base"
-addopts = "--cov=django_adminx --cov-report=term-missing --cov-report=xml --no-cov-on-fail"
+addopts = "--cov=django_admin_boost --cov-report=term-missing --cov-report=xml --no-cov-on-fail"
 pythonpath = ["tests"]
 testpaths = ["tests"]
 xfail_strict = true

@@ -1,8 +1,8 @@
 site_name: Django AdminX
 site_description: Performance-oriented Django admin extensions.
-site_url: https://oliverhaas.github.io/django-adminx/
-repo_url: https://github.com/oliverhaas/django-adminx
-repo_name: oliverhaas/django-adminx
+site_url: https://oliverhaas.github.io/django-admin-boost/
+repo_url: https://github.com/oliverhaas/django-admin-boost
+repo_name: oliverhaas/django-admin-boost
 edit_uri: edit/main/docs/
 
 theme:

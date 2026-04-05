@@ -24,7 +24,7 @@ jobs:
         run: |
           CURRENT_VERSION=$(grep -m1 'version = ' pyproject.toml | cut -d'"' -f2)
           echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          if curl -s "https://pypi.org/pypi/django-adminx/$CURRENT_VERSION/json" | grep -q '"version"'; then
+          if curl -s "https://pypi.org/pypi/django-admin-boost/$CURRENT_VERSION/json" | grep -q '"version"'; then
             echo "on_pypi=true" >> $GITHUB_OUTPUT
           else
             echo "on_pypi=false" >> $GITHUB_OUTPUT

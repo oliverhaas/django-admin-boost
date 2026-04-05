@@ -1,4 +1,4 @@
-import django_adminx.admin as admin
+import django_admin_boost.admin as admin
 from import_export.admin import ImportExportModelAdmin
 from modeltranslation.admin import TranslationAdmin
 

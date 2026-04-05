@@ -267,7 +267,7 @@ wheels = [
 ]
 
 [[package]]
-name = "django-adminx"
+name = "django-admin-boost"
 version = "0.1.0a1"
 source = { editable = "." }
 dependencies = [

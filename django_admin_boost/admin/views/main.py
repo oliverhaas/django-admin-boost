@@ -17,19 +17,19 @@ from django.utils.http import urlencode
 from django.utils.timezone import make_aware
 from django.utils.translation import gettext
 
-from django_adminx.admin import FieldListFilter
-from django_adminx.admin.exceptions import (
+from django_admin_boost.admin import FieldListFilter
+from django_admin_boost.admin.exceptions import (
     DisallowedModelAdminLookup,
     DisallowedModelAdminToField,
 )
-from django_adminx.admin.options import (
+from django_admin_boost.admin.options import (
     IS_FACETS_VAR,
     IS_POPUP_VAR,
     TO_FIELD_VAR,
     IncorrectLookupParameters,
     ShowFacets,
 )
-from django_adminx.admin.utils import (
+from django_admin_boost.admin.utils import (
     build_q_object_from_lookup_parameters,
     get_fields_from_path,
     lookup_spawns_duplicates,

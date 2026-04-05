@@ -90,9 +90,9 @@ def register(*models, site=None):
 
     The `site` kwarg is an admin site to use instead of the default admin site.
     """
-    from django_adminx.admin import ModelAdmin
-    from django_adminx.admin.sites import AdminSite
-    from django_adminx.admin.sites import site as default_site
+    from django_admin_boost.admin import ModelAdmin
+    from django_admin_boost.admin.sites import AdminSite
+    from django_admin_boost.admin.sites import site as default_site
 
     def _model_admin_wrapper(admin_class):
         if not models:

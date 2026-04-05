@@ -5,7 +5,7 @@ from datetime import UTC
 import pytest
 from django.test import RequestFactory, override_settings
 
-from django_adminx.admin.jinja2_env import (
+from django_admin_boost.admin.jinja2_env import (
     _admin_urlname,
     _admin_urlquote,
     _date_filter,
@@ -69,7 +69,7 @@ class TestUrlGlobal:
         request.current_app = "my_custom_admin"
 
         template = env.from_string('{{ url("admin:index") }}')
-        with patch("django_adminx.admin.jinja2_env.reverse", return_value="/custom/") as mock_reverse:
+        with patch("django_admin_boost.admin.jinja2_env.reverse", return_value="/custom/") as mock_reverse:
             result = template.render({"request": request})
 
         mock_reverse.assert_called_once()

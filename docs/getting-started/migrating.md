@@ -1,21 +1,21 @@
 # Migrating from django.contrib.admin
 
-This guide covers switching from Django's built-in admin to `django_adminx.admin`. The migration is designed to be zero-friction — your existing `ModelAdmin` classes, templates, and third-party admin packages continue to work without changes.
+This guide covers switching from Django's built-in admin to `django_admin_boost.admin`. The migration is designed to be zero-friction — your existing `ModelAdmin` classes, templates, and third-party admin packages continue to work without changes.
 
-## 1. Install django-adminx
+## 1. Install django-admin-boost
 
 ```console
-pip install django-adminx[jinja2]
+pip install django-admin-boost[jinja2]
 ```
 
 ## 2. Update settings.py
 
-Replace `django.contrib.admin` with `django_adminx.admin` in `INSTALLED_APPS`:
+Replace `django.contrib.admin` with `django_admin_boost.admin` in `INSTALLED_APPS`:
 
 ```python
 INSTALLED_APPS = [
     # "django.contrib.admin",       # remove this
-    "django_adminx.admin",          # add this
+    "django_admin_boost.admin",          # add this
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -33,7 +33,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "django_adminx.admin.jinja2_env.environment",
+            "environment": "django_admin_boost.admin.jinja2_env.environment",
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -55,7 +55,7 @@ TEMPLATES = [
 ]
 ```
 
-If you don't want Jinja2, just keep the DTL backend — django-adminx works with both.
+If you don't want Jinja2, just keep the DTL backend — django-admin-boost works with both.
 
 ## 3. Update admin.py imports
 
@@ -64,7 +64,7 @@ If you don't want Jinja2, just keep the DTL backend — django-adminx works with
 from django.contrib import admin
 
 # After
-import django_adminx.admin as admin
+import django_admin_boost.admin as admin
 ```
 
 Everything else stays the same — `@admin.register()`, `admin.ModelAdmin`, `admin.TabularInline`, `admin.site`, etc.
@@ -76,18 +76,18 @@ Everything else stays the same — `@admin.register()`, `admin.ModelAdmin`, `adm
 from django.contrib import admin
 
 # After (optional — the old import still works via monkey-patching)
-from django_adminx.admin import site
+from django_admin_boost.admin import site
 
 urlpatterns = [
     path("admin/", site.urls),
 ]
 ```
 
-The old `from django.contrib import admin` / `admin.site.urls` pattern continues to work because `django_adminx.admin` redirects Django's admin site singleton. But using the direct import is cleaner.
+The old `from django.contrib import admin` / `admin.site.urls` pattern continues to work because `django_admin_boost.admin` redirects Django's admin site singleton. But using the direct import is cleaner.
 
 ## That's it
 
-No database migrations needed — `django_adminx.admin` shares the same `django_admin_log` table.
+No database migrations needed — `django_admin_boost.admin` shares the same `django_admin_log` table.
 
 No template changes needed — your custom admin templates continue to work (DTL templates are found via the DTL backend fallback).
 
@@ -103,20 +103,20 @@ Third-party admin packages (`django-import-export`, `django-debug-toolbar`, etc.
 ## FAQ
 
 **Do I need to keep `django.contrib.admin` in INSTALLED_APPS?**
-No. Remove it entirely. `django_adminx.admin` is a complete standalone replacement.
+No. Remove it entirely. `django_admin_boost.admin` is a complete standalone replacement.
 
 **Will my existing admin log entries be preserved?**
-Yes. `django_adminx.admin` uses the same `django_admin_log` database table.
+Yes. `django_admin_boost.admin` uses the same `django_admin_log` database table.
 
 **What about `django.contrib.auth`'s User/Group admin?**
 They register automatically on our admin site via the monkey-patched singleton. You'll see Users and Groups in the admin as usual.
 
-**Can I use django-adminx's mixins without the full replacement?**
-Yes. Just `pip install django-adminx` (no `[jinja2]` extra needed) and use the mixins directly with stock Django admin:
+**Can I use django-admin-boost's mixins without the full replacement?**
+Yes. Just `pip install django-admin-boost` (no `[jinja2]` extra needed) and use the mixins directly with stock Django admin:
 
 ```python
 from django.contrib.admin import ModelAdmin
-from django_adminx import ListOnlyFieldsMixin
+from django_admin_boost import ListOnlyFieldsMixin
 
 class MyAdmin(ListOnlyFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name"]

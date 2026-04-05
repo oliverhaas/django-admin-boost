@@ -7,7 +7,7 @@ from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
 # ---------------------------------------------------------------------------
-# Make ``django.contrib.admin`` resolve to ``django_adminx.admin``.
+# Make ``django.contrib.admin`` resolve to ``django_admin_boost.admin``.
 #
 # We insert placeholder modules into sys.modules at import time so that
 # ``from django.contrib.admin.models import LogEntry`` (or any submodule)
@@ -81,15 +81,15 @@ class SimpleAdminConfig(AppConfig):
     """Simple AppConfig which does not do automatic discovery."""
 
     default_auto_field = "django.db.models.AutoField"
-    default_site = "django_adminx.admin.sites.AdminSite"
+    default_site = "django_admin_boost.admin.sites.AdminSite"
     label = "admin"
-    name = "django_adminx.admin"
+    name = "django_admin_boost.admin"
     verbose_name = _("Administration")
 
     def ready(self) -> None:
         from django.core import checks  # noqa: PLC0415
 
-        from django_adminx.admin.checks import check_admin_app, check_dependencies  # noqa: PLC0415
+        from django_admin_boost.admin.checks import check_admin_app, check_dependencies  # noqa: PLC0415
 
         checks.register(check_dependencies, checks.Tags.admin)
         checks.register(check_admin_app, checks.Tags.admin)
@@ -106,7 +106,7 @@ class SimpleAdminConfig(AppConfig):
         """
         import django.contrib  # noqa: PLC0415
 
-        import django_adminx.admin as our_admin  # noqa: PLC0415
+        import django_admin_boost.admin as our_admin  # noqa: PLC0415
 
         sys.modules["django.contrib.admin"] = our_admin
         # Also update the parent-package attribute so that
@@ -115,14 +115,14 @@ class SimpleAdminConfig(AppConfig):
         django.contrib.admin = our_admin
 
         for name in _DJANGO_ADMIN_SUBMODULES:
-            mod = importlib.import_module(f"django_adminx.admin.{name}")
+            mod = importlib.import_module(f"django_admin_boost.admin.{name}")
             sys.modules[f"django.contrib.admin.{name}"] = mod
 
         for pkg_name, children in _DJANGO_ADMIN_SUBPACKAGES.items():
-            pkg = importlib.import_module(f"django_adminx.admin.{pkg_name}")
+            pkg = importlib.import_module(f"django_admin_boost.admin.{pkg_name}")
             sys.modules[f"django.contrib.admin.{pkg_name}"] = pkg
             for child in children:
-                mod = importlib.import_module(f"django_adminx.admin.{pkg_name}.{child}")
+                mod = importlib.import_module(f"django_admin_boost.admin.{pkg_name}.{child}")
                 sys.modules[f"django.contrib.admin.{pkg_name}.{child}"] = mod
 
     def _monkeypatch_generics(self) -> None:
@@ -135,7 +135,7 @@ class SimpleAdminConfig(AppConfig):
         """
         import django_stubs_ext  # noqa: PLC0415
 
-        from django_adminx.admin.options import BaseModelAdmin, ModelAdmin  # noqa: PLC0415
+        from django_admin_boost.admin.options import BaseModelAdmin, ModelAdmin  # noqa: PLC0415
 
         django_stubs_ext.monkeypatch(extra_classes=[BaseModelAdmin, ModelAdmin])
 

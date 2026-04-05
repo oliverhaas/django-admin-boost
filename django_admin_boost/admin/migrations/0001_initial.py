@@ -5,7 +5,7 @@ import django.utils.timezone
 from django.conf import settings
 from django.db import migrations, models
 
-import django_adminx.admin.models
+import django_admin_boost.admin.models
 
 
 class Migration(migrations.Migration):
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 "ordering": ["-action_time"],
             },
             managers=[
-                ("objects", django_adminx.admin.models.LogEntryManager()),
+                ("objects", django_admin_boost.admin.models.LogEntryManager()),
             ],
         ),
     ]

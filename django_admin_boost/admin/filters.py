@@ -13,9 +13,9 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from django_adminx.admin.exceptions import NotRegistered
-from django_adminx.admin.options import IncorrectLookupParameters
-from django_adminx.admin.utils import (
+from django_admin_boost.admin.exceptions import NotRegistered
+from django_admin_boost.admin.options import IncorrectLookupParameters
+from django_admin_boost.admin.utils import (
     build_q_object_from_lookup_parameters,
     get_last_value_from_parameters,
     get_model_from_relation,

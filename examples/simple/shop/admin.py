@@ -1,4 +1,4 @@
-import django_adminx.admin as admin
+import django_admin_boost.admin as admin
 
 from .models import Category, Customer, Order, OrderItem, Product, ProductImage, Tag
 

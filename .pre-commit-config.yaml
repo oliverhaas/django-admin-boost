@@ -61,7 +61,7 @@ repos:
       - id: mypy
         name: mypy
         language: system
-        entry: uv run mypy django_adminx/
+        entry: uv run mypy django_admin_boost/
         pass_filenames: false
         always_run: true
         stages: [pre-push]

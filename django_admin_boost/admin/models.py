@@ -9,7 +9,7 @@ from django.utils.text import get_text_list
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
-from django_adminx.admin.utils import quote
+from django_admin_boost.admin.utils import quote
 
 ADDITION = 1
 CHANGE = 2

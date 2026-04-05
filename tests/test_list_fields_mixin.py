@@ -8,9 +8,9 @@ from django.core.exceptions import ImproperlyConfigured
 from django.test import RequestFactory, TestCase
 from django.urls import resolve
 
-from django_adminx import admin
-from django_adminx.admin import ModelAdmin
-from django_adminx.mixins import ListFieldsMixin
+from django_admin_boost import admin
+from django_admin_boost.admin import ModelAdmin
+from django_admin_boost.mixins import ListFieldsMixin
 from tests.testapp.models import Article
 
 
@@ -233,11 +233,11 @@ class TestListFieldsMixinExport(_ChangelistTestBase):
         assert ListFieldsMixin is not None
 
     def test_importable_from_top_level(self) -> None:
-        from django_adminx import ListFieldsMixin
+        from django_admin_boost import ListFieldsMixin
 
         assert ListFieldsMixin is not None
 
     def test_importable_from_admin(self) -> None:
-        from django_adminx.admin import ListFieldsMixin
+        from django_admin_boost.admin import ListFieldsMixin
 
         assert ListFieldsMixin is not None

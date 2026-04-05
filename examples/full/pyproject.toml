@@ -1,15 +1,15 @@
 [project]
-name = "django-adminx-example-full"
+name = "django-admin-boost-example-full"
 version = "0.0.0"
 requires-python = ">=3.12"
 dependencies = [
-  "django-adminx[jinja2]",
+  "django-admin-boost[jinja2]",
   "django-import-export>=4.0",
   "django-modeltranslation>=0.20.2",
 ]
 
 [tool.uv.sources]
-django-adminx = { path = "../../", editable = true }
+django-admin-boost = { path = "../../", editable = true }
 
 [tool.hatch.build.targets.wheel]
 packages = ["catalog"]

@@ -1,4 +1,4 @@
-"""Render-parity tests: verify django-adminx output matches django.contrib.admin.
+"""Render-parity tests: verify django-admin-boost output matches django.contrib.admin.
 
 Each test renders an admin view three ways:
 1. Our Jinja2 templates (the primary product)
@@ -34,7 +34,7 @@ JINJA2_ADMINX = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "django_adminx.admin.jinja2_env.environment",
+            "environment": "django_admin_boost.admin.jinja2_env.environment",
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -56,7 +56,7 @@ JINJA2_ADMINX = [
     },
 ]
 
-# Our DTL copies (APP_DIRS finds django_adminx/templates/admin/)
+# Our DTL copies (APP_DIRS finds django_admin_boost/templates/admin/)
 DTL_ADMINX = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",

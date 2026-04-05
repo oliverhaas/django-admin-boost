@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/project/django-adminx/
+      url: https://pypi.org/project/django-admin-boost/
     permissions:
       id-token: write
     steps:

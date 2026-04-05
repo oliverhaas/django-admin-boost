@@ -16,7 +16,7 @@ jobs:
       - run: uv sync --group dev
       - run: uv run ruff check
       - run: uv run ruff format --check
-      - run: uv run mypy django_adminx/
+      - run: uv run mypy django_admin_boost/
 
   test:
     runs-on: ubuntu-latest

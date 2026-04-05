@@ -7,8 +7,8 @@ from unittest.mock import MagicMock, patch
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from django_adminx import EstimatedCountPaginator
-from django_adminx.admin import ModelAdmin
+from django_admin_boost import EstimatedCountPaginator
+from django_admin_boost.admin import ModelAdmin
 from tests.testapp.models import Article
 
 
@@ -74,7 +74,7 @@ class EstimatedCountPaginatorPostgresPathTest(TestCase):
         for i in range(10):
             Article.objects.create(title=f"Article {i}", status="published")
 
-    @patch("django_adminx.paginators.connections")
+    @patch("django_admin_boost.paginators.connections")
     def test_unfiltered_uses_estimate_on_postgres(self, mock_connections: MagicMock) -> None:
         mock_conn = MagicMock()
         mock_conn.vendor = "postgresql"
@@ -89,7 +89,7 @@ class EstimatedCountPaginatorPostgresPathTest(TestCase):
         paginator = EstimatedCountPaginator(qs, per_page=10)
         assert paginator.count == 50000
 
-    @patch("django_adminx.paginators.connections")
+    @patch("django_admin_boost.paginators.connections")
     def test_zero_estimate_falls_back_to_real_count(self, mock_connections: MagicMock) -> None:
         """When reltuples is 0 (never analysed), use real COUNT."""
         mock_conn = MagicMock()
@@ -106,7 +106,7 @@ class EstimatedCountPaginatorPostgresPathTest(TestCase):
         # Should fall back — the real count is 10
         assert paginator.count == 10
 
-    @patch("django_adminx.paginators.connections")
+    @patch("django_admin_boost.paginators.connections")
     def test_negative_estimate_falls_back_to_real_count(self, mock_connections: MagicMock) -> None:
         """When reltuples is -1 (table never analysed), use real COUNT."""
         mock_conn = MagicMock()
@@ -122,7 +122,7 @@ class EstimatedCountPaginatorPostgresPathTest(TestCase):
         paginator = EstimatedCountPaginator(qs, per_page=10)
         assert paginator.count == 10
 
-    @patch("django_adminx.paginators.connections")
+    @patch("django_admin_boost.paginators.connections")
     def test_filtered_queryset_skips_estimate_even_on_postgres(self, mock_connections: MagicMock) -> None:
         """Filtered querysets should never use the estimate."""
         mock_conn = MagicMock()
@@ -135,7 +135,7 @@ class EstimatedCountPaginatorPostgresPathTest(TestCase):
         # The cursor should never have been opened for the estimate
         mock_conn.cursor.assert_not_called()
 
-    @patch("django_adminx.paginators.connections")
+    @patch("django_admin_boost.paginators.connections")
     def test_no_row_in_pg_class_falls_back(self, mock_connections: MagicMock) -> None:
         """When pg_class has no matching row, fall back to real COUNT."""
         mock_conn = MagicMock()

@@ -11,7 +11,7 @@ JINJA2_TEMPLATES = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "django_adminx.admin.jinja2_env.environment",
+            "environment": "django_admin_boost.admin.jinja2_env.environment",
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",

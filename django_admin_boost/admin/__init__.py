@@ -1,14 +1,14 @@
-"""django-adminx full admin replacement.
+"""django-admin-boost full admin replacement.
 
 Drop-in replacement for ``django.contrib.admin`` with Jinja2 template support
 and performance optimizations baked in.
 
 Usage::
 
-    INSTALLED_APPS = ["django_adminx.admin", ...]
+    INSTALLED_APPS = ["django_admin_boost.admin", ...]
 
     # in your admin.py:
-    import django_adminx.admin as admin
+    import django_admin_boost.admin as admin
 
     @admin.register(MyModel)
     class MyModelAdmin(admin.ModelAdmin):
@@ -17,8 +17,8 @@ Usage::
 
 from django.utils.module_loading import autodiscover_modules
 
-from django_adminx.admin.decorators import action, display, register
-from django_adminx.admin.filters import (
+from django_admin_boost.admin.decorators import action, display, register
+from django_admin_boost.admin.filters import (
     AllValuesFieldListFilter,
     BooleanFieldListFilter,
     ChoicesFieldListFilter,
@@ -30,7 +30,7 @@ from django_adminx.admin.filters import (
     RelatedOnlyFieldListFilter,
     SimpleListFilter,
 )
-from django_adminx.admin.options import (
+from django_admin_boost.admin.options import (
     HORIZONTAL,
     VERTICAL,
     ModelAdmin,
@@ -38,11 +38,11 @@ from django_adminx.admin.options import (
     StackedInline,
     TabularInline,
 )
-from django_adminx.admin.sites import AdminSite, site
+from django_admin_boost.admin.sites import AdminSite, site
 
 # Re-export standalone mixins for convenience
-from django_adminx.mixins import ListFieldsMixin, SmartPaginatorMixin
-from django_adminx.paginators import EstimatedCountPaginator
+from django_admin_boost.mixins import ListFieldsMixin, SmartPaginatorMixin
+from django_admin_boost.paginators import EstimatedCountPaginator
 
 __all__ = [
     "HORIZONTAL",

@@ -9,11 +9,11 @@ Drop-in replacement for `django.contrib.admin` that works with Jinja2 (and DTL).
 Replace `django.contrib.admin` entirely. All admin pages render via Jinja2 by default, with DTL fallback.
 
 ```python
-INSTALLED_APPS = ["django_adminx.admin", ...]
+INSTALLED_APPS = ["django_admin_boost.admin", ...]
 ```
 
 ```python
-import django_adminx.admin as admin
+import django_admin_boost.admin as admin
 
 @admin.register(MyModel)
 class MyModelAdmin(admin.ModelAdmin):
@@ -26,7 +26,7 @@ Keep stock Django admin, just add performance optimizations.
 
 ```python
 from django.contrib.admin import ModelAdmin
-from django_adminx import ListOnlyFieldsMixin, EstimatedCountPaginator
+from django_admin_boost import ListOnlyFieldsMixin, EstimatedCountPaginator
 
 class MyModelAdmin(ListOnlyFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name", "status"]

@@ -12,7 +12,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "modeltranslation",
-    "django_adminx.admin",
+    "django_admin_boost.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -38,7 +38,7 @@ TEMPLATES = [
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "django_adminx.admin.jinja2_env.environment",
+            "environment": "django_admin_boost.admin.jinja2_env.environment",
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",

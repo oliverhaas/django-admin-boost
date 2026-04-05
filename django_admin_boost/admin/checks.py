@@ -13,8 +13,8 @@ from django.template import engines
 from django.template.backends.django import DjangoTemplates
 from django.utils.module_loading import import_string
 
-from django_adminx.admin.exceptions import NotRegistered
-from django_adminx.admin.utils import NotRelationField, flatten, get_fields_from_path
+from django_admin_boost.admin.exceptions import NotRegistered
+from django_admin_boost.admin.utils import NotRelationField, flatten, get_fields_from_path
 
 
 def _issubclass(cls, classinfo):
@@ -46,7 +46,7 @@ def _contains_subclass(class_path, candidate_paths):
 
 
 def check_admin_app(app_configs, **kwargs):
-    from django_adminx.admin.sites import all_sites
+    from django_admin_boost.admin.sites import all_sites
 
     errors = []
     for site in all_sites:
@@ -58,9 +58,9 @@ def check_dependencies(**kwargs):
     """
     Check that the admin's dependencies are correctly installed.
     """
-    from django_adminx.admin.sites import all_sites
+    from django_admin_boost.admin.sites import all_sites
 
-    if not apps.is_installed("django_adminx.admin"):
+    if not apps.is_installed("django_admin_boost.admin"):
         return []
     errors = []
     app_dependencies = (
@@ -635,7 +635,7 @@ class BaseModelAdminChecks:
     def _check_radio_fields_value(self, obj, val, label):
         """Check type of a value of `radio_fields` dictionary."""
 
-        from django_adminx.admin.options import HORIZONTAL, VERTICAL
+        from django_admin_boost.admin.options import HORIZONTAL, VERTICAL
 
         if val not in (HORIZONTAL, VERTICAL):
             return [
@@ -915,7 +915,7 @@ class ModelAdminChecks(BaseModelAdminChecks):
                 ),
             ]
 
-        from django_adminx.admin.options import InlineModelAdmin
+        from django_admin_boost.admin.options import InlineModelAdmin
 
         if not _issubclass(inline, InlineModelAdmin):
             return [
@@ -995,7 +995,7 @@ class ModelAdminChecks(BaseModelAdminChecks):
 
     def _check_list_display_links(self, obj):
         """Check that list_display_links is a unique subset of list_display."""
-        from django_adminx.admin.options import ModelAdmin
+        from django_admin_boost.admin.options import ModelAdmin
 
         if obj.list_display_links is None:
             return []
@@ -1054,7 +1054,7 @@ class ModelAdminChecks(BaseModelAdminChecks):
         2. ('field', SomeFieldListFilter) - a field-based list filter class
         3. SomeListFilter - a non-field list filter class
         """
-        from django_adminx.admin import FieldListFilter, ListFilter
+        from django_admin_boost.admin import FieldListFilter, ListFilter
 
         if callable(item) and not isinstance(item, models.Field):
             # If item is option 3, it should be a ListFilter...
