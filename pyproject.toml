@@ -35,15 +35,15 @@ Repository = "https://github.com/oliverhaas/django-adminx.git"
 
 [dependency-groups]
 dev = [
-  "django-stubs==6.0.1",
-  "mypy==1.19.1",
+  "django-stubs==6.0.2",
+  "mypy==1.20.0",
   "pre-commit==4.5.1",
   "pytest==9.0.2",
   "pytest-cov==7.1.0",
   "pytest-django==4.12.0",
   "pytest-xdist==3.8.0",
   "Jinja2>=3.1",
-  "ruff==0.15.8",
+  "ruff==0.15.9",
   "beautifulsoup4>=4.14.3",
 ]
 docs = ["mike==2.1.4", "mkdocs==1.6.1", "mkdocs-material==9.7.6"]
