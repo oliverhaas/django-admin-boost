@@ -1,4 +1,4 @@
-site_name: Django AdminX
+site_name: Django Admin Boost
 site_description: Performance-oriented Django admin extensions.
 site_url: https://oliverhaas.github.io/django-admin-boost/
 repo_url: https://github.com/oliverhaas/django-admin-boost
@@ -10,11 +10,13 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
+      primary: deep orange
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
+      primary: deep orange
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
