@@ -112,7 +112,7 @@ class SimpleAdminConfig(AppConfig):
         # Also update the parent-package attribute so that
         # ``from django.contrib import admin`` returns our module
         # (Python checks the parent's attribute before sys.modules).
-        django.contrib.admin = our_admin  # type: ignore[attr-defined]
+        django.contrib.admin = our_admin
 
         for name in _DJANGO_ADMIN_SUBMODULES:
             mod = importlib.import_module(f"django_adminx.admin.{name}")
