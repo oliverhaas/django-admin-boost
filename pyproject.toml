@@ -80,6 +80,8 @@ extend-exclude = [
   "django_admin_boost/admin/views/",
   "django_admin_boost/admin/templatetags/",
   "django_admin_boost/admin/migrations/",
+  # Copied from django-unfold — not our code to lint
+  "django_admin_boost/admin/contrib/",
 ]
 
 [tool.ruff.lint]
