@@ -1,0 +1,13 @@
+<div class="card bg-base-100 shadow-sm">
+    <div class="card-body">
+        <h3 class="card-title text-lg">{{ title }}</h3>
+        <canvas id="chart-{{ widget_id }}" width="400" height="200"></canvas>
+        <script src="{{ static('boost/js/chart.min.js') }}"></script>
+        <script>
+            new Chart(document.getElementById('chart-{{ widget_id }}'), {
+                type: '{{ chart_type }}',
+                data: {{ data|tojson }},
+            });
+        </script>
+    </div>
+</div>

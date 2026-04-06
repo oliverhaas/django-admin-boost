@@ -1,0 +1,15 @@
+{% if cl.paginator.num_pages > 1 %}
+<div class="flex justify-center mt-4">
+    <div class="join">
+        {% for i in cl.paginator.get_elided_page_range(cl.page_num) %}
+            {% if i == cl.page_num %}
+                <button class="join-item btn btn-sm btn-active">{{ i }}</button>
+            {% elif i == '…' %}
+                <button class="join-item btn btn-sm btn-disabled">…</button>
+            {% else %}
+                <a href="{{ cl.get_query_string({page_var: i}) }}" class="join-item btn btn-sm">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

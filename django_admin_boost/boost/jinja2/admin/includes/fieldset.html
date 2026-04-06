@@ -1,0 +1,45 @@
+<div class="card bg-base-100 shadow-sm mb-4 {{ 'collapse collapse-arrow' if 'collapse' in fieldset.classes else '' }}">
+    {% if 'collapse' in fieldset.classes %}
+    <input type="checkbox" />
+    {% endif %}
+    {% if fieldset.name %}
+    <div class="{{ 'collapse-title' if 'collapse' in fieldset.classes else 'card-body pb-0' }}">
+        <h3 class="font-semibold text-lg">{{ fieldset.name }}</h3>
+    </div>
+    {% endif %}
+    <div class="{{ 'collapse-content' if 'collapse' in fieldset.classes else 'card-body' }}">
+        {% for line in fieldset %}
+        <div class="grid grid-cols-{{ line.fields|length }} gap-4 mb-4">
+            {% for field in line %}
+            <div class="form-control">
+                {% if not field.is_readonly %}
+                    {% if field.field.label %}
+                    <label class="label" for="{{ field.field.auto_id }}">
+                        <span class="label-text">{{ field.field.label }}{% if field.field.field.required %} *{% endif %}</span>
+                    </label>
+                    {% endif %}
+                    {{ field.field }}
+                    {% if field.field.help_text %}
+                    <label class="label">
+                        <span class="label-text-alt text-base-content/60">{{ field.field.help_text }}</span>
+                    </label>
+                    {% endif %}
+                    {% if field.field.errors %}
+                    {% for error in field.field.errors %}
+                    <label class="label">
+                        <span class="label-text-alt text-error">{{ error }}</span>
+                    </label>
+                    {% endfor %}
+                    {% endif %}
+                {% else %}
+                    <label class="label">
+                        <span class="label-text">{{ field.field.label }}</span>
+                    </label>
+                    <div class="py-2">{{ field.contents }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>

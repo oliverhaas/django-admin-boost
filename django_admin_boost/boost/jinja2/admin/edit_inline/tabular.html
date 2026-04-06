@@ -1,0 +1,42 @@
+<div class="card bg-base-100 shadow-sm mb-4">
+    <div class="card-body">
+        <h3 class="card-title">{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h3>
+        {{ inline_admin_formset.formset.management_form }}
+        <div class="overflow-x-auto">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        {% for field in inline_admin_formset.fields() %}
+                            {% if not field.widget.is_hidden %}
+                            <th class="text-xs uppercase tracking-wider">{{ field.label|capfirst }}</th>
+                            {% endif %}
+                        {% endfor %}
+                        {% if inline_admin_formset.formset.can_delete %}
+                        <th class="text-xs uppercase tracking-wider">{{ gettext("Delete?") }}</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inline_admin_form in inline_admin_formset %}
+                    <tr>
+                        {% for fieldset in inline_admin_form %}
+                            {% for line in fieldset %}
+                                {% for field in line %}
+                                    {% if not field.field.is_hidden %}
+                                    <td>{{ field.field }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                        {% if inline_admin_formset.formset.can_delete and inline_admin_form.original %}
+                        <td>
+                            <input type="checkbox" name="{{ inline_admin_form.deletion_field.html_name }}" class="checkbox checkbox-error checkbox-sm">
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+    {{ super() }}
+    <script src="{{ url('admin:jsi18n') }}"></script>
+    {{ media.css }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ super() }}
+    {{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}{{ super() }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% block content %}
+<form method="post" id="{{ opts.model_name }}_form" enctype="multipart/form-data" novalidate>
+    {{ csrf_input }}
+
+    {% if is_popup %}<input type="hidden" name="_popup" value="1">{% endif %}
+    {% if to_field %}<input type="hidden" name="_to_field" value="{{ to_field }}">{% endif %}
+
+    {% if errors %}
+    <div class="alert alert-error mb-4">
+        <div>
+            <p class="font-bold">{{ gettext("Please correct the errors below.") }}</p>
+            {{ adminform.form.non_field_errors() }}
+        </div>
+    </div>
+    {% endif %}
+
+    {% for fieldset in adminform %}
+        {% include "admin/includes/fieldset.html" %}
+    {% endfor %}
+
+    {% for inline_admin_formset in inline_admin_formsets %}
+        {% if "stacked" in (inline_admin_formset.opts.template|default("tabular")) %}
+            {% include "admin/edit_inline/stacked.html" %}
+        {% else %}
+            {% include "admin/edit_inline/tabular.html" %}
+        {% endif %}
+    {% endfor %}
+
+    {% include "admin/submit_line.html" %}
+</form>
+{% endblock %}

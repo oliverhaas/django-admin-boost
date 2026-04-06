@@ -1,0 +1,27 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="card bg-base-100 shadow-sm max-w-2xl">
+    <div class="card-body">
+        <h2 class="card-title text-error">{{ gettext("Are you sure?") }}</h2>
+        <p>{{ gettext("Are you sure you want to delete the %(object_name)s \"%(escaped_object)s\"? All of the following related items will be deleted:")|format(object_name=opts.verbose_name, escaped_object=object) }}</p>
+
+        {% if deleted_objects %}
+        <ul class="list-disc list-inside my-4">
+            {% for obj in deleted_objects %}
+            <li>{{ obj }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form method="post">
+            {{ csrf_input }}
+            <input type="hidden" name="post" value="yes">
+            <div class="card-actions justify-end mt-4">
+                <a href="{{ object_url }}" class="btn btn-ghost">{{ gettext("No, take me back") }}</a>
+                <button type="submit" class="btn btn-error">{{ gettext("Yes, I'm sure") }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

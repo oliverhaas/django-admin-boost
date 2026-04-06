@@ -1,0 +1,65 @@
+<h2>Boost Admin — Layout Concept</h2>
+<p class="subtitle">DaisyUI-based Django admin with clean, modern styling. Click to select your preferred overall structure.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Faithful Layout</h3>
+      <p>Same layout structure as stock Django admin (top nav bar, content area, recent actions sidebar on index). Just restyled with DaisyUI components. Feels immediately familiar to Django devs.</p>
+      <div style="margin-top: 12px; font-family: monospace; font-size: 12px; color: #888; line-height: 1.6;">
+        ┌─────────────────────────────────┐<br>
+        │ navbar (brand + user + theme)   │<br>
+        ├─────────────────────────────────┤<br>
+        │                    │ recent     │<br>
+        │   app list /       │ actions    │<br>
+        │   change list /    │            │<br>
+        │   change form      │            │<br>
+        │                    │            │<br>
+        └─────────────────────────────────┘
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Modern Compact</h3>
+      <p>Slightly modernized: full-width content area, breadcrumb trail, dashboard widgets on index instead of recent actions sidebar. Still no collapsible sidebar — that's a future addition.</p>
+      <div style="margin-top: 12px; font-family: monospace; font-size: 12px; color: #888; line-height: 1.6;">
+        ┌─────────────────────────────────┐<br>
+        │ navbar (brand + user + theme)   │<br>
+        ├─────────────────────────────────┤<br>
+        │ breadcrumbs                     │<br>
+        ├─────────────────────────────────┤<br>
+        │                                 │<br>
+        │   dashboard widgets (index)     │<br>
+        │   OR change list / form         │<br>
+        │                                 │<br>
+        │                                 │<br>
+        └─────────────────────────────────┘
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Hybrid</h3>
+      <p>Modern Compact for change lists and forms, but keep the recent actions as a collapsible section on the dashboard alongside widgets. Best of both worlds.</p>
+      <div style="margin-top: 12px; font-family: monospace; font-size: 12px; color: #888; line-height: 1.6;">
+        ┌─────────────────────────────────┐<br>
+        │ navbar (brand + user + theme)   │<br>
+        ├─────────────────────────────────┤<br>
+        │ breadcrumbs                     │<br>
+        ├─────────────────────────────────┤<br>
+        │ ┌─widgets──┐ ┌─recent actions─┐│<br>
+        │ │ KPI card │ │ User edited X  ││<br>
+        │ │ chart    │ │ User added Y   ││<br>
+        │ └──────────┘ └────────────────┘│<br>
+        │                                 │<br>
+        └─────────────────────────────────┘
+      </div>
+    </div>
+  </div>
+</div>

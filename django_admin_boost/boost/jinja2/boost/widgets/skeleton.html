@@ -1,0 +1,10 @@
+<div class="card bg-base-100 shadow-sm"
+     hx-get="{{ url('admin:boost_widget', widget.widget_id) }}"
+     hx-trigger="load"
+     hx-swap="outerHTML">
+    <div class="card-body">
+        <div class="skeleton h-4 w-1/3 mb-2"></div>
+        <div class="skeleton h-8 w-1/2 mb-4"></div>
+        <div class="skeleton h-4 w-full"></div>
+    </div>
+</div>

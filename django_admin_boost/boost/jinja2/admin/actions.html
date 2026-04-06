@@ -1,0 +1,22 @@
+{% if action_form and actions_on_top %}
+<div class="flex items-center gap-2 mb-4">
+    <select name="action" class="select select-bordered select-sm">
+        <option value="" selected>{{ gettext("---------") }}</option>
+        {% for action in action_form.fields.action.choices %}
+            {% if action.0 %}
+            <option value="{{ action.0 }}">{{ action.1 }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <button type="submit" name="index" value="0" class="btn btn-sm btn-primary">{{ gettext("Go") }}</button>
+    {% if cl.result_count != cl.full_result_count %}
+    <span class="text-sm text-base-content/60">
+        {{ cl.result_count }} {{ gettext("of") }} {{ cl.full_result_count }}
+    </span>
+    {% else %}
+    <span class="text-sm text-base-content/60">
+        {{ cl.result_count }} {{ cl.opts.verbose_name_plural }}
+    </span>
+    {% endif %}
+</div>
+{% endif %}

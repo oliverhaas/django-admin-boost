@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="{{ get_current_language() }}" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ title }} | {{ site_title|default(gettext("Django site admin")) }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ static('boost/css/boost.css') }}">
+    {% block extrastyle %}{% endblock %}
+    {% block extrahead %}{% endblock %}
+</head>
+<body class="bg-base-200 min-h-screen {% block bodyclass %}{% endblock %}" x-data>
+    {% include "boost/components/navbar.html" %}
+    <main class="container mx-auto px-4 py-6 max-w-7xl">
+        {% include "boost/components/breadcrumbs.html" %}
+        {% include "boost/components/messages.html" %}
+        <div id="content" class="{% block coltype %}{% endblock %}">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    {% block footer %}{% endblock %}
+    <script src="{{ static('boost/js/alpine.min.js') }}" defer></script>
+    <script src="{{ static('boost/js/htmx.min.js') }}"></script>
+    <script src="{{ static('boost/js/boost.js') }}"></script>
+    {% block extrajs %}{% endblock %}
+</body>
+</html>

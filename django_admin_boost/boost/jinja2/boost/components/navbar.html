@@ -1,0 +1,27 @@
+<div class="navbar bg-base-100 shadow-sm">
+    <div class="container mx-auto max-w-7xl">
+        <div class="flex-1">
+            <a href="{{ url('admin:index') }}" class="btn btn-ghost text-xl">
+                {{ site_header|default(gettext("Django administration")) }}
+            </a>
+        </div>
+        <div class="flex-none gap-2">
+            {% include "boost/components/theme_toggle.html" %}
+            {% if user.is_active and user.is_staff %}
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
+                    <div class="bg-neutral text-neutral-content w-10 rounded-full">
+                        <span>{{ user.get_short_name()[:2]|upper if user.get_short_name() else user.get_username()[:2]|upper }}</span>
+                    </div>
+                </div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                    {% if user.has_usable_password() %}
+                    <li><a href="{{ url('admin:password_change') }}">{{ gettext("Change password") }}</a></li>
+                    {% endif %}
+                    <li><a href="{{ url('admin:logout') }}">{{ gettext("Log out") }}</a></li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}{{ app_label }} | {{ site_title }}{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">{{ title }}</h2>
+
+{% if app_list %}
+<div class="grid grid-cols-1 gap-4">
+    {% for app in app_list %}
+    <div class="card bg-base-100 shadow-sm">
+        <div class="card-body">
+            <table class="table">
+                <tbody>
+                {% for model in app.models %}
+                    <tr>
+                        <td>
+                            {% if model.admin_url %}
+                                <a href="{{ model.admin_url }}" class="link">{{ model.name }}</a>
+                            {% else %}
+                                {{ model.name }}
+                            {% endif %}
+                        </td>
+                        <td class="text-right">
+                            {% if model.add_url %}
+                                <a href="{{ model.add_url }}" class="btn btn-xs btn-ghost">{{ gettext("Add") }}</a>
+                            {% endif %}
+                            {% if model.admin_url %}
+                                <a href="{{ model.admin_url }}" class="btn btn-xs btn-ghost">{{ gettext("Change") }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

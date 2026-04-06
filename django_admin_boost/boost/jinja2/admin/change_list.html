@@ -1,0 +1,67 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+    {{ super() }}
+    <script src="{{ url('admin:jsi18n') }}"></script>
+    {{ media.css }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ super() }}
+    {{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}{{ super() }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-list{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    {% if cl.formset and cl.formset.errors %}
+    <div class="alert alert-error mb-4">
+        <span>{{ cl.formset.errors }}</span>
+    </div>
+    {{ cl.formset.non_form_errors() }}
+    {% endif %}
+
+    <div id="changelist" class="{% if cl.has_filters %}filtered{% endif %}">
+        {% block search %}
+            {% include "admin/search_form.html" %}
+        {% endblock %}
+
+        {% block date_hierarchy %}
+            {% if cl.date_hierarchy %}
+                {% include "admin/date_hierarchy.html" %}
+            {% endif %}
+        {% endblock %}
+
+        <form id="changelist-form" method="post">
+            {{ csrf_input }}
+            {% if cl.formset %}
+                {{ cl.formset.management_form }}
+            {% endif %}
+
+            {% block result_list %}
+                {% include "admin/actions.html" %}
+                {% include "admin/change_list_results.html" %}
+            {% endblock %}
+
+            {% block pagination %}
+                {% include "admin/pagination.html" %}
+            {% endblock %}
+        </form>
+
+        {% if cl.has_filters %}
+        <div class="mt-4">
+            <div class="collapse collapse-arrow bg-base-100 shadow-sm">
+                <input type="checkbox" />
+                <div class="collapse-title font-medium">{{ gettext("Filter") }}</div>
+                <div class="collapse-content">
+                    {% for spec in cl.filter_specs %}
+                        {% include "admin/filter.html" %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

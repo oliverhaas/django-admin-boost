@@ -1,0 +1,22 @@
+{% set submit_ctx = submit_row() %}
+<div class="flex justify-between items-center mt-6 pt-4 border-t border-base-300">
+    <div>
+        {% if submit_ctx.show_delete_link %}
+            <a href="{{ url(opts|admin_urlname('delete'), original.pk|admin_urlquote) }}" class="btn btn-error btn-outline btn-sm">{{ gettext("Delete") }}</a>
+        {% endif %}
+    </div>
+    <div class="flex gap-2">
+        {% if submit_ctx.show_save_as_new %}
+            <input type="submit" value="{{ gettext('Save as new') }}" name="_saveasnew" class="btn btn-sm btn-ghost">
+        {% endif %}
+        {% if submit_ctx.show_save_and_add_another %}
+            <input type="submit" value="{{ gettext('Save and add another') }}" name="_addanother" class="btn btn-sm btn-ghost">
+        {% endif %}
+        {% if submit_ctx.show_save_and_continue %}
+            <input type="submit" value="{{ gettext('Save and continue editing') }}" name="_continue" class="btn btn-sm btn-outline btn-primary">
+        {% endif %}
+        {% if submit_ctx.show_save %}
+            <input type="submit" value="{{ gettext('Save') }}" name="_save" class="btn btn-sm btn-primary">
+        {% endif %}
+    </div>
+</div>

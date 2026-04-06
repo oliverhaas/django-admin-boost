@@ -1,0 +1,12 @@
+<div class="mb-2">
+    <h4 class="font-semibold text-sm mb-1">{{ spec.title }}</h4>
+    <ul class="menu menu-sm bg-base-200 rounded-box">
+        {% for choice in spec.choices(cl) %}
+        <li>
+            <a href="{{ choice.query_string }}" class="{{ 'active' if choice.selected else '' }}">
+                {{ choice.display }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

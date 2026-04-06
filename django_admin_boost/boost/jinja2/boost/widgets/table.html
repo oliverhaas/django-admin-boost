@@ -1,0 +1,23 @@
+<div class="card bg-base-100 shadow-sm">
+    <div class="card-body">
+        <h3 class="card-title text-lg">{{ title }}</h3>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                {% for header in headers %}
+                    <th class="text-xs uppercase tracking-wider text-base-content/60">{{ header }}</th>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    {% for cell in row %}
+                    <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
