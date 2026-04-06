@@ -157,7 +157,7 @@ class ComponentExtension(Extension):
             next(parser.stream)
             include_context = True
 
-        body = parser.parse_statements(["name:endcomponent"], drop_needle=True)
+        body = parser.parse_statements(("name:endcomponent",), drop_needle=True)
 
         return nodes.CallBlock(
             self.call_method(
@@ -201,16 +201,16 @@ class CaptureExtension(Extension):
                 next(parser.stream)
                 silent = True
 
-        body = parser.parse_statements(["name:endcapture"], drop_needle=True)
+        body = parser.parse_statements(("name:endcapture",), drop_needle=True)
 
         if var_name and silent:
             # Assign captured content to variable, output nothing
             target = nodes.Name(var_name, "store", lineno=lineno)
-            return nodes.AssignBlock(target, None, body).set_lineno(lineno)  # type: ignore[arg-type]
+            return nodes.AssignBlock(target, None, body).set_lineno(lineno)
         if var_name:
             # Assign and output
             target = nodes.Name(var_name, "store", lineno=lineno)
-            return nodes.AssignBlock(target, None, body).set_lineno(lineno)  # type: ignore[arg-type]
+            return nodes.AssignBlock(target, None, body).set_lineno(lineno)
         # Just output — return first node
         return body[0] if body else nodes.Output([]).set_lineno(lineno)
 
