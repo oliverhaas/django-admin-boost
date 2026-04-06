@@ -138,6 +138,8 @@ module = [
   "django_admin_boost.admin.views.*",
   "django_admin_boost.admin.templatetags.*",
   "django_admin_boost.admin.migrations.*",
+  # Copied from django-unfold — not our code to type-check
+  "django_admin_boost.admin.contrib.*",
 ]
 ignore_errors = true
 
