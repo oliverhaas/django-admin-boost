@@ -1,92 +1,7 @@
-import importlib
-import sys
-import types
 from pathlib import Path
 
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
-
-# ---------------------------------------------------------------------------
-# Make ``django.contrib.admin`` resolve to ``django_admin_boost.admin``.
-#
-# Most of our submodules can be imported before the app registry is ready,
-# so we wire them into sys.modules directly at import time.  Two submodules
-# (``forms`` and ``models``) import Django models at module level, which
-# requires the app registry — those get lightweight stubs now and are
-# replaced with the real modules in ``ready()``.
-# ---------------------------------------------------------------------------
-
-# Submodules that are safe to import before the app registry is ready.
-_EAGER_SUBMODULES = [
-    "actions",
-    "checks",
-    "decorators",
-    "exceptions",
-    "filters",
-    "helpers",
-    "options",
-    "sites",
-    "utils",
-    "widgets",
-]
-
-# Submodules that import Django models at module level and need the app
-# registry — they get empty stubs now, replaced in ready().
-_DEFERRED_SUBMODULES = [
-    "forms",
-    "models",
-]
-
-_SUBPACKAGES = {
-    "templatetags": ["admin_list", "admin_modify", "admin_urls", "base", "log"],
-    "views": ["autocomplete", "decorators", "main"],
-}
-
-
-def _install_redirects() -> None:
-    """Point ``django.contrib.admin`` at ``django_admin_boost.admin``.
-
-    Called at import time.  Eagerly wires the top-level package and all
-    submodules that can be imported before the app registry is ready.
-    Installs lightweight stubs for ``forms``, ``models``, and subpackages
-    that are replaced in ``SimpleAdminConfig.ready()``.
-    """
-    # Top-level: wire directly to our real module
-    our_admin = importlib.import_module("django_admin_boost.admin")
-    sys.modules["django.contrib.admin"] = our_admin
-
-    # Eager submodules: import and wire directly
-    for name in _EAGER_SUBMODULES:
-        key = f"django.contrib.admin.{name}"
-        if key not in sys.modules:
-            mod = importlib.import_module(f"django_admin_boost.admin.{name}")
-            sys.modules[key] = mod
-
-    # Deferred submodules: lightweight stubs until ready()
-    for name in _DEFERRED_SUBMODULES:
-        key = f"django.contrib.admin.{name}"
-        if key not in sys.modules:
-            stub = types.ModuleType(key)
-            stub.__package__ = "django.contrib.admin"
-            sys.modules[key] = stub
-
-    # Subpackages: lightweight stubs until ready()
-    for pkg_name, children in _SUBPACKAGES.items():
-        pkg_key = f"django.contrib.admin.{pkg_name}"
-        if pkg_key not in sys.modules:
-            pkg = types.ModuleType(pkg_key)
-            pkg.__package__ = pkg_key
-            pkg.__path__ = []
-            sys.modules[pkg_key] = pkg
-        for child in children:
-            child_key = f"{pkg_key}.{child}"
-            if child_key not in sys.modules:
-                stub = types.ModuleType(child_key)
-                stub.__package__ = pkg_key
-                sys.modules[child_key] = stub
-
-
-_install_redirects()
 
 
 class SimpleAdminConfig(AppConfig):
@@ -105,35 +20,8 @@ class SimpleAdminConfig(AppConfig):
 
         checks.register(check_dependencies, checks.Tags.admin)
         checks.register(check_admin_app, checks.Tags.admin)
-        self._wire_deferred_modules()
-        self._update_parent_attribute()
         self._monkeypatch_generics()
         self._ensure_admin_locale()
-
-    def _wire_deferred_modules(self) -> None:
-        """Replace stubs for forms, models, and subpackages with real modules."""
-        for name in _DEFERRED_SUBMODULES:
-            mod = importlib.import_module(f"django_admin_boost.admin.{name}")
-            sys.modules[f"django.contrib.admin.{name}"] = mod
-
-        for pkg_name, children in _SUBPACKAGES.items():
-            pkg = importlib.import_module(f"django_admin_boost.admin.{pkg_name}")
-            sys.modules[f"django.contrib.admin.{pkg_name}"] = pkg
-            for child in children:
-                mod = importlib.import_module(f"django_admin_boost.admin.{pkg_name}.{child}")
-                sys.modules[f"django.contrib.admin.{pkg_name}.{child}"] = mod
-
-    def _update_parent_attribute(self) -> None:
-        """Update ``django.contrib.admin`` attribute on the parent package.
-
-        Python checks the parent's attribute before ``sys.modules``, so
-        ``from django.contrib import admin`` needs this to work.
-        """
-        import django.contrib  # noqa: PLC0415
-
-        import django_admin_boost.admin as our_admin  # noqa: PLC0415
-
-        django.contrib.admin = our_admin
 
     def _monkeypatch_generics(self) -> None:
         """Make our admin classes subscriptable for type-checking tools.

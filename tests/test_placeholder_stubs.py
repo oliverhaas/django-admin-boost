@@ -1,40 +1,63 @@
+"""Tests for the django.contrib.admin → django_admin_boost.admin import redirect."""
+
 import sys
 
 import django_admin_boost.admin
 
 
+def test_hook_is_installed():
+    from django_admin_boost._redirect import _AdminRedirectFinder
+
+    assert any(isinstance(f, _AdminRedirectFinder) for f in sys.meta_path)
+
+
 def test_top_level_is_our_module():
-    """django.contrib.admin should point directly at our module."""
+    """django.contrib.admin should be our module."""
     mod = sys.modules.get("django.contrib.admin")
     assert mod is django_admin_boost.admin
 
 
-def test_admin_site_importable():
-    """AdminSite and ModelAdmin should be importable from django.contrib.admin."""
-    mod = sys.modules["django.contrib.admin"]
-    assert hasattr(mod, "AdminSite")
-    assert hasattr(mod, "ModelAdmin")
+def test_import_admin_site():
+    from django.contrib.admin import AdminSite
+
+    from django_admin_boost.admin.sites import AdminSite as OurAdminSite
+
+    assert AdminSite is OurAdminSite
 
 
-def test_eager_submodule_is_real_module():
-    """Eager submodules (sites, options) should be our real modules, not stubs."""
+def test_import_model_admin():
+    from django.contrib.admin import ModelAdmin
+
+    from django_admin_boost.admin.options import ModelAdmin as OurModelAdmin
+
+    assert ModelAdmin is OurModelAdmin
+
+
+def test_submodule_import():
+    from django.contrib.admin import sites
+
     import django_admin_boost.admin.sites
 
-    mod = sys.modules.get("django.contrib.admin.sites")
-    assert mod is django_admin_boost.admin.sites
-    assert hasattr(mod, "AdminSite")
+    assert sites is django_admin_boost.admin.sites
 
 
-def test_deferred_submodule_has_attrs_after_ready():
-    """Deferred submodules (forms, models) should have attrs after ready()."""
-    mod = sys.modules.get("django.contrib.admin.forms")
-    assert mod is not None
-    assert hasattr(mod, "AdminAuthenticationForm")
+def test_deep_submodule_import():
+    from django.contrib.admin.views import main
+
+    import django_admin_boost.admin.views.main
+
+    assert main is django_admin_boost.admin.views.main
 
 
-def test_options_has_model_admin():
-    import django_admin_boost.admin.options
+def test_forms_not_redirected():
+    """forms imports auth models — must NOT be redirected by the hook."""
+    from django_admin_boost._redirect import _SKIP
 
-    mod = sys.modules.get("django.contrib.admin.options")
-    assert mod is django_admin_boost.admin.options
-    assert hasattr(mod, "ModelAdmin")
+    assert "django.contrib.admin.forms" in _SKIP
+
+
+def test_models_not_redirected():
+    """models defines LogEntry — must NOT be redirected by the hook."""
+    from django_admin_boost._redirect import _SKIP
+
+    assert "django.contrib.admin.models" in _SKIP

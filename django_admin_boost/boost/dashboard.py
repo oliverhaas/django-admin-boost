@@ -109,11 +109,11 @@ class RecentActionsWidget(Widget):
         self.htmx = kwargs.get("htmx", False)
 
     def get_context(self, request: HttpRequest) -> dict[str, Any]:
-        from django.contrib.admin.models import LogEntry
+        from django_admin_boost.admin.models import LogEntry
 
         qs = LogEntry.objects.select_related("content_type", "user")
         if not getattr(request.user, "is_anonymous", True):
-            qs = qs.filter(user=request.user)
+            qs = qs.filter(user=request.user)  # type: ignore[misc]
         return {
             "entries": list(qs[: self.limit]),
             "limit": self.limit,
