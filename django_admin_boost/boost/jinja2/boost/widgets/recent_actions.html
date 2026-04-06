@@ -1,0 +1,24 @@
+<div class="card bg-base-100 shadow-sm">
+    <div class="card-body">
+        <h3 class="card-title text-lg">{{ gettext("Recent actions") }}</h3>
+        {% if entries %}
+        <table class="table table-sm">
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td>{{ entry.action_time|date("SHORT_DATETIME_FORMAT") }}</td>
+                    <td>
+                        {% if entry.content_type %}
+                            {{ entry.content_type.name|capfirst }}
+                        {% endif %}
+                    </td>
+                    <td>{{ entry.object_repr }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-sm text-base-content/60">{{ gettext("None available") }}</p>
+        {% endif %}
+    </div>
+</div>

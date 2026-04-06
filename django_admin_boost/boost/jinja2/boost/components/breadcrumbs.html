@@ -1,0 +1,14 @@
+{% if breadcrumbs %}
+<div class="breadcrumbs text-sm mb-4">
+    <ul>
+        <li><a href="{{ url('admin:index') }}">{{ gettext("Home") }}</a></li>
+        {% for crumb in breadcrumbs %}
+            {% if crumb.url %}
+                <li><a href="{{ crumb.url }}">{{ crumb.name }}</a></li>
+            {% else %}
+                <li>{{ crumb.name }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

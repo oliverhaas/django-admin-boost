@@ -1,0 +1,13 @@
+{% set date_hierarchy_ctx = date_hierarchy(cl) %}
+{% if date_hierarchy_ctx %}
+<div class="mb-4">
+    <div class="flex flex-wrap gap-1">
+        {% if date_hierarchy_ctx.back %}
+            <a href="{{ date_hierarchy_ctx.back.link }}" class="btn btn-xs btn-ghost">« {{ gettext("Back") }}</a>
+        {% endif %}
+        {% for choice in date_hierarchy_ctx.choices %}
+            <a href="{{ choice.link }}" class="btn btn-xs {{ 'btn-primary' if choice.selected else 'btn-ghost' }}">{{ choice.title }}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

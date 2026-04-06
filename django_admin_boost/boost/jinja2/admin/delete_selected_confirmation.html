@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="card bg-base-100 shadow-sm max-w-2xl">
+    <div class="card-body">
+        <h2 class="card-title text-error">{{ gettext("Are you sure?") }}</h2>
+        <p>{{ gettext("Are you sure you want to delete the selected %(objects_name)s? All of the following objects and their related items will be deleted:")|format(objects_name=opts.verbose_name_plural) }}</p>
+
+        {% if deletable_objects %}
+        <ul class="list-disc list-inside my-4">
+            {% for obj in deletable_objects %}
+            <li>{{ obj }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form method="post">
+            {{ csrf_input }}
+            {% for obj in queryset %}
+            <input type="hidden" name="_selected_action" value="{{ obj.pk }}">
+            {% endfor %}
+            <input type="hidden" name="action" value="delete_selected">
+            <input type="hidden" name="post" value="yes">
+            <div class="card-actions justify-end mt-4">
+                <button type="submit" name="cancel" class="btn btn-ghost">{{ gettext("No, take me back") }}</button>
+                <button type="submit" class="btn btn-error">{{ gettext("Yes, I'm sure") }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

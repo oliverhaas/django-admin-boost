@@ -1,0 +1,37 @@
+{% extends "admin/base_site.html" %}
+
+{% block bodyclass %}login{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-[60vh]">
+    <div class="card bg-base-100 shadow-xl w-full max-w-md">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">{{ site_header|default(gettext("Django administration")) }}</h2>
+            {% if form.errors %}
+            <div class="alert alert-error mb-4">
+                <span>{{ gettext("Please enter the correct username and password for a staff account.") }}</span>
+            </div>
+            {% endif %}
+            <form method="post" action="{{ app_path }}">
+                {{ csrf_input }}
+                <div class="form-control mb-4">
+                    <label class="label" for="id_username">
+                        <span class="label-text">{{ gettext("Username:") }}</span>
+                    </label>
+                    <input type="text" name="username" id="id_username" class="input input-bordered w-full" autofocus required>
+                </div>
+                <div class="form-control mb-6">
+                    <label class="label" for="id_password">
+                        <span class="label-text">{{ gettext("Password:") }}</span>
+                    </label>
+                    <input type="password" name="password" id="id_password" class="input input-bordered w-full" required>
+                </div>
+                <input type="hidden" name="next" value="{{ next }}">
+                <div class="card-actions justify-end">
+                    <button type="submit" class="btn btn-primary w-full">{{ gettext("Log in") }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

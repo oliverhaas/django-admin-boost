@@ -1,0 +1,13 @@
+{% if cl.search_fields %}
+<div class="mb-4">
+    <form id="changelist-search" method="get">
+        <div class="join">
+            <input type="text" name="{{ search_var }}" value="{{ cl.query }}" class="input input-bordered join-item" placeholder="{{ gettext('Search') }}">
+            <button type="submit" class="btn btn-primary join-item">{{ gettext("Search") }}</button>
+            {% if cl.query %}
+            <a href="{{ cl.get_query_string(remove=[search_var]) }}" class="btn btn-ghost join-item">{{ gettext("Clear") }}</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endif %}

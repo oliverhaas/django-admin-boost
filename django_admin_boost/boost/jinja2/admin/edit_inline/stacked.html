@@ -1,0 +1,33 @@
+<div class="card bg-base-100 shadow-sm mb-4">
+    <div class="card-body">
+        <h3 class="card-title">{{ inline_admin_formset.opts.verbose_name_plural|capfirst }}</h3>
+        {{ inline_admin_formset.formset.management_form }}
+        {% for inline_admin_form in inline_admin_formset %}
+        <div class="border border-base-300 rounded-lg p-4 mb-2">
+            {% if inline_admin_form.original %}
+                <p class="font-semibold mb-2">{{ inline_admin_form.original }}</p>
+            {% endif %}
+            {% for fieldset in inline_admin_form %}
+                {% for line in fieldset %}
+                <div class="grid grid-cols-{{ line.fields|length }} gap-4 mb-2">
+                    {% for field in line %}
+                    <div class="form-control">
+                        {% if field.field.label %}
+                        <label class="label"><span class="label-text">{{ field.field.label }}</span></label>
+                        {% endif %}
+                        {{ field.field }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            {% endfor %}
+            {% if inline_admin_formset.formset.can_delete and inline_admin_form.original %}
+                <label class="label cursor-pointer justify-start gap-2">
+                    <input type="checkbox" name="{{ inline_admin_form.deletion_field.html_name }}" class="checkbox checkbox-error checkbox-sm">
+                    <span class="label-text text-error">{{ gettext("Delete") }}</span>
+                </label>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="card bg-base-100 shadow-sm">
+    <div class="card-body">
+        <h2 class="card-title">{{ gettext("Change history:") }} {{ object }}</h2>
+        {% if action_list %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-xs uppercase tracking-wider text-base-content/60">{{ gettext("Date/time") }}</th>
+                    <th class="text-xs uppercase tracking-wider text-base-content/60">{{ gettext("User") }}</th>
+                    <th class="text-xs uppercase tracking-wider text-base-content/60">{{ gettext("Action") }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for action in action_list %}
+                <tr>
+                    <td>{{ action.action_time|date("DATETIME_FORMAT") }}</td>
+                    <td>{{ action.user.get_username() }}</td>
+                    <td>{{ action.get_change_message() }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-base-content/60">{{ gettext("This object doesn't have a change history.") }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
