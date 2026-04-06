@@ -6,6 +6,7 @@ import re
 from typing import TYPE_CHECKING, Any
 
 from django.core.exceptions import ImproperlyConfigured
+from django.db.models import Count
 
 from django_admin_boost.paginators import EstimatedCountPaginator
 
@@ -61,6 +62,11 @@ class ListFieldsMixin:
                 f"{self.__class__.__name__}. Use one or the other.",
             )
 
+        # Apply M2M count annotations before field filtering
+        m2m_annotations = self._resolve_m2m_annotations()
+        if m2m_annotations:
+            qs = qs.annotate(**m2m_annotations)
+
         if self.list_only_fields is not None:
             pk_name = self.opts.pk.name  # type: ignore[attr-defined]
             fields = {pk_name, *self.list_only_fields}
@@ -74,6 +80,49 @@ class ListFieldsMixin:
         # Auto mode: resolve list_display to concrete fields
         fields = self._resolve_list_display_fields()
         return qs.only(*fields)
+
+    def get_list_display(self, request: HttpRequest) -> list[object]:
+        # super().get_list_display() may not exist when mixin is used standalone;
+        # fall back to self.list_display which BaseModelAdmin/ModelAdmin provide.
+        parent = super()
+        if hasattr(parent, "get_list_display"):
+            list_display = list(parent.get_list_display(request))  # type: ignore[misc]
+        else:
+            list_display = list(self.list_display)  # type: ignore[attr-defined]
+        m2m_annotations = self._resolve_m2m_annotations()
+        for entry in list(list_display):
+            annotation_name = f"{entry}_count"
+            if annotation_name in m2m_annotations:
+                idx = list_display.index(entry)
+
+                def make_count_display(field_name: str, ann_name: str) -> object:
+                    def count_display(obj: object) -> object:
+                        return getattr(obj, ann_name, 0)
+
+                    count_display.short_description = field_name.replace("_", " ").title()  # type: ignore[attr-defined]
+                    count_display.admin_order_field = ann_name  # type: ignore[attr-defined]
+                    return count_display
+
+                list_display[idx] = make_count_display(entry, annotation_name)
+        return list_display
+
+    def _resolve_m2m_annotations(self) -> dict[str, Count]:
+        """Detect M2M/reverse FK fields in list_display and return Count annotations."""
+        annotations: dict[str, Count] = {}
+        for entry in self.list_display:  # type: ignore[attr-defined]
+            if not isinstance(entry, str) or entry == "__str__":
+                continue
+            if callable(getattr(self, entry, None)):
+                # Skip if it's a custom callable on the ModelAdmin
+                continue
+            try:
+                field = self.opts.get_field(entry)  # type: ignore[attr-defined]
+            except Exception:  # noqa: BLE001, S112
+                continue
+            if field.many_to_many or field.one_to_many:
+                annotation_name = f"{entry}_count"
+                annotations[annotation_name] = Count(entry, distinct=True)
+        return annotations
 
     def _resolve_list_display_fields(self) -> set[str]:
         """Resolve ``list_display`` entries to concrete model field names."""
