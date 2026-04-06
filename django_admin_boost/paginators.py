@@ -75,6 +75,8 @@ class EstimatedCountPaginator(Paginator):
 
         # Check ORDER BY
         for ordering in queryset.query.order_by:
+            if not isinstance(ordering, str):
+                continue
             clean_name = ordering.lstrip("-")
             if clean_name in queryset.query.annotations:
                 referenced.add(clean_name)
