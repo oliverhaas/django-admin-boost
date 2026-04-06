@@ -1,6 +1,12 @@
 from django_admin_boost import admin
 
-from .models import Article, Category
+from .models import Article, Category, Tag
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    search_fields = ["name"]
 
 
 @admin.register(Category)

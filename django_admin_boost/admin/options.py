@@ -1075,6 +1075,9 @@ class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, BaseModelAdmin):
         Return a sequence containing the fields to be displayed on the
         changelist.
         """
+        parent = super()
+        if hasattr(parent, "get_list_display"):
+            return parent.get_list_display(request)
         return self.list_display
 
     def get_list_display_links(self, request, list_display):

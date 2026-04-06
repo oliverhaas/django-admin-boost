@@ -1,6 +1,16 @@
 from django.db import models
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        app_label = "testapp"
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -22,6 +32,7 @@ class Article(models.Model):
     slug = models.SlugField(default="", blank=True)
     body = models.TextField(default="", blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.DRAFT)
     is_featured = models.BooleanField(default=False)
     priority = models.IntegerField(default=0)
