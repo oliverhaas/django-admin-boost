@@ -1,0 +1,39 @@
+{% load i18n %}
+
+<template id="trix-toolbar">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; border: 1px solid #ddd; border-bottom: none; background: #f8f8f8;">
+        <div style="display: flex;">
+            <button type="button" data-trix-attribute="bold" data-trix-key="b" title="{% translate 'Bold' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">B</button>
+            <button type="button" data-trix-attribute="italic" data-trix-key="i" title="{% translate 'Italic' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;"><em>I</em></button>
+            <button type="button" data-trix-attribute="underlined" data-trix-key="u" title="{% translate 'Underlined' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;"><u>U</u></button>
+            <button type="button" data-trix-attribute="strike" title="{% translate 'Strike' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;"><s>S</s></button>
+            <button type="button" data-trix-attribute="href" data-trix-action="link" data-trix-key="k" title="{% translate 'Link' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&#128279;</button>
+        </div>
+
+        <div style="display: flex;">
+            <button type="button" data-trix-attribute="heading1" title="{% translate 'Heading' %} 1" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">H1</button>
+            <button type="button" data-trix-attribute="heading2" title="{% translate 'Heading' %} 2" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">H2</button>
+            <button type="button" data-trix-attribute="heading3" title="{% translate 'Heading' %} 3" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">H3</button>
+        </div>
+
+        <div style="display: flex;">
+            <button type="button" data-trix-attribute="quote" title="{% translate 'Quote' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&ldquo;</button>
+            <button type="button" data-trix-attribute="code" title="{% translate 'Code' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&lt;/&gt;</button>
+            <button type="button" data-trix-attribute="bullet" title="{% translate 'Unordered list' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&#8226;</button>
+            <button type="button" data-trix-attribute="number" title="{% translate 'Ordered list' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">1.</button>
+        </div>
+
+        <div style="display: flex; margin-left: auto;">
+            <button type="button" data-trix-action="undo" data-trix-key="z" title="{% translate 'Undo' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&#8617;</button>
+            <button type="button" data-trix-action="redo" data-trix-key="shift+z" title="{% translate 'Redo' %}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&#8618;</button>
+        </div>
+
+        <div data-trix-dialogs>
+            <div data-trix-dialog="href" data-trix-dialog-attribute="href" style="display: none; padding: 8px; background: #f8f8f8; border: 1px solid #ddd;">
+                <input type="url" name="href" placeholder="{% translate 'Enter a URL' %}" required data-trix-input style="padding: 4px 8px;">
+                <button type="button" data-trix-method="setAttribute" style="cursor: pointer; padding: 4px 8px;">{% translate "Link" %}</button>
+                <button type="button" data-trix-method="removeAttribute" style="cursor: pointer; padding: 4px 8px;">{% translate "Unlink" %}</button>
+            </div>
+        </div>
+    </div>
+</template>

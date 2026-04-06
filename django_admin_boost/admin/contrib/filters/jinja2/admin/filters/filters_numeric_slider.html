@@ -1,0 +1,18 @@
+{% with choices.0 as choice %}
+    <div class="admin-numeric-filter-wrapper">
+        <h3>{% trans %}By {{ title }}{% endtrans %}</h3>
+
+        {% if choice.min is not none and choice.max is not none and choice.step %}
+            <div class="admin-numeric-filter-wrapper-group">
+                {{ choice.form.as_p() }}
+            </div>
+
+            <div class="admin-numeric-filter-slider" data-min="{{ choice.min|unlocalize }}" data-max="{{ choice.max|unlocalize }}" data-decimals="{{ choice.decimals }}" data-step="{{ choice.step|unlocalize }}">
+            </div>
+        {% else %}
+            <div class="admin-numeric-filter-slider-error">
+                <p>{{ gettext('Not enough data.') }}</p>
+            </div>
+        {% endif %}
+    </div>
+{% endwith %}

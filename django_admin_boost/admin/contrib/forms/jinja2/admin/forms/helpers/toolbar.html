@@ -1,0 +1,37 @@
+<template id="trix-toolbar">
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; border: 1px solid #ddd; border-bottom: none; background: #f8f8f8;">
+        <div style="display: flex;">
+            <button type="button" data-trix-attribute="bold" data-trix-key="b" title="{{ gettext('Bold') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">B</button>
+            <button type="button" data-trix-attribute="italic" data-trix-key="i" title="{{ gettext('Italic') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;"><em>I</em></button>
+            <button type="button" data-trix-attribute="underlined" data-trix-key="u" title="{{ gettext('Underlined') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;"><u>U</u></button>
+            <button type="button" data-trix-attribute="strike" title="{{ gettext('Strike') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;"><s>S</s></button>
+            <button type="button" data-trix-attribute="href" data-trix-action="link" data-trix-key="k" title="{{ gettext('Link') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&#128279;</button>
+        </div>
+
+        <div style="display: flex;">
+            <button type="button" data-trix-attribute="heading1" title="{{ gettext('Heading') }} 1" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">H1</button>
+            <button type="button" data-trix-attribute="heading2" title="{{ gettext('Heading') }} 2" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">H2</button>
+            <button type="button" data-trix-attribute="heading3" title="{{ gettext('Heading') }} 3" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">H3</button>
+        </div>
+
+        <div style="display: flex;">
+            <button type="button" data-trix-attribute="quote" title="{{ gettext('Quote') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&ldquo;</button>
+            <button type="button" data-trix-attribute="code" title="{{ gettext('Code') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&lt;/&gt;</button>
+            <button type="button" data-trix-attribute="bullet" title="{{ gettext('Unordered list') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&#8226;</button>
+            <button type="button" data-trix-attribute="number" title="{{ gettext('Ordered list') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">1.</button>
+        </div>
+
+        <div style="display: flex; margin-left: auto;">
+            <button type="button" data-trix-action="undo" data-trix-key="z" title="{{ gettext('Undo') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&#8617;</button>
+            <button type="button" data-trix-action="redo" data-trix-key="shift+z" title="{{ gettext('Redo') }}" tabindex="-1" style="cursor: pointer; padding: 4px 8px;">&#8618;</button>
+        </div>
+
+        <div data-trix-dialogs>
+            <div data-trix-dialog="href" data-trix-dialog-attribute="href" style="display: none; padding: 8px; background: #f8f8f8; border: 1px solid #ddd;">
+                <input type="url" name="href" placeholder="{{ gettext('Enter a URL') }}" required data-trix-input style="padding: 4px 8px;">
+                <button type="button" data-trix-method="setAttribute" style="cursor: pointer; padding: 4px 8px;">{{ gettext("Link") }}</button>
+                <button type="button" data-trix-method="removeAttribute" style="cursor: pointer; padding: 4px 8px;">{{ gettext("Unlink") }}</button>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,5 @@
+{% with choices.0 as choice %}
+    {% for field in choice.form %}
+        <div>{{ field.label_tag() }}{{ field }}</div>
+    {% endfor %}
+{% endwith %}

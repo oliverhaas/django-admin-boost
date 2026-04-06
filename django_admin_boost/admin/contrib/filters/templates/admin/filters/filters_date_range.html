@@ -1,0 +1,10 @@
+{% load i18n %}
+
+{% with choices.0 as choice %}
+    <div>
+        <h3>{% blocktranslate with filter_title=title %}By {{ filter_title }}{% endblocktranslate %}</h3>
+        {% for field in choice.form %}
+            <div>{{ field }}</div>
+        {% endfor %}
+    </div>
+{% endwith %}
