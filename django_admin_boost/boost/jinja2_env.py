@@ -7,6 +7,35 @@ from typing import Any
 from urllib.parse import quote
 
 import jinja2
+from django.contrib.admin.models import LogEntry
+from django.contrib.admin.templatetags.admin_list import (
+    admin_actions as _raw_admin_actions,
+)
+from django.contrib.admin.templatetags.admin_list import (
+    admin_list_filter as _raw_admin_list_filter,
+)
+from django.contrib.admin.templatetags.admin_list import (
+    date_hierarchy,
+    pagination,
+    paginator_number,
+    result_headers,
+    result_hidden_fields,
+    result_list,
+    results,
+    search_form,
+)
+from django.contrib.admin.templatetags.admin_modify import (
+    cell_count,
+)
+from django.contrib.admin.templatetags.admin_modify import (
+    prepopulated_fields_js as _raw_prepopulated_fields_js,
+)
+from django.contrib.admin.templatetags.admin_modify import (
+    submit_row as _raw_submit_row,
+)
+from django.contrib.admin.templatetags.admin_urls import (
+    add_preserved_filters as _raw_add_preserved_filters,
+)
 from django.templatetags.static import static
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
@@ -17,36 +46,6 @@ from django.utils.html import conditional_escape
 from django.utils.text import Truncator, capfirst
 from django.utils.translation import get_language, get_language_bidi, gettext, ngettext
 from markupsafe import Markup
-
-from django_admin_boost.admin.models import LogEntry
-from django_admin_boost.admin.templatetags.admin_list import (
-    admin_actions as _raw_admin_actions,
-)
-from django_admin_boost.admin.templatetags.admin_list import (
-    admin_list_filter as _raw_admin_list_filter,
-)
-from django_admin_boost.admin.templatetags.admin_list import (
-    date_hierarchy,
-    pagination,
-    paginator_number,
-    result_headers,
-    result_hidden_fields,
-    result_list,
-    results,
-    search_form,
-)
-from django_admin_boost.admin.templatetags.admin_modify import (
-    cell_count,
-)
-from django_admin_boost.admin.templatetags.admin_modify import (
-    prepopulated_fields_js as _raw_prepopulated_fields_js,
-)
-from django_admin_boost.admin.templatetags.admin_modify import (
-    submit_row as _raw_submit_row,
-)
-from django_admin_boost.admin.templatetags.admin_urls import (
-    add_preserved_filters as _raw_add_preserved_filters,
-)
 
 
 def environment(**options: object) -> jinja2.Environment:
@@ -164,17 +163,17 @@ def _jinja2_context_to_dict(context: Any) -> dict[str, Any]:
 
 @jinja2.pass_context
 def _admin_actions_jinja2(context: Any) -> dict[str, Any]:
-    return _raw_admin_actions(_jinja2_context_to_dict(context))
+    return _raw_admin_actions(_jinja2_context_to_dict(context))  # type: ignore[arg-type,return-value]
 
 
 @jinja2.pass_context
 def _submit_row_jinja2(context: Any) -> dict[str, Any]:
-    return _raw_submit_row(_jinja2_context_to_dict(context))
+    return _raw_submit_row(_jinja2_context_to_dict(context))  # type: ignore[arg-type,return-value]
 
 
 @jinja2.pass_context
 def _prepopulated_fields_js_jinja2(context: Any) -> dict[str, Any]:
-    return _raw_prepopulated_fields_js(_jinja2_context_to_dict(context))
+    return _raw_prepopulated_fields_js(_jinja2_context_to_dict(context))  # type: ignore[arg-type,return-value]
 
 
 @jinja2.pass_context

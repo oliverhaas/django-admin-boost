@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 
-from django_admin_boost.admin.options import ModelAdmin
+from django_admin_boost.admin import ModelAdmin
 from django_admin_boost.boost import site as boost_site
 from tests.testapp.models import Article, Category
 

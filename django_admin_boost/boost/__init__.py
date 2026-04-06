@@ -14,10 +14,9 @@ Usage::
         ...
 """
 
-from django.utils.module_loading import autodiscover_modules
-
-from django_admin_boost.admin.decorators import action, display, register
-from django_admin_boost.admin.filters import (
+from django.contrib.admin import (
+    HORIZONTAL,
+    VERTICAL,
     AllValuesFieldListFilter,
     BooleanFieldListFilter,
     ChoicesFieldListFilter,
@@ -27,16 +26,15 @@ from django_admin_boost.admin.filters import (
     ListFilter,
     RelatedFieldListFilter,
     RelatedOnlyFieldListFilter,
-    SimpleListFilter,
-)
-from django_admin_boost.admin.options import (
-    HORIZONTAL,
-    VERTICAL,
-    ModelAdmin,
     ShowFacets,
-    StackedInline,
-    TabularInline,
+    SimpleListFilter,
+    action,
+    display,
+    register,
 )
+from django.utils.module_loading import autodiscover_modules
+
+from django_admin_boost.admin import ModelAdmin, StackedInline, TabularInline
 from django_admin_boost.boost.sites import BoostAdminSite
 from django_admin_boost.mixins import ListFieldsMixin, SmartPaginatorMixin
 from django_admin_boost.paginators import EstimatedCountPaginator

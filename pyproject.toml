@@ -64,22 +64,6 @@ line-length = 120
 fix = true
 extend-exclude = [
   "examples",
-  # Copied from Django — not our code to lint
-  "django_admin_boost/admin/actions.py",
-  "django_admin_boost/admin/checks.py",
-  "django_admin_boost/admin/decorators.py",
-  "django_admin_boost/admin/exceptions.py",
-  "django_admin_boost/admin/filters.py",
-  "django_admin_boost/admin/forms.py",
-  "django_admin_boost/admin/helpers.py",
-  "django_admin_boost/admin/models.py",
-  "django_admin_boost/admin/options.py",
-  "django_admin_boost/admin/sites.py",
-  "django_admin_boost/admin/utils.py",
-  "django_admin_boost/admin/widgets.py",
-  "django_admin_boost/admin/views/",
-  "django_admin_boost/admin/templatetags/",
-  "django_admin_boost/admin/migrations/",
   # Copied from django-unfold — not our code to lint
   "django_admin_boost/admin/contrib/",
 ]
@@ -132,26 +116,8 @@ warn_unused_ignores = true
 
 
 [[tool.mypy.overrides]]
-# Copied from Django — not our code to type-check
-module = [
-  "django_admin_boost.admin.actions",
-  "django_admin_boost.admin.checks",
-  "django_admin_boost.admin.decorators",
-  "django_admin_boost.admin.exceptions",
-  "django_admin_boost.admin.filters",
-  "django_admin_boost.admin.forms",
-  "django_admin_boost.admin.helpers",
-  "django_admin_boost.admin.models",
-  "django_admin_boost.admin.options",
-  "django_admin_boost.admin.sites",
-  "django_admin_boost.admin.utils",
-  "django_admin_boost.admin.widgets",
-  "django_admin_boost.admin.views.*",
-  "django_admin_boost.admin.templatetags.*",
-  "django_admin_boost.admin.migrations.*",
-  # Copied from django-unfold — not our code to type-check
-  "django_admin_boost.admin.contrib.*",
-]
+# Copied from django-unfold — not our code to type-check
+module = ["django_admin_boost.admin.contrib.*"]
 ignore_errors = true
 
 [tool.django-stubs]
