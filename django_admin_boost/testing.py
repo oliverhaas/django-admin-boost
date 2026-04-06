@@ -12,16 +12,17 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
     from django.contrib.admin import AdminSite
+    from django.db.models import Model
     from django.test import Client
 
 
-def get_registered_models(admin_site: AdminSite | None = None) -> list[tuple[type, Any]]:
+def get_registered_models(admin_site: AdminSite | None = None) -> list[tuple[type[Model], Any]]:
     """Return list of (model_class, model_admin_instance) for all registered models."""
     site = admin_site or default_admin_site
     return [(model, site._registry[model]) for model in site._registry]  # noqa: SLF001
 
 
-def admin_smoke_test_params(admin_site: AdminSite | None = None) -> list[pytest.param]:
+def admin_smoke_test_params(admin_site: AdminSite | None = None) -> list[Any]:
     """Generate pytest parametrize params for all registered ModelAdmin classes."""
     params = []
     for model, model_admin in get_registered_models(admin_site):
@@ -37,7 +38,7 @@ def admin_smoke_test_params(admin_site: AdminSite | None = None) -> list[pytest.
     return params
 
 
-def check_changelist_loads(client: Client, model: type, superuser: User) -> None:
+def check_changelist_loads(client: Client, model: type[Model], superuser: User) -> None:
     """Assert the changelist view returns 200."""
     client.force_login(superuser)
     app_label = model._meta.app_label  # noqa: SLF001
@@ -47,7 +48,7 @@ def check_changelist_loads(client: Client, model: type, superuser: User) -> None
     assert response.status_code == 200, f"Changelist for {app_label}.{model_name} returned {response.status_code}"  # noqa: PLR2004, S101
 
 
-def check_add_view_loads(client: Client, model: type, model_admin: Any, superuser: User) -> None:  # noqa: ANN401
+def check_add_view_loads(client: Client, model: type[Model], model_admin: Any, superuser: User) -> None:  # noqa: ANN401
     """Assert the add view returns 200 (if add permission exists)."""
     if not model_admin.has_add_permission(type("FakeRequest", (), {"user": superuser})()):
         return
@@ -59,7 +60,7 @@ def check_add_view_loads(client: Client, model: type, model_admin: Any, superuse
     assert response.status_code == 200, f"Add view for {app_label}.{model_name} returned {response.status_code}"  # noqa: PLR2004, S101
 
 
-def check_search_works(client: Client, model: type, model_admin: Any, superuser: User) -> None:  # noqa: ANN401
+def check_search_works(client: Client, model: type[Model], model_admin: Any, superuser: User) -> None:  # noqa: ANN401
     """Assert search doesn't error (if search_fields is set)."""
     if not model_admin.search_fields:
         return
@@ -71,7 +72,7 @@ def check_search_works(client: Client, model: type, model_admin: Any, superuser:
     assert response.status_code == 200, f"Search for {app_label}.{model_name} returned {response.status_code}"  # noqa: PLR2004, S101
 
 
-def check_filters_work(client: Client, model: type, model_admin: Any, superuser: User) -> None:  # noqa: ANN401
+def check_filters_work(client: Client, model: type[Model], model_admin: Any, superuser: User) -> None:  # noqa: ANN401
     """Assert each list_filter doesn't error."""
     if not model_admin.list_filter:
         return
