@@ -12,7 +12,7 @@
         {% if cl.result_count != cl.result_list|length %}
         <span class="all hidden">{{ selection_note_all }}</span>
         <span class="question hidden">
-            <a role="button" href="#" title="{{ gettext("Click here to select the objects across all pages") }}">{% trans total_count=cl.result_count %}Select all {{ total_count }} {{ module_name }}{% endtrans %}</a>
+            <a role="button" href="#" title="{{ gettext("Click here to select the objects across all pages") }}">{% trans total_count=cl.result_count, approx="~" if cl.paginator.is_approximate_count else "" %}Select all {{ approx }}{{ total_count }} {{ module_name }}{% endtrans %}</a>
         </span>
         <span class="clear hidden"><a role="button" href="#">{{ gettext("Clear selection") }}</a></span>
         {% endif %}

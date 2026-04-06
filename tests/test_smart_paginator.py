@@ -45,6 +45,60 @@ class EstimatedCountPaginatorSQLiteFallbackTest(TestCase):
         assert paginator.num_pages == 1
 
 
+class EstimatedCountPaginatorApproximateCountTest(TestCase):
+    """Test is_approximate_count flag."""
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        for i in range(10):
+            Article.objects.create(title=f"Article {i}", status="published")
+
+    def test_not_approximate_on_sqlite(self) -> None:
+        qs = Article.objects.all()
+        paginator = EstimatedCountPaginator(qs, per_page=10)
+        assert paginator.is_approximate_count is False
+
+    def test_not_approximate_for_plain_list(self) -> None:
+        paginator = EstimatedCountPaginator(list(range(42)), per_page=10)
+        assert paginator.is_approximate_count is False
+
+    def test_not_approximate_for_filtered_queryset(self) -> None:
+        qs = Article.objects.filter(status="published")
+        paginator = EstimatedCountPaginator(qs, per_page=10)
+        assert paginator.is_approximate_count is False
+
+    @patch("django_admin_boost.paginators.connections")
+    def test_approximate_when_estimate_used(self, mock_connections: MagicMock) -> None:
+        mock_conn = MagicMock()
+        mock_conn.vendor = "postgresql"
+        mock_cursor = MagicMock()
+        mock_cursor.fetchone.return_value = (50000.0,)
+        mock_cursor.__enter__ = lambda self: self
+        mock_cursor.__exit__ = MagicMock(return_value=False)
+        mock_conn.cursor.return_value = mock_cursor
+        mock_connections.__getitem__.return_value = mock_conn
+
+        qs = Article.objects.all()
+        paginator = EstimatedCountPaginator(qs, per_page=10)
+        assert paginator.is_approximate_count is True
+        assert paginator.count == 50000
+
+    @patch("django_admin_boost.paginators.connections")
+    def test_not_approximate_when_estimate_zero(self, mock_connections: MagicMock) -> None:
+        mock_conn = MagicMock()
+        mock_conn.vendor = "postgresql"
+        mock_cursor = MagicMock()
+        mock_cursor.fetchone.return_value = (0.0,)
+        mock_cursor.__enter__ = lambda self: self
+        mock_cursor.__exit__ = MagicMock(return_value=False)
+        mock_conn.cursor.return_value = mock_cursor
+        mock_connections.__getitem__.return_value = mock_conn
+
+        qs = Article.objects.all()
+        paginator = EstimatedCountPaginator(qs, per_page=10)
+        assert paginator.is_approximate_count is False
+
+
 class EstimatedCountPaginatorFilteredFallbackTest(TestCase):
     """When the queryset is filtered, fall back to real COUNT even on PostgreSQL."""
 
