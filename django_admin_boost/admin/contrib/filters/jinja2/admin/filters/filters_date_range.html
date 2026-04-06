@@ -1,0 +1,8 @@
+{% with choices.0 as choice %}
+    <div>
+        <h3>{% trans %}By {{ title }}{% endtrans %}</h3>
+        {% for field in choice.form %}
+            <div>{{ field }}</div>
+        {% endfor %}
+    </div>
+{% endwith %}

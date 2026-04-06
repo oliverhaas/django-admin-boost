@@ -6,6 +6,9 @@ INSTALLED_APPS = [
     "django_admin_boost.admin",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django_admin_boost.admin.contrib.filters",
+    "django_admin_boost.admin.contrib.inlines",
+    "django_admin_boost.admin.contrib.forms",
     "tests.testapp",
 ]
 

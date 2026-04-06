@@ -1,0 +1,29 @@
+<div data-controller="array-widget">
+    {% for subwidget in widget.subwidgets %}
+        <div style="display: flex; align-items: center; margin-bottom: 4px;">
+            {% with widget=subwidget %}
+                {% include widget.template_name %}
+            {% endwith %}
+            <a onclick="this.parentElement.remove()" style="cursor: pointer; margin-left: 8px; color: #ba2121;" title="{{ gettext('Remove') }}">&times;</a>
+        </div>
+    {% endfor %}
+
+    <template id="array-widget-template-{{ widget.name }}">
+        <div style="display: flex; align-items: center; margin-bottom: 4px;">
+            {% with widget=template %}
+                {% include template.template_name %}
+            {% endwith %}
+            <a onclick="this.parentElement.remove()" style="cursor: pointer; margin-left: 8px; color: #ba2121;" title="{{ gettext('Remove') }}">&times;</a>
+        </div>
+    </template>
+
+    <div style="margin-top: 4px;">
+        <a onclick="
+            var tpl = document.getElementById('array-widget-template-{{ widget.name }}');
+            var clone = tpl.content.cloneNode(true);
+            var input = clone.querySelector('input, select');
+            if (input &amp;&amp; input.name.includes('__prefix__')) { input.name = '{{ widget.name }}'; }
+            tpl.parentElement.insertBefore(clone, tpl);
+        " class="addlink" style="cursor: pointer;">{{ gettext("Add new item") }}</a>
+    </div>
+</div>
