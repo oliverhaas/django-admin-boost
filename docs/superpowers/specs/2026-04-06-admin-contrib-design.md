@@ -74,8 +74,7 @@ django_admin_boost/admin/contrib/
     └── static/admin/contrib/forms/      Static assets
         ├── css/trix/trix.css
         ├── js/trix/trix.js
-        ├── js/trix.config.js
-        └── js/alpine.min.js
+        └── js/trix.config.js
 ```
 
 ## Adaptation from Unfold
@@ -145,7 +144,7 @@ def parse_datetime_str(value: str) -> datetime.datetime | None:
 
 All unfold templates use Tailwind CSS classes extensively. These must be restyled for Django admin's default CSS. The restyling is straightforward for most templates (replacing Tailwind classes with Django admin equivalents or removing them), but two cases require special attention:
 
-**ArrayWidget template** uses Alpine.js (`x-data`, `x-for`, `x-on:click`, `x-init`) for dynamic add/remove of items. We keep Alpine.js as a bundled JS dependency for this widget — it's lightweight (~17KB) and avoids a vanilla JS rewrite. The widget's `Media` class includes Alpine.js from static assets.
+**ArrayWidget template** uses Alpine.js (`x-data`, `x-for`, `x-on:click`, `x-init`) in unfold for dynamic add/remove of items. We rewrite this with vanilla JS using `<template>` element cloning to avoid the Alpine.js dependency entirely.
 
 **WysiwygWidget toolbar template** uses Material Symbols (Google icon font) for toolbar buttons. We replace these with text labels or Django admin's existing icon approach to avoid the external font dependency.
 
