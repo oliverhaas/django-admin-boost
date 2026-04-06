@@ -26,6 +26,8 @@ class EstimatedCountPaginator(Paginator):
     * The estimate is ≤ 0 (table freshly created / never analysed).
     """
 
+    _used_estimate: bool = False
+
     @cached_property
     def count(self) -> int:
         """Return the total number of objects, using an estimate when possible."""
@@ -37,9 +39,16 @@ class EstimatedCountPaginator(Paginator):
         if self._can_use_estimate(queryset):
             estimate = self._get_estimate(queryset)
             if estimate is not None and estimate > 0:
+                self._used_estimate = True
                 return int(estimate)
 
         return queryset.count()
+
+    @property
+    def is_approximate_count(self) -> bool:
+        """Return True if the count was derived from an estimate, not an exact query."""
+        _ = self.count  # ensure count is computed
+        return self._used_estimate
 
     def _can_use_estimate(self, queryset: QuerySet[Any]) -> bool:
         """Return True if we can safely use pg_class.reltuples."""
