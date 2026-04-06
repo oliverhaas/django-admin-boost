@@ -86,7 +86,7 @@ class ListFieldsMixin:
         # fall back to self.list_display which BaseModelAdmin/ModelAdmin provide.
         parent = super()
         if hasattr(parent, "get_list_display"):
-            list_display = list(parent.get_list_display(request))  # type: ignore[misc]
+            list_display = list(parent.get_list_display(request))
         else:
             list_display = list(self.list_display)  # type: ignore[attr-defined]
         m2m_annotations = self._resolve_m2m_annotations()
