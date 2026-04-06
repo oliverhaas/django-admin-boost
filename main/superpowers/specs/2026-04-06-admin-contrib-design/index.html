@@ -1,0 +1,1093 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Performance-oriented Django admin extensions.">
+      
+      
+      
+        <link rel="canonical" href="https://oliverhaas.github.io/django-admin-boost/main/superpowers/specs/2026-04-06-admin-contrib-design/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Admin Contrib Modules — Design Spec - Django Admin Boost</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#admin-contrib-modules-design-spec" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Django Admin Boost" class="md-header__button md-logo" aria-label="Django Admin Boost" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Django Admin Boost
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Admin Contrib Modules — Design Spec
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/oliverhaas/django-admin-boost" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    oliverhaas/django-admin-boost
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Django Admin Boost" class="md-nav__button md-logo" aria-label="Django Admin Boost" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Django Admin Boost
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/oliverhaas/django-admin-boost" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    oliverhaas/django-admin-boost
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/migrating/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migrating from django.contrib.admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#motivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#package-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Package Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adaptation-from-unfold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adaptation from Unfold
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adaptation from Unfold">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#widget-replacements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widget replacements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-replacements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import replacements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-path-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template path changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-asset-path-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Static asset path changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utilities-self-contained-copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilities (self-contained copy)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-restyling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template restyling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select2-for-dropdownautocomplete-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Select2 for dropdown/autocomplete filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inlines-paginationformsetmixin-dropped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inlines: PaginationFormSetMixin dropped
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-not-ported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is NOT ported
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public API
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inlines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        inlines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        forms
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="admin-contrib-modules-design-spec">Admin Contrib Modules — Design Spec<a class="headerlink" href="#admin-contrib-modules-design-spec" title="Permanent link">&para;</a></h1>
+<p><strong>Issue:</strong> <a href="https://github.com/oliverhaas/django-admin-boost/issues/16">#16 — Port useful unfold contrib features to the standard admin</a>
+<strong>Date:</strong> 2026-04-06
+<strong>Approach:</strong> Direct port from <code>django_admin_boost.unfold.contrib</code>, replacing unfold-specific widgets/utilities with standard Django admin equivalents.</p>
+<h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
+<p>The unfold contrib modules provide features that Django's stock admin lacks: advanced filters (numeric range, date range, autocomplete, dropdown, text, checkbox/radio), non-related inlines, and custom widgets (array input, WYSIWYG editor). These features are useful independent of unfold's visual theme and should be available to users of the standard admin replacement (<code>django_admin_boost.admin</code>).</p>
+<h2 id="package-structure">Package Structure<a class="headerlink" href="#package-structure" title="Permanent link">&para;</a></h2>
+<p>Three new Django apps under <code>django_admin_boost/admin/contrib/</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>django_admin_boost/admin/contrib/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── __init__.py                          (empty)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── filters/                             App: django_admin_boost.admin.contrib.filters
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── __init__.py
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   ├── apps.py                          AppConfig (label=&quot;boost_filters&quot;)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   ├── forms.py                         Filter form classes
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   ├── utils.py                         parse_date_str, parse_datetime_str
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│   ├── admin/
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   │   ├── __init__.py                  Re-exports all filter classes
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│   │   ├── mixins.py                    ValueMixin, MultiValueMixin, DropdownMixin,
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│   │   │                                ChoicesMixin, RangeNumericMixin, AutocompleteMixin
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│   │   ├── text_filters.py              TextFilter, FieldTextFilter
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│   │   ├── choice_filters.py            RadioFilter, CheckboxFilter, ChoicesRadioFilter,
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│   │   │                                ChoicesCheckboxFilter, BooleanRadioFilter,
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│   │   │                                RelatedCheckboxFilter, AllValuesCheckboxFilter
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   │   ├── datetime_filters.py          RangeDateFilter, RangeDateTimeFilter
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│   │   ├── numeric_filters.py           SingleNumericFilter, RangeNumericFilter,
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│   │   │                                RangeNumericListFilter, SliderNumericFilter
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│   │   ├── dropdown_filters.py          DropdownFilter, MultipleDropdownFilter,
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│   │   │                                ChoicesDropdownFilter, MultipleChoicesDropdownFilter,
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│   │   │                                RelatedDropdownFilter, MultipleRelatedDropdownFilter
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│   │   └── autocomplete_filters.py      AutocompleteSelectFilter,
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   │                                    AutocompleteSelectMultipleFilter
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│   ├── jinja2/admin/filters/            Jinja2 templates (6 files)
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│   │   ├── filters_field.html
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│   │   ├── filters_numeric_range.html
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│   │   ├── filters_numeric_single.html
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>│   │   ├── filters_numeric_slider.html
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>│   │   ├── filters_date_range.html
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│   │   └── filters_datetime_range.html
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│   ├── templates/admin/filters/         DTL mirror templates (6 files)
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│   └── static/admin/contrib/filters/    Static assets
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│       ├── css/nouislider/nouislider.min.css
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│       ├── js/nouislider/nouislider.min.js
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│       ├── js/wnumb/wNumb.min.js
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>│       ├── js/admin-numeric-filter.js
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>│       ├── js/DateTimeShortcuts.js
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>│       └── js/select2.init.js
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>│
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>├── inlines/                             App: django_admin_boost.admin.contrib.inlines
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>│   ├── __init__.py
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>│   ├── apps.py                          AppConfig (label=&quot;boost_inlines&quot;)
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>│   ├── admin.py                         NonrelatedInlineMixin, NonrelatedStackedInline,
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>│   │                                    NonrelatedTabularInline
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>│   ├── forms.py                         NonrelatedInlineModelFormSet,
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>│   │                                    nonrelated_inline_formset_factory
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>│   └── checks.py                        NonrelatedModelAdminChecks
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>│
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>└── forms/                               App: django_admin_boost.admin.contrib.forms
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>    ├── __init__.py
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a>    ├── apps.py                          AppConfig (label=&quot;boost_forms&quot;)
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a>    ├── widgets.py                       ArrayWidget, WysiwygWidget
+<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a>    ├── jinja2/admin/forms/              Jinja2 templates
+<a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a>    │   ├── array.html
+<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a>    │   ├── wysiwyg.html
+<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a>    │   └── helpers/toolbar.html
+<a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a>    ├── templates/admin/forms/           DTL mirror templates
+<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a>    └── static/admin/contrib/forms/      Static assets
+<a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a>        ├── css/trix/trix.css
+<a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a>        ├── js/trix/trix.js
+<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a>        └── js/trix.config.js
+</code></pre></div>
+<h2 id="adaptation-from-unfold">Adaptation from Unfold<a class="headerlink" href="#adaptation-from-unfold" title="Permanent link">&para;</a></h2>
+<h3 id="widget-replacements">Widget replacements<a class="headerlink" href="#widget-replacements" title="Permanent link">&para;</a></h3>
+<p>The unfold code uses custom Tailwind-styled widgets. We replace these with Django's stock admin widgets:</p>
+<table>
+<thead>
+<tr>
+<th>Unfold widget</th>
+<th>Standard admin replacement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UnfoldAdminTextInputWidget</code></td>
+<td><code>django.contrib.admin.widgets.AdminTextInputWidget</code></td>
+</tr>
+<tr>
+<td><code>UnfoldAdminSelectWidget</code></td>
+<td><code>django.forms.Select</code></td>
+</tr>
+<tr>
+<td><code>UnfoldAdminSelectMultipleWidget</code></td>
+<td><code>django.forms.SelectMultiple</code></td>
+</tr>
+<tr>
+<td><code>UnfoldAdminRadioSelectWidget</code></td>
+<td><code>django.contrib.admin.widgets.AdminRadioSelect</code></td>
+</tr>
+<tr>
+<td><code>UnfoldAdminCheckboxSelectMultipleWidget</code></td>
+<td><code>django.forms.CheckboxSelectMultiple</code></td>
+</tr>
+<tr>
+<td><code>UnfoldAdminSplitDateTimeVerticalWidget</code></td>
+<td><code>django.contrib.admin.widgets.AdminSplitDateTime</code></td>
+</tr>
+<tr>
+<td><code>INPUT_CLASSES</code> (Tailwind CSS)</td>
+<td>Dropped — use Django admin default CSS</td>
+</tr>
+<tr>
+<td><code>PROSE_CLASSES</code> / <code>WYSIWYG_CLASSES</code></td>
+<td>Dropped — use Django admin default CSS</td>
+</tr>
+</tbody>
+</table>
+<h3 id="import-replacements">Import replacements<a class="headerlink" href="#import-replacements" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Unfold import</th>
+<th>Standard admin replacement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>django_admin_boost.unfold.admin.StackedInline</code></td>
+<td><code>django_admin_boost.admin.StackedInline</code></td>
+</tr>
+<tr>
+<td><code>django_admin_boost.unfold.admin.TabularInline</code></td>
+<td><code>django_admin_boost.admin.TabularInline</code></td>
+</tr>
+<tr>
+<td><code>django_admin_boost.unfold.utils.parse_date_str</code></td>
+<td><code>django_admin_boost.admin.contrib.filters.utils.parse_date_str</code></td>
+</tr>
+<tr>
+<td><code>django_admin_boost.unfold.utils.parse_datetime_str</code></td>
+<td><code>django_admin_boost.admin.contrib.filters.utils.parse_datetime_str</code></td>
+</tr>
+<tr>
+<td><code>django_admin_boost.unfold.forms.PaginationFormSetMixin</code></td>
+<td>Dropped (unfold-specific)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-path-changes">Template path changes<a class="headerlink" href="#template-path-changes" title="Permanent link">&para;</a></h3>
+<p>All templates move from <code>unfold/</code> prefix to <code>admin/</code> prefix:</p>
+<table>
+<thead>
+<tr>
+<th>Unfold template</th>
+<th>Standard admin template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unfold/filters/filters_field.html</code></td>
+<td><code>admin/filters/filters_field.html</code></td>
+</tr>
+<tr>
+<td><code>unfold/filters/filters_numeric_range.html</code></td>
+<td><code>admin/filters/filters_numeric_range.html</code></td>
+</tr>
+<tr>
+<td><code>unfold/filters/filters_numeric_single.html</code></td>
+<td><code>admin/filters/filters_numeric_single.html</code></td>
+</tr>
+<tr>
+<td><code>unfold/filters/filters_numeric_slider.html</code></td>
+<td><code>admin/filters/filters_numeric_slider.html</code></td>
+</tr>
+<tr>
+<td><code>unfold/filters/filters_date_range.html</code></td>
+<td><code>admin/filters/filters_date_range.html</code></td>
+</tr>
+<tr>
+<td><code>unfold/filters/filters_datetime_range.html</code></td>
+<td><code>admin/filters/filters_datetime_range.html</code></td>
+</tr>
+<tr>
+<td><code>unfold/forms/array.html</code></td>
+<td><code>admin/forms/array.html</code></td>
+</tr>
+<tr>
+<td><code>unfold/forms/wysiwyg.html</code></td>
+<td><code>admin/forms/wysiwyg.html</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="static-asset-path-changes">Static asset path changes<a class="headerlink" href="#static-asset-path-changes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Unfold static path</th>
+<th>Standard admin static path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unfold/filters/css/...</code></td>
+<td><code>admin/contrib/filters/css/...</code></td>
+</tr>
+<tr>
+<td><code>unfold/filters/js/...</code></td>
+<td><code>admin/contrib/filters/js/...</code></td>
+</tr>
+<tr>
+<td><code>unfold/forms/css/...</code></td>
+<td><code>admin/contrib/forms/css/...</code></td>
+</tr>
+<tr>
+<td><code>unfold/forms/js/...</code></td>
+<td><code>admin/contrib/forms/js/...</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="utilities-self-contained-copy">Utilities (self-contained copy)<a class="headerlink" href="#utilities-self-contained-copy" title="Permanent link">&para;</a></h3>
+<p><code>filters/utils.py</code> contains two functions copied from <code>unfold.utils</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_date_str</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a date string using Django&#39;s DATE_INPUT_FORMATS.&quot;&quot;&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_datetime_str</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a datetime string using Django&#39;s DATETIME_INPUT_FORMATS.&quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="template-restyling">Template restyling<a class="headerlink" href="#template-restyling" title="Permanent link">&para;</a></h3>
+<p>All unfold templates use Tailwind CSS classes extensively. These must be restyled for Django admin's default CSS. The restyling is straightforward for most templates (replacing Tailwind classes with Django admin equivalents or removing them), but two cases require special attention:</p>
+<p><strong>ArrayWidget template</strong> uses Alpine.js (<code>x-data</code>, <code>x-for</code>, <code>x-on:click</code>, <code>x-init</code>) in unfold for dynamic add/remove of items. We rewrite this with vanilla JS using <code>&lt;template&gt;</code> element cloning to avoid the Alpine.js dependency entirely.</p>
+<p><strong>WysiwygWidget toolbar template</strong> uses Material Symbols (Google icon font) for toolbar buttons. We replace these with text labels or Django admin's existing icon approach to avoid the external font dependency.</p>
+<h3 id="select2-for-dropdownautocomplete-filters">Select2 for dropdown/autocomplete filters<a class="headerlink" href="#select2-for-dropdownautocomplete-filters" title="Permanent link">&para;</a></h3>
+<p>The unfold dropdown and autocomplete filter forms reference <code>unfold/js/select2.init.js</code>. Django's admin already ships select2 and jQuery. We provide a minimal <code>select2.init.js</code> in our static assets that initializes select2 on filter dropdowns, reusing Django's bundled select2/jQuery.</p>
+<h3 id="inlines-paginationformsetmixin-dropped">Inlines: PaginationFormSetMixin dropped<a class="headerlink" href="#inlines-paginationformsetmixin-dropped" title="Permanent link">&para;</a></h3>
+<p>The unfold <code>NonrelatedInlineModelFormSet</code> inherits from <code>PaginationFormSetMixin</code> which adds unfold-specific pagination to formsets. The standard admin version inherits from <code>BaseModelFormSet</code> directly, since Django's stock admin handles inline pagination differently.</p>
+<h2 id="what-is-not-ported">What is NOT ported<a class="headerlink" href="#what-is-not-ported" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Unfold Tailwind CSS class constants (<code>INPUT_CLASSES</code>, <code>PROSE_CLASSES</code>, <code>BUTTON_CLASSES</code>, etc.)</li>
+<li><code>PaginationFormSetMixin</code> (unfold-specific inline pagination)</li>
+<li>Unfold-specific JS init files (<code>select2.init.js</code>)</li>
+<li>Unfold theme integration or color system</li>
+<li>Template-only contrib modules (guardian, simple_history, location_field, constance) — the standard admin works with these libraries out of the box</li>
+</ul>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># settings.py</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="s2">&quot;django_admin_boost.admin&quot;</span><span class="p">,</span>                      <span class="c1"># required base</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="s2">&quot;django_admin_boost.admin.contrib.filters&quot;</span><span class="p">,</span>      <span class="c1"># optional</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="s2">&quot;django_admin_boost.admin.contrib.inlines&quot;</span><span class="p">,</span>      <span class="c1"># optional</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="s2">&quot;django_admin_boost.admin.contrib.forms&quot;</span><span class="p">,</span>        <span class="c1"># optional</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">]</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1"># admin.py — filters</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_admin_boost.admin.contrib.filters.admin</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">RangeDateFilter</span><span class="p">,</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">SliderNumericFilter</span><span class="p">,</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">TextFilter</span><span class="p">,</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="p">)</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="n">list_filter</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">SliderNumericFilter</span><span class="p">),</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        <span class="p">(</span><span class="s2">&quot;created&quot;</span><span class="p">,</span> <span class="n">RangeDateFilter</span><span class="p">),</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>        <span class="n">TextFilter</span><span class="p">,</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="p">]</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="c1"># admin.py — non-related inlines</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_admin_boost.admin.contrib.inlines.admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">NonrelatedStackedInline</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="k">class</span><span class="w"> </span><span class="nc">TagInline</span><span class="p">(</span><span class="n">NonrelatedStackedInline</span><span class="p">):</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>    <span class="n">model</span> <span class="o">=</span> <span class="n">Tag</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_form_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>        <span class="k">return</span> <span class="n">Tag</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items__pk</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">save_new_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>        <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>        <span class="n">parent</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="c1"># admin.py — widgets</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_admin_boost.admin.contrib.forms.widgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayWidget</span><span class="p">,</span> <span class="n">WysiwygWidget</span>
+</code></pre></div>
+<h2 id="public-api">Public API<a class="headerlink" href="#public-api" title="Permanent link">&para;</a></h2>
+<h3 id="filters">filters<a class="headerlink" href="#filters" title="Permanent link">&para;</a></h3>
+<p>All filter classes exported from <code>django_admin_boost.admin.contrib.filters.admin</code>:</p>
+<ul>
+<li><code>TextFilter</code>, <code>FieldTextFilter</code></li>
+<li><code>RadioFilter</code>, <code>CheckboxFilter</code>, <code>ChoicesRadioFilter</code>, <code>ChoicesCheckboxFilter</code>, <code>BooleanRadioFilter</code>, <code>RelatedCheckboxFilter</code>, <code>AllValuesCheckboxFilter</code></li>
+<li><code>RangeDateFilter</code>, <code>RangeDateTimeFilter</code></li>
+<li><code>SingleNumericFilter</code>, <code>RangeNumericFilter</code>, <code>RangeNumericListFilter</code>, <code>SliderNumericFilter</code></li>
+<li><code>DropdownFilter</code>, <code>MultipleDropdownFilter</code>, <code>ChoicesDropdownFilter</code>, <code>MultipleChoicesDropdownFilter</code>, <code>RelatedDropdownFilter</code>, <code>MultipleRelatedDropdownFilter</code></li>
+<li><code>AutocompleteSelectFilter</code>, <code>AutocompleteSelectMultipleFilter</code></li>
+</ul>
+<h3 id="inlines">inlines<a class="headerlink" href="#inlines" title="Permanent link">&para;</a></h3>
+<p>Exported from <code>django_admin_boost.admin.contrib.inlines.admin</code>:</p>
+<ul>
+<li><code>NonrelatedInlineMixin</code></li>
+<li><code>NonrelatedStackedInline</code></li>
+<li><code>NonrelatedTabularInline</code></li>
+</ul>
+<h3 id="forms">forms<a class="headerlink" href="#forms" title="Permanent link">&para;</a></h3>
+<p>Exported from <code>django_admin_boost.admin.contrib.forms.widgets</code>:</p>
+<ul>
+<li><code>ArrayWidget</code></li>
+<li><code>WysiwygWidget</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
