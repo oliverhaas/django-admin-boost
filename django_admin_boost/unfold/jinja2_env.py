@@ -33,6 +33,9 @@ from django.utils.formats import date_format, localize
 from django.utils.html import conditional_escape
 from django.utils.text import Truncator, capfirst, slugify
 from django.utils.translation import get_language, get_language_bidi, gettext, ngettext
+from jinja2 import nodes
+from jinja2.ext import Extension
+from jinja2.parser import Parser as JinjaParser  # noqa: TC002
 from markupsafe import Markup
 
 from django_admin_boost.unfold.jinja2_helpers import select_unfold_template
@@ -127,17 +130,17 @@ def environment(**options: object) -> jinja2.Environment:
 # ---------------------------------------------------------------------------
 
 
-class ComponentExtension(jinja2.ext.Extension):
+class ComponentExtension(Extension):
     """Jinja2 extension for {% component "template" with key=val %}...{% endcomponent %}."""
 
     tags = {"component"}
 
-    def parse(self, parser: jinja2.ext.Extension) -> jinja2.nodes.Node:
+    def parse(self, parser: JinjaParser) -> nodes.Node:
         lineno = next(parser.stream).lineno
         # Parse template name
         template_name = parser.parse_expression()
         # Parse optional 'with key=val' pairs
-        kwargs = []
+        kwargs: list[nodes.Keyword] = []
         if parser.stream.current.test("name:with"):
             next(parser.stream)
             while not parser.stream.current.test("block_end"):
@@ -146,7 +149,7 @@ class ComponentExtension(jinja2.ext.Extension):
                 key = parser.stream.expect("name").value
                 parser.stream.expect("assign")
                 value = parser.parse_expression()
-                kwargs.append(jinja2.nodes.Keyword(key, value, lineno=lineno))
+                kwargs.append(nodes.Keyword(key, value, lineno=lineno))
 
         # Check for include_context flag
         include_context = False
@@ -156,10 +159,10 @@ class ComponentExtension(jinja2.ext.Extension):
 
         body = parser.parse_statements(["name:endcomponent"], drop_needle=True)
 
-        return jinja2.nodes.CallBlock(
+        return nodes.CallBlock(
             self.call_method(
                 "_render_component",
-                [template_name, jinja2.nodes.Const(include_context)],
+                [template_name, nodes.Const(include_context)],
                 kwargs,
             ),
             [],
@@ -180,12 +183,12 @@ class ComponentExtension(jinja2.ext.Extension):
         return tmpl.render(ctx)
 
 
-class CaptureExtension(jinja2.ext.Extension):
+class CaptureExtension(Extension):
     """Jinja2 extension for {% capture as varname silent %}...{% endcapture %}."""
 
     tags = {"capture"}
 
-    def parse(self, parser: jinja2.ext.Extension) -> jinja2.nodes.Node:
+    def parse(self, parser: JinjaParser) -> nodes.Node:
         lineno = next(parser.stream).lineno
 
         # Parse optional 'as varname'
@@ -202,16 +205,14 @@ class CaptureExtension(jinja2.ext.Extension):
 
         if var_name and silent:
             # Assign captured content to variable, output nothing
-            target = jinja2.nodes.Name(var_name, "store", lineno=lineno)
-            return jinja2.nodes.AssignBlock(target, None, body).set_lineno(lineno)
+            target = nodes.Name(var_name, "store", lineno=lineno)
+            return nodes.AssignBlock(target, None, body).set_lineno(lineno)  # type: ignore[arg-type]
         if var_name:
             # Assign and output
-            output_nodes = list(body)
-            target = jinja2.nodes.Name(var_name, "store", lineno=lineno)
-            assign = jinja2.nodes.AssignBlock(target, None, body).set_lineno(lineno)
-            return [assign, *output_nodes]
-        # Just output
-        return body
+            target = nodes.Name(var_name, "store", lineno=lineno)
+            return nodes.AssignBlock(target, None, body).set_lineno(lineno)  # type: ignore[arg-type]
+        # Just output — return first node
+        return body[0] if body else nodes.Output([]).set_lineno(lineno)
 
 
 # ---------------------------------------------------------------------------
@@ -405,10 +406,10 @@ def _unfold_admin_actions_jinja2(context: Any, cl: Any) -> Markup:
     from django.contrib.admin.templatetags.admin_list import admin_actions
 
     ctx = _jinja2_context_to_dict(context)
-    result = admin_actions(ctx)
+    result = admin_actions(ctx)  # type: ignore[arg-type]
     from django.template.loader import render_to_string
 
-    return Markup(render_to_string("admin/dataset_actions.html", context=result))  # noqa: S704
+    return Markup(render_to_string("admin/dataset_actions.html", context=result))  # type: ignore[arg-type]  # noqa: S704
 
 
 def _result_headers(cl: Any) -> Any:
