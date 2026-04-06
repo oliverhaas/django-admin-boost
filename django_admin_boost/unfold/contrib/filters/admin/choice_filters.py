@@ -1,0 +1,171 @@
+from collections.abc import Iterator
+from typing import Any
+
+from django.contrib import admin
+from django.contrib.admin.views.main import ChangeList
+from django.db.models import Model
+from django.http import HttpRequest
+from django.utils.translation import gettext_lazy as _
+
+from django_admin_boost.unfold.admin import ModelAdmin
+from django_admin_boost.unfold.contrib.filters.admin.mixins import (
+    ChoicesMixin,
+    MultiValueMixin,
+    ValueMixin,
+)
+from django_admin_boost.unfold.contrib.filters.forms import CheckboxForm, HorizontalRadioForm, RadioForm
+
+
+class RadioFilter(admin.SimpleListFilter):
+    template = "unfold/filters/filters_field.html"
+    form_class = RadioForm
+    all_option = ["", _("All")]
+
+    def choices(self, changelist: ChangeList) -> Iterator:
+        add_facets = getattr(changelist, "add_facets", False)
+        facet_counts = self.get_facet_queryset(changelist) if add_facets else None
+        choices = []
+
+        if self.all_option:
+            choices = [self.all_option]
+
+        if add_facets:
+            for i, (lookup, title) in enumerate(self.lookup_choices):
+                choices.append(
+                    (lookup, f"{title} ({facet_counts.get(f'{i}__c', '-')})"),
+                )
+        else:
+            choices.extend(self.lookup_choices)
+
+        yield {
+            "form": self.form_class(
+                label=_(" By %(filter_title)s ") % {"filter_title": self.title},
+                name=self.parameter_name,
+                choices=choices,
+                data={self.parameter_name: self.value()},
+            ),
+        }
+
+
+class CheckboxFilter(RadioFilter):
+    form_class = CheckboxForm
+    all_option = None
+
+    # TODO: remove once django 4.x is not supported
+    def __init__(
+        self,
+        request: HttpRequest,
+        params: dict[str, Any],
+        model: type[Model],
+        model_admin: ModelAdmin,
+    ) -> None:
+        self.request = request
+        super().__init__(request, params, model, model_admin)
+
+    def value(self) -> list[str] | None:  # ty:ignore[invalid-method-override]
+        if self.parameter_name:
+            return self.request.GET.getlist(self.parameter_name)
+
+
+class ChoicesRadioFilter(ValueMixin, ChoicesMixin, admin.ChoicesFieldListFilter):
+    form_class = RadioForm
+    all_option = ["", _("All")]
+
+
+class ChoicesCheckboxFilter(
+    MultiValueMixin, ChoicesMixin, admin.ChoicesFieldListFilter,
+):
+    form_class = CheckboxForm
+    all_option = None
+
+
+class BooleanRadioFilter(ValueMixin, admin.BooleanFieldListFilter):
+    template = "unfold/filters/filters_field.html"
+    form_class = HorizontalRadioForm
+    all_option = ["", _("All")]
+
+    def choices(self, changelist: ChangeList) -> Iterator:
+        add_facets = getattr(changelist, "add_facets", False)
+        facet_counts = self.get_facet_queryset(changelist) if add_facets else None
+
+        if add_facets and facet_counts:
+            choices = [
+                self.all_option,
+                *[
+                    ("1", f"{_('Yes')} ({facet_counts['true__c']})"),
+                    ("0", f"{_('No')} ({facet_counts['false__c']})"),
+                ],
+            ]
+        else:
+            choices = [
+                self.all_option,
+                *[
+                    ("1", _("Yes")),
+                    ("0", _("No")),
+                ],
+            ]
+
+        yield {
+            "form": self.form_class(
+                label=_(" By %(filter_title)s ") % {"filter_title": self.title},
+                name=self.lookup_kwarg,
+                choices=choices,
+                data={self.lookup_kwarg: self.value()},
+            ),
+        }
+
+
+class RelatedCheckboxFilter(MultiValueMixin, admin.RelatedFieldListFilter):
+    template = "unfold/filters/filters_field.html"
+    form_class = CheckboxForm
+
+    def choices(self, changelist: ChangeList) -> Iterator:
+        add_facets = getattr(changelist, "add_facets", False)
+        facet_counts = self.get_facet_queryset(changelist) if add_facets else None
+
+        if add_facets and facet_counts:
+            choices = []
+
+            for pk_val, val in self.lookup_choices:
+                count = facet_counts[f"{pk_val}__c"]
+                choice = (pk_val, f"{val} ({count})")
+                choices.append(choice)
+        else:
+            choices = self.lookup_choices
+
+        yield {
+            "form": self.form_class(
+                label=_(" By %(filter_title)s ") % {"filter_title": self.title},
+                name=self.lookup_kwarg,
+                choices=choices,
+                data={self.lookup_kwarg: self.value()},
+            ),
+        }
+
+
+class AllValuesCheckboxFilter(MultiValueMixin, admin.AllValuesFieldListFilter):
+    template = "unfold/filters/filters_field.html"
+    form_class = CheckboxForm
+
+    def choices(self, changelist: ChangeList) -> Iterator:
+        add_facets = getattr(changelist, "add_facets", False)
+        facet_counts = self.get_facet_queryset(changelist) if add_facets else None
+
+        if add_facets and facet_counts:
+            choices = []
+
+            for i, val in enumerate(self.lookup_choices):
+                count = facet_counts[f"{i}__c"]
+                choice = (val, f"{val} ({count})")
+                choices.append(choice)
+        else:
+            choices = [[val, val] for _i, val in enumerate(self.lookup_choices)]
+
+        yield {
+            "form": self.form_class(
+                label=_(" By %(filter_title)s ") % {"filter_title": self.title},
+                name=self.lookup_kwarg,
+                choices=choices,
+                data={self.lookup_kwarg: self.value()},
+            ),
+        }

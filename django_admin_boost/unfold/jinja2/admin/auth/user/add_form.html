@@ -1,0 +1,5 @@
+{% extends "admin/change_form.html" %}
+{% block form_top %}
+    {% set message = gettext("After you've created a user, you’ll be able to edit more user options.") %}
+    {% set message = message %}{% include "unfold/helpers/messages/info.html" %}
+{% endblock %}

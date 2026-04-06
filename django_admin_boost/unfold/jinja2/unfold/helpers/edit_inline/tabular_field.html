@@ -1,0 +1,21 @@
+<div class="flex flex-row gap-3 items-center">
+    {% if loop.counter == 1 and loop.index == 1 %}
+        {% set tabular = 1 %}{% include "unfold/helpers/edit_inline/inline_drag.html" %}
+    {% endif %}
+
+    {% if field.is_readonly %}
+        {% set tabular = 1 %}{% include "unfold/helpers/field_readonly_value.html" %}
+    {% else %}
+        <div class="flex flex-col grow">
+            {{ field.field }}
+
+            {% if field.field.errors|length > 0 %}
+                <div class="mt-2 text-red-600 text-xs dark:text-red-500">
+                    {% for error in field.field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

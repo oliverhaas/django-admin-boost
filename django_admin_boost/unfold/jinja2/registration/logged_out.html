@@ -1,0 +1,25 @@
+{% extends 'unfold/layouts/unauthenticated.html' %}
+{% block title %}
+    {{ title }} | {{ site_title }}
+{% endblock %}
+
+{% block content %}
+    <div id="page" class="bg-white flex min-h-screen dark:bg-base-900 ">
+        <div class="flex grow items-center justify-center mx-auto px-4">
+            <div class="w-full sm:w-96">
+                <h1 class="font-semibold mb-4 text-font-important-light text-xl tracking-tight dark:text-font-important-dark">
+                    {{ gettext("You have been successfully logged out from the administration") }}
+                </h1>
+
+                <p class="leading-relaxed mb-10">
+                    {{ gettext("Thanks for spending some quality time with the web site today.") }}
+                </p>
+
+                {% set login_url = url("admin:index", silent=True) %}
+                {% component "unfold/components/button.html" with href=login_url variant="primary" class="w-full" %}
+                    {{ gettext("Log in again") }} <span class="material-symbols-outlined relative right-0 transition-all group-hover:-right-1 text-sm">arrow_forward</span>
+                {% endcomponent %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

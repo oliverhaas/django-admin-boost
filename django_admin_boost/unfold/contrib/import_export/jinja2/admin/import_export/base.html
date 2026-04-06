@@ -1,0 +1,6 @@
+{% extends "admin/base_site.html" %}
+{% block extrastyle %}{{ super() }}{% endblock %}
+
+{% block bodyclass %}
+    {{ super() }} {{ opts.app_label }}-{{ opts.object_name.lower }} change-form
+{% endblock %}

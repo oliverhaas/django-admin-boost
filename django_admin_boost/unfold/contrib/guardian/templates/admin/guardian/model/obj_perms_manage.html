@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+
+{% load admin_urls i18n guardian_tags  %}
+
+{% block content %}
+    {% include "unfold/guardian/user_form.html" %}
+
+    <hr class="border-base-200 my-12 dark:border-base-800"/>
+
+    {% include "unfold/guardian/group_form.html" %}
+{% endblock %}
+
+{% block footer %}{% endblock%}

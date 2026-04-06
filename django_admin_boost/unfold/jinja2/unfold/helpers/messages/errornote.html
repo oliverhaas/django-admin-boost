@@ -1,0 +1,5 @@
+{% if errors %}
+    <p class="errornote bg-red-100 mb-4 text-red-700 px-3 py-2.5 leading-[18px] rounded-default dark:bg-red-500/20 dark:border-red-500/20 dark:text-red-400 {% if class %} {{ class }}{% endif %}">
+        {% trans count counter=errors.items|length %}Please correct the error below.{% pluralize %}Please correct the errors below.{% endtrans %}
+    </p>
+{% endif %}

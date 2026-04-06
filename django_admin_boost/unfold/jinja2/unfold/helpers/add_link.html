@@ -1,0 +1,17 @@
+{% if cl %}
+    {% set add_url = url(cl.opts|admin_urlname:"add", silent=True) %}
+    {% set name = cl.opts.verbose_name %}{% trans%} %}Add {{ name }}{% endtrans %}
+{% else %}
+    {% set add_url = url(opts|admin_urlname:"add", silent=True) %}
+    {% set name = opts.verbose_name %}{% trans%} %}Add {{ name }}{% endtrans %}
+{% endif %}
+
+{% if add_url %}
+    {% if cl.model_admin.show_add_link or adminform.model_admin.show_add_link %}
+        <div class="flex flex-row items-center">
+            <a href="{% add_preserved_filters add_url is_popup to_field %}" class="addlink bg-primary-600 flex items-center h-[38px] justify-center -my-1 rounded-full w-[38px]" title="{{ title }}">
+                <span class="material-symbols-outlined text-white">add</span>
+            </a>
+        </div>
+    {% endif %}
+{% endif %}

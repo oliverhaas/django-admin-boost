@@ -1,0 +1,5 @@
+{% block object_tools_items %}
+    {% if has_add_permission %}
+        {% include "unfold/helpers/add_link.html" %}
+    {% endif %}
+{% endblock %}

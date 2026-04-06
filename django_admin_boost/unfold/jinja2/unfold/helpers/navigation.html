@@ -1,0 +1,13 @@
+<nav id="nav-sidebar-inner" class="bg-base-50 flex flex-col min-h-screen dark:text-font-default-dark dark:bg-base-950/20 {{ element_classes('navigation_inner') }}">
+    {% include "unfold/helpers/navigation_header.html" %}
+
+    {% include "unfold/helpers/search.html" %}
+
+    {% if sidebar_navigation|length > 0 %}
+        {% set app_list = available_apps %}{% include "unfold/helpers/app_list.html" %}
+    {% else %}
+        {% set app_list = available_apps %}{% set show_changelinks = False %}{% include "admin/app_list.html" %}
+    {% endif %}
+
+    {% include "unfold/helpers/navigation_user.html" %}
+</nav>

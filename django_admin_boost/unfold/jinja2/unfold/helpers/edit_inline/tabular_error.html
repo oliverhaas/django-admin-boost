@@ -1,0 +1,8 @@
+{% if inline_admin_form.form.non_field_errors %}
+    <tr class="row-form-errors group inline-tabular">
+        <td colspan="{{ inline_admin_form|cell_count }}">
+
+            {% set errors = inline_admin_form.form.non_field_errors %}{% include "unfold/helpers/messages/error.html" %}
+        </td>
+    </tr>
+{% endif %}

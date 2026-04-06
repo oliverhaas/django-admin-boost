@@ -1,0 +1,12 @@
+{% extends 'admin/change_form.html' %}
+{% load i18n unfold %}
+
+{% block actions %}
+    {{ block.super }}
+
+    {% if show_change_form_export %}
+        {% component "unfold/components/button.html" with submit=1 name="_export-item" variant="default" class="mr-3" %}
+            {% translate 'Export' %}
+        {% endcomponent %}
+    {% endif %}
+{% endblock %}

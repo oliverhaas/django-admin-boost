@@ -1,0 +1,11 @@
+<div class="flex flex-row gap-4 items-center ml-auto">
+    {% if environment %}
+        {% set text = environment.0 %}{% set type = environment.1 %}{% include "unfold/helpers/label.html" %}
+    {% endif %}
+
+    {{ action_list() }}
+
+    {% if nav_global_side %}
+        {{ nav_global_side }}
+    {% endif %}
+</div>

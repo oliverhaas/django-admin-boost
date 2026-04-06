@@ -1,0 +1,19 @@
+{% if show_back_button %}
+    {% if object %}
+        {{ admin_object_app_url(object, "changelist", as, changelist_url) }}
+
+        <a href="{{ url(changelist_url) }}" class="block h-[18px] mr-3" title="{{ gettext("Go back") }}">
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
+        </a>
+    {% elif opts and adminform %}
+        {% set changelist_url = url(opts|admin_urlname:'changelist', silent=True) %}
+
+        <a href="{% add_preserved_filters changelist_url %}" class="block h-[18px] mr-3" title="{{ gettext("Go back") }}">
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
+        </a>
+    {% endif %}
+{% endif %}

@@ -1,0 +1,9 @@
+<div class="flex flex-col gap-3 items-center w-full lg:flex-row">
+    {% component "unfold/components/button.html" with href="#" variant="default" class="cancel-link w-full lg:mb-0 lg:w-auto" %}
+        {{ gettext("No, take me back") }}
+    {% endcomponent %}
+
+    {% component "unfold/components/button.html" with submit=1 variant="danger" class="w-full lg:ml-auto lg:w-auto" %}
+        {{ gettext("Yes, I’m sure") }}
+    {% endcomponent %}
+</div>

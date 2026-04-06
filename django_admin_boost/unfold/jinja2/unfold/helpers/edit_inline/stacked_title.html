@@ -1,0 +1,19 @@
+{% if not inline_admin_formset.opts.hide_title or inline_admin_formset.formset.can_delete and inline_admin_formset.has_delete_permission %}
+    <h3 class="group/title border-base-200 flex font-semibold items-center px-3 py-2 text-sm dark:border-base-800 {% if inline_admin_formset.opts.collapsible %}cursor-pointer{% else %}border-b{% endif %}" {% if inline_admin_formset.opts.collapsible %}x-bind:class="openRow ? 'border-b' : ''" x-on:click="['h3', 'strong'].includes($event.target.tagName.toLowerCase()) && (openRow = !openRow)"{% endif %}>
+        {% set stacked = 1 %}{% include "unfold/helpers/edit_inline/inline_drag.html" %}
+
+        <span class="flex items-center font-semibold mr-auto text-font-important-light dark:text-font-important-dark">
+            {% if inline_admin_form.original %}
+                {% set inline_title = inline_admin_form.original.get_inline_title|default(inline_admin_form.original) %}
+                    <strong class="font-semibold select-none">{{ inline_title }}</strong>
+                
+            {% else %}
+                <strong class="font-semibold select-none">{{ inline_admin_formset.opts.verbose_name|capfirst }}: #<span class="stacked-counter">{{ loop.index }}</span></strong>
+            {% endif %}
+
+            {% include "unfold/helpers/edit_inline/inline_links.html" %}
+        </span>
+
+        {% include "unfold/helpers/edit_inline/stacked_delete.html" %}
+    </h3>
+{% endif %}

@@ -1,0 +1,23 @@
+<div class="{{ fieldset_row_classes() }} {% if loop.last %}last{% endif %}">
+    {% for field in line %}
+        
+            <div class="{{ fieldset_line_classes() }}" {% if has_conditional_display and conditional_display %}x-show="{{ conditional_display }}"{% endif %}>
+                {% if has_conditional_display %}
+                    
+                        {% if field.is_checkbox %}
+                            {% include "unfold/helpers/fieldset_row_checkbox.html" %}
+                        {% else %}
+                            {% include "unfold/helpers/fieldset_row_field.html" %}
+                        {% endif %}
+                    
+                {% else %}
+                    {% if field.is_checkbox %}
+                        {% include "unfold/helpers/fieldset_row_checkbox.html" %}
+                    {% else %}
+                        {% include "unfold/helpers/fieldset_row_field.html" %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        
+    {% endfor %}
+</div>

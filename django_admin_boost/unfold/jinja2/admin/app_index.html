@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default(gettext('Django site admin') }}{% endblock %}
+
+{% block bodyclass %}{{ super() }} app-{{ app_label }}{% endblock %}
+
+{% block branding %}
+    {% include "unfold/helpers/site_branding.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="flex flex-row -mx-4">
+        <div class="grow px-4">
+            {% include "unfold/helpers/app_list_default.html" %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

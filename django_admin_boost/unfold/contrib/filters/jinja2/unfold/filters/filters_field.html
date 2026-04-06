@@ -1,0 +1,5 @@
+{% with choices.0 as choice %}
+    {% for field in choice.form %}
+        {% include "unfold/helpers/field.html" %}
+    {% endfor %}
+{% endwith %}

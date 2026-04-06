@@ -1,0 +1,33 @@
+{% extends "admin/change_form.html" %}
+
+{% load admin_urls i18n unfold %}
+
+{% block extrahead %}{{ block.super }}
+    {{ form.media }}
+{% endblock %}
+
+{% block content %}
+    <div class="border border-base-200 overflow-hidden rounded-default p-3 shadow-xs dark:border-base-800">
+        <form method="post">
+            {% csrf_token %}
+
+            {% trans "Object" as title %}
+            {% include "unfold/helpers/field_readonly.html" with title=title value=object %}
+
+            {% trans "User" as title %}
+            {% include "unfold/helpers/field_readonly.html" with title=title value=user_obj %}
+
+            {% include "unfold/helpers/field.html" with field=form.permissions %}
+
+            <div class="bg-base-50 border-t border-base-200 flex flex-row -m-3 p-3 dark:bg-white/[.02] dark:border-base-800">
+                <div class="ml-auto">
+                    {% component "unfold/components/button.html" with submit=1 %}
+                        {% trans "Save" %}
+                    {% endcomponent %}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer %}{% endblock%}

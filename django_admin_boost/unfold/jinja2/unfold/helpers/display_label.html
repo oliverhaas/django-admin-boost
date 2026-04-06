@@ -1,0 +1,11 @@
+{% if label %}
+    {% if multiple %}
+        {% for item in label %}
+            {% set type = label_type %}{% set text = item %}{% include "unfold/helpers/label.html" %}
+        {% endfor %}
+    {% else %}
+        {% set type = label_type %}{% set text = label %}{% include "unfold/helpers/label.html" %}
+    {% endif %}
+{% else %}
+    -
+{% endif %}

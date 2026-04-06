@@ -37,6 +37,7 @@ Repository = "https://github.com/oliverhaas/django-admin-boost.git"
 dev = [
   "beautifulsoup4==4.14.3",
   "django-stubs==6.0.2",
+  "django-unfold==0.87.0",
   "Jinja2==3.1.6",
   "mypy==1.20.0",
   "pre-commit==4.5.1",
@@ -80,6 +81,30 @@ extend-exclude = [
   "django_admin_boost/admin/views/",
   "django_admin_boost/admin/templatetags/",
   "django_admin_boost/admin/migrations/",
+  # Copied from django-unfold — not our code to lint
+  "django_admin_boost/unfold/admin.py",
+  "django_admin_boost/unfold/checks.py",
+  "django_admin_boost/unfold/components.py",
+  "django_admin_boost/unfold/dataclasses.py",
+  "django_admin_boost/unfold/datasets.py",
+  "django_admin_boost/unfold/decorators.py",
+  "django_admin_boost/unfold/enums.py",
+  "django_admin_boost/unfold/exceptions.py",
+  "django_admin_boost/unfold/fields.py",
+  "django_admin_boost/unfold/forms.py",
+  "django_admin_boost/unfold/layout.py",
+  "django_admin_boost/unfold/overrides.py",
+  "django_admin_boost/unfold/paginator.py",
+  "django_admin_boost/unfold/sections.py",
+  "django_admin_boost/unfold/settings.py",
+  "django_admin_boost/unfold/sites.py",
+  "django_admin_boost/unfold/typing.py",
+  "django_admin_boost/unfold/utils.py",
+  "django_admin_boost/unfold/views.py",
+  "django_admin_boost/unfold/widgets.py",
+  "django_admin_boost/unfold/mixins/",
+  "django_admin_boost/unfold/templatetags/",
+  "django_admin_boost/unfold/contrib/",
 ]
 
 [tool.ruff.lint]
@@ -87,6 +112,14 @@ select = ["ALL"]
 ignore = ["COM812", "D", "E501", "EM", "TRY003"]
 
 [tool.ruff.lint.per-file-ignores]
+"django_admin_boost/unfold/jinja2_env.py" = [
+  "ANN",
+  "ARG",
+  "FBT",
+  "PLC0415",
+  "RUF012",
+  "SIM110",
+]
 "tests/**" = [
   "ANN",
   "ARG",
@@ -136,6 +169,35 @@ module = [
   "django_admin_boost.admin.views.*",
   "django_admin_boost.admin.templatetags.*",
   "django_admin_boost.admin.migrations.*",
+]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+# Copied from django-unfold — not our code to type-check
+module = [
+  "django_admin_boost.unfold.admin",
+  "django_admin_boost.unfold.checks",
+  "django_admin_boost.unfold.components",
+  "django_admin_boost.unfold.dataclasses",
+  "django_admin_boost.unfold.datasets",
+  "django_admin_boost.unfold.decorators",
+  "django_admin_boost.unfold.enums",
+  "django_admin_boost.unfold.exceptions",
+  "django_admin_boost.unfold.fields",
+  "django_admin_boost.unfold.forms",
+  "django_admin_boost.unfold.layout",
+  "django_admin_boost.unfold.overrides",
+  "django_admin_boost.unfold.paginator",
+  "django_admin_boost.unfold.sections",
+  "django_admin_boost.unfold.settings",
+  "django_admin_boost.unfold.sites",
+  "django_admin_boost.unfold.typing",
+  "django_admin_boost.unfold.utils",
+  "django_admin_boost.unfold.views",
+  "django_admin_boost.unfold.widgets",
+  "django_admin_boost.unfold.mixins.*",
+  "django_admin_boost.unfold.templatetags.*",
+  "django_admin_boost.unfold.contrib.*",
 ]
 ignore_errors = true
 

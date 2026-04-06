@@ -1,0 +1,33 @@
+{% extends "admin/object_history.html" %}
+
+{% load  i18n %}
+
+{% block content %}
+    {% if not revert_disabled %}
+        {% trans 'Choose a date from the list below to revert to a previous version of this object' as message %}
+        {% include "unfold/helpers/messages/info.html" with message=message %}
+    {% endif %}
+
+    {% if page_obj.object_list %}
+        {% include object_history_list_template %}
+        <div class="bg-base-50 flex my-4 items-center p-3 rounded-default dark:bg-base-800">
+            {% if pagination_required %}
+                {% for i in page_range %}
+                    <span class="pr-4">
+                        {% if i == page_obj.paginator.ELLIPSIS %}
+                            {{ page_obj.paginator.ELLIPSIS }}
+                        {% elif i == page_obj.number %}
+                            <span class="font-medium text-primary-600">{{ i }}</span>
+                        {% else %}
+                            <a href="?{{ page_var }}={{ i }}" {% if i == page_obj.paginator.num_pages %} class="end" {% endif %}>{{ i }}</a>
+                        {% endif %}
+                    </span>
+                {% endfor %}
+            {% endif %}
+            {{ page_obj.paginator.count }} {% blocktranslate count counter=page_obj.paginator.count %}entry{% plural %}entries{% endblocktranslate %}
+        </div>
+    {% else %}
+        {% trans "This object doesn't have a change history." as message %}
+        {% include "unfold/helpers/messages/warning.html" with message=message %}
+    {% endif %}
+{% endblock %}

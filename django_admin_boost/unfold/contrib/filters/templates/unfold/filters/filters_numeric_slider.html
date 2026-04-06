@@ -1,0 +1,26 @@
+{% load i18n %}
+{% load l10n %}
+
+{% with choices.0 as choice %}
+    <div class="admin-numeric-filter-wrapper">
+        <h3 class="font-semibold mb-2 text-font-important-light dark:text-font-important-dark">
+            {% blocktranslate with filter_title=title %} By {{ filter_title }} {% endblocktranslate %}
+        </h3>
+
+        {% if choice.min is not None and choice.max is not None and choice.step %}
+
+            <div class="admin-numeric-filter-wrapper-group flex flex-row gap-4 mb-4">
+                {{ choice.form.as_p }}
+            </div>
+
+            <div class="admin-numeric-filter-slider" data-min="{{ choice.min|unlocalize }}" data-max="{{ choice.max|unlocalize }}" data-decimals="{{ choice.decimals }}" data-step="{{ choice.step|unlocalize }}">
+            </div>
+        {% else %}
+            <div class="admin-numeric-filter-slider-error dark:text-font-default-dark">
+                <p class="border border-base-300 border-dashed leading-[36px] h-[38px] rounded-default text-center dark:border-base-700">
+                    {% trans 'Not enough data.' %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+{% endwith %}

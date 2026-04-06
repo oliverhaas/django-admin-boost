@@ -1,0 +1,13 @@
+{% block object_tools_items %}
+    {% if show_history %}
+        {% set history_url = url(opts|admin_urlname:'history', original.pk|admin_urlquote, silent=True) %}
+        {% set title = gettext('History') %}
+        {% add_preserved_filters history_url as link %}
+        {% set title = title %}{% set link = link %}{% set icon = "history" %}{% include "unfold/helpers/tab_action.html" %}
+    {% endif %}
+
+    {% if has_absolute_url and show_view_on_site %}
+        {% set title = gettext('View on site') %}
+        {% set title = title %}{% set link = absolute_url %}{% set blank = 1 %}{% set icon = "open_in_new" %}{% include "unfold/helpers/tab_action.html" %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "admin/base_site.html" %}
+
+{% load admin_list static i18n unfold %}
+
+{% block extrahead %}
+    {% url 'admin:jsi18n' as jsi18nurl %}
+    <script type="text/javascript" src="{{ jsi18nurl|default:'../../jsi18n/' }}"></script>
+    {{ block.super }}
+    {{ media.js }}
+    <script type="text/javascript" src="{% static 'admin/js/constance.js' %}"></script>
+{% endblock %}
+
+{% block is_fullwidth %}1{% endblock %}
+
+{% block content %}
+    <div id="content-main" class="constance">
+        <div id="changelist" class="flex flex-col gap-8 w-full">
+            <form id="changelist-form" action="" method="post" enctype="multipart/form-data" novalidate class="flex flex-col gap-8 w-full">
+                {% csrf_token %}
+
+                {% include "unfold/helpers/form_errors.html" with errors=form.non_field_errors %}
+
+                {% for field in form.hidden_fields %}
+                    {{ field }}
+                {% endfor %}
+
+                <div class="border border-base-200 rounded-default overflow-x-auto simplebar-horizontal-scrollbar-top dark:border-base-800" data-simplebar data-simplebar-auto-hide="false">
+                    <table class="w-full border-collapse">
+                        {% if fieldsets %}
+                            {% for fieldset in fieldsets %}
+                                {% with config_values=fieldset.config_values %}
+                                    {% include "admin/constance/includes/results_list.html" %}
+                                {% endwith %}
+                            {% endfor %}
+                        {% else %}
+                            {% include "admin/constance/includes/results_list.html" %}
+                        {% endif %}
+
+                        <tfoot>
+                            <tr>
+                                <td class="border-t border-base-200 px-3 py-2 dark:border-base-800" colspan="100%">
+                                    <div class="flex justify-end">
+                                        {% component "unfold/components/button.html" with submit=1 %}
+                                            {% trans "Save" %}
+                                        {% endcomponent %}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

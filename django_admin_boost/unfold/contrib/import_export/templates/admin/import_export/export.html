@@ -1,0 +1,80 @@
+{% extends "admin/import_export/base.html" %}
+
+{% load admin_urls i18n import_export_tags unfold %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+
+    {{ form.media }}
+{% endblock %}
+
+{% block content %}
+    <form action="{{ export_url }}" method="POST">
+        {% csrf_token %}
+
+        {% if form.initial.export_items %}
+            <p class="bg-blue-50 mb-4 text-blue-500 px-3 py-3 rounded-default text-sm dark:bg-blue-500/20 dark:border-blue-500/10">
+                {% blocktranslate count len=form.initial.export_items|length %}
+                    Export {{ len }} selected item.
+                {% plural %}
+                    Export {{ len }} selected items.
+                {% endblocktranslate %}
+            </p>
+        {% endif %}
+
+        {% if not form.is_selectable_fields_form %}
+            {% include "admin/import_export/resource_fields_list.html" with import_or_export="export" %}
+        {% endif %}
+
+        {{ form.non_field_errors }}
+
+        <fieldset class="border border-base-200 mb-4 rounded-default p-3 shadow-xs dark:border-base-800">
+            {% for field in form.visible_fields %}
+                {% if field.field.initial_field %}
+                    <p class="block font-semibold mb-2 text-important">
+                        {% trans "This exporter will export the following fields" %}
+                    </p>
+                {% endif %}
+            {% endfor %}
+
+            <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-2">
+                    {% for field in form.visible_fields %}
+                        {% if field.field.is_selectable_field %}
+                            <div class="selectable-field-export-row !p-0 *:mb-0" resource-index="{{ field.field.resource_index }}">
+                                {% if field.field.widget.attrs.readonly %}
+                                    {% include "unfold/helpers/field_readonly.html" with title=field.label value=field.field.value %}
+                                    {{ field.as_hidden }}
+                                {% else %}
+                                    {% include "unfold/helpers/field.html" with field=field %}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% for field in form.visible_fields %}
+                    {% if not field.field.is_selectable_field %}
+                        <div class="*:mb-0">
+                            {% if field.field.widget.attrs.readonly %}
+                                {% include "unfold/helpers/field_readonly.html" with title=field.label value=field.field.value %}
+                                {{ field.as_hidden }}
+                            {% else %}
+                                {% include "unfold/helpers/field.html" with field=field %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% for field in form.hidden_fields %}
+                {{ field }}
+            {% endfor %}
+        </fieldset>
+
+        {% component "unfold/components/button.html" with submit=1 %}
+            {% translate "Submit" %}
+        {% endcomponent %}
+    </form>
+{% endblock %}

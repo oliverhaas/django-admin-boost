@@ -1,0 +1,39 @@
+{% extends "admin/import_export/base.html" %}
+
+{% load admin_urls i18n import_export_tags static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+
+    <link rel="stylesheet" type="text/css" href="{% static "import_export/import.css" %}" />
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+
+    {% if confirm_form %}
+        {{ confirm_form.media }}
+    {% else %}
+        {{ form.media }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if confirm_form %}
+        {% include "admin/import_export/import_confirm.html" %}
+    {% else %}
+        {% include "admin/import_export/import_form.html" %}
+    {% endif %}
+
+    {% if result %}
+        {% if result.has_errors %}
+            {% include "admin/import_export/import_errors.html" %}
+        {% elif result.has_validation_errors %}
+            {% include "admin/import_export/import_validation.html" %}
+        {% else %}
+            {% include "admin/import_export/import_preview.html" %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
