@@ -1,3 +1,4 @@
+import contextlib
 import importlib
 import sys
 import types
@@ -37,6 +38,21 @@ _DJANGO_ADMIN_SUBPACKAGES = {
 }
 
 
+def _copy_public_attrs(src: types.ModuleType, dst: types.ModuleType) -> None:
+    """Copy all public attributes from *src* onto *dst*."""
+    for attr in dir(src):
+        if not attr.startswith("_"):
+            with contextlib.suppress(Exception):
+                setattr(dst, attr, getattr(src, attr))
+
+
+def _populate_stub(stub: types.ModuleType, boost_path: str) -> None:
+    """Import *boost_path* and copy its public attrs onto *stub*, ignoring failures."""
+    with contextlib.suppress(Exception):
+        src = importlib.import_module(boost_path)
+        _copy_public_attrs(src, stub)
+
+
 def _install_placeholders() -> None:
     """Pre-populate sys.modules with placeholders for django.contrib.admin.
 
@@ -44,6 +60,11 @@ def _install_placeholders() -> None:
     ``from django.contrib.admin.models import LogEntry`` before the app
     registry is ready.  All placeholders are replaced with real modules
     in ``SimpleAdminConfig.ready()``.
+
+    After creating each stub we eagerly import the corresponding
+    ``django_admin_boost.admin`` module and copy its public attributes onto
+    the stub, so that ``from django.contrib.admin import AdminSite`` works
+    at import time (before ``ready()`` runs).
     """
     # Top-level package placeholder
     if "django.contrib.admin" not in sys.modules:
@@ -51,6 +72,7 @@ def _install_placeholders() -> None:
         pkg.__package__ = "django.contrib.admin"
         pkg.__path__ = []
         sys.modules["django.contrib.admin"] = pkg
+        _populate_stub(pkg, "django_admin_boost.admin")
 
     for name in _DJANGO_ADMIN_SUBMODULES:
         key = f"django.contrib.admin.{name}"
@@ -58,20 +80,28 @@ def _install_placeholders() -> None:
             mod = types.ModuleType(key)
             mod.__package__ = "django.contrib.admin"
             sys.modules[key] = mod
+            _populate_stub(mod, f"django_admin_boost.admin.{name}")
 
     for pkg_name, children in _DJANGO_ADMIN_SUBPACKAGES.items():
-        pkg_key = f"django.contrib.admin.{pkg_name}"
-        if pkg_key not in sys.modules:
-            pkg = types.ModuleType(pkg_key)
-            pkg.__package__ = pkg_key
-            pkg.__path__ = []
-            sys.modules[pkg_key] = pkg
-        for child in children:
-            child_key = f"{pkg_key}.{child}"
-            if child_key not in sys.modules:
-                mod = types.ModuleType(child_key)
-                mod.__package__ = pkg_key
-                sys.modules[child_key] = mod
+        _install_subpackage_placeholder(pkg_name, children)
+
+
+def _install_subpackage_placeholder(pkg_name: str, children: list[str]) -> None:
+    """Install placeholder for a django.contrib.admin subpackage and its children."""
+    pkg_key = f"django.contrib.admin.{pkg_name}"
+    if pkg_key not in sys.modules:
+        pkg = types.ModuleType(pkg_key)
+        pkg.__package__ = pkg_key
+        pkg.__path__ = []
+        sys.modules[pkg_key] = pkg
+        _populate_stub(pkg, f"django_admin_boost.admin.{pkg_name}")
+    for child in children:
+        child_key = f"{pkg_key}.{child}"
+        if child_key not in sys.modules:
+            mod = types.ModuleType(child_key)
+            mod.__package__ = pkg_key
+            sys.modules[child_key] = mod
+            _populate_stub(mod, f"django_admin_boost.admin.{pkg_name}.{child}")
 
 
 _install_placeholders()
