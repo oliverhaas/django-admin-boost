@@ -6,4 +6,4 @@ class BoostAdminConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
 
     def ready(self) -> None:
-        self.module.autodiscover()
+        self.module.autodiscover()  # type: ignore[union-attr]

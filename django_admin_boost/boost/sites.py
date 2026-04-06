@@ -15,7 +15,11 @@ class BoostAdminSite(AdminSite):
     # Dashboard widget rows — list of lists of Widget instances
     dashboard_widgets: list[list] = []
 
-    def index(self, request: HttpRequest, extra_context: dict | None = None) -> HttpResponse:
+    def index(  # type: ignore[override]
+        self,
+        request: HttpRequest,
+        extra_context: dict | None = None,
+    ) -> HttpResponse:
         extra_context = extra_context or {}
         extra_context["dashboard_widgets"] = self._get_dashboard_widgets(request)
         return super().index(request, extra_context=extra_context)
