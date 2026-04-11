@@ -1,24 +1,24 @@
-"""django-admin-boost full admin replacement.
+"""django-admin-boost: Django admin with Jinja2 support and performance optimizations.
 
-Drop-in replacement for ``django.contrib.admin`` with Jinja2 template support
-and performance optimizations baked in.
+Subclasses ``django.contrib.admin`` — adds Jinja2 template support,
+``ListFieldsMixin``, ``SmartPaginatorMixin``, and ``EstimatedCountPaginator``.
 
 Usage::
 
     INSTALLED_APPS = ["django_admin_boost.admin", ...]
 
-    # in your admin.py:
-    import django_admin_boost.admin as admin
+    # in your admin.py — use exactly like django.contrib.admin:
+    from django_admin_boost.admin import admin
 
     @admin.register(MyModel)
     class MyModelAdmin(admin.ModelAdmin):
         ...
 """
 
-from django.utils.module_loading import autodiscover_modules
-
-from django_admin_boost.admin.decorators import action, display, register
-from django_admin_boost.admin.filters import (
+from django.contrib.admin import (
+    HORIZONTAL,
+    VERTICAL,
+    AdminSite,
     AllValuesFieldListFilter,
     BooleanFieldListFilter,
     ChoicesFieldListFilter,
@@ -28,21 +28,33 @@ from django_admin_boost.admin.filters import (
     ListFilter,
     RelatedFieldListFilter,
     RelatedOnlyFieldListFilter,
-    SimpleListFilter,
-)
-from django_admin_boost.admin.options import (
-    HORIZONTAL,
-    VERTICAL,
-    ModelAdmin,
     ShowFacets,
-    StackedInline,
-    TabularInline,
+    SimpleListFilter,
+    action,
+    autodiscover,
+    display,
+    register,
+    site,
 )
-from django_admin_boost.admin.sites import AdminSite, site
+from django.contrib.admin import ModelAdmin as DjangoModelAdmin
+from django.contrib.admin import StackedInline as DjangoStackedInline
+from django.contrib.admin import TabularInline as DjangoTabularInline
 
-# Re-export standalone mixins for convenience
 from django_admin_boost.mixins import ListFieldsMixin, SmartPaginatorMixin
 from django_admin_boost.paginators import EstimatedCountPaginator
+
+
+class ModelAdmin(SmartPaginatorMixin, ListFieldsMixin, DjangoModelAdmin):
+    """ModelAdmin with performance optimizations baked in."""
+
+
+class StackedInline(SmartPaginatorMixin, ListFieldsMixin, DjangoStackedInline):
+    """StackedInline with performance optimizations baked in."""
+
+
+class TabularInline(SmartPaginatorMixin, ListFieldsMixin, DjangoTabularInline):
+    """TabularInline with performance optimizations baked in."""
+
 
 __all__ = [
     "HORIZONTAL",
@@ -71,7 +83,3 @@ __all__ = [
     "register",
     "site",
 ]
-
-
-def autodiscover() -> None:
-    autodiscover_modules("admin", register_to=site)
