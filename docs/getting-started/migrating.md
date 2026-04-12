@@ -96,7 +96,7 @@ Third-party admin packages (`django-import-export`, `django-debug-toolbar`, etc.
 ## What you get
 
 - All admin pages rendered via Jinja2 (faster template rendering)
-- `ListOnlyFieldsMixin` baked into `ModelAdmin` — set `list_only_fields` to optimize changelist queries
+- `ListFieldsMixin` baked into `ModelAdmin` — set `list_only_fields` to optimize changelist queries
 - `EstimatedCountPaginator` baked in — fast `pg_class.reltuples` counts on PostgreSQL
 - DTL fallback for any template that doesn't have a Jinja2 version yet
 
@@ -116,8 +116,8 @@ Yes. Just `pip install django-admin-boost` (no `[jinja2]` extra needed) and use 
 
 ```python
 from django.contrib.admin import ModelAdmin
-from django_admin_boost import ListOnlyFieldsMixin
+from django_admin_boost import ListFieldsMixin
 
-class MyAdmin(ListOnlyFieldsMixin, ModelAdmin):
+class MyAdmin(ListFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name"]
 ```

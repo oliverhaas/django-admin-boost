@@ -26,9 +26,9 @@ Keep stock Django admin, just add performance optimizations.
 
 ```python
 from django.contrib.admin import ModelAdmin
-from django_admin_boost import ListOnlyFieldsMixin, EstimatedCountPaginator
+from django_admin_boost import ListFieldsMixin, EstimatedCountPaginator
 
-class MyModelAdmin(ListOnlyFieldsMixin, ModelAdmin):
+class MyModelAdmin(ListFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name", "status"]
     paginator = EstimatedCountPaginator
 ```
@@ -37,7 +37,7 @@ class MyModelAdmin(ListOnlyFieldsMixin, ModelAdmin):
 
 | Feature | Standalone | Full admin |
 |---------|-----------|------------|
-| `ListOnlyFieldsMixin` — automatic `.only()` on changelist querysets | Yes | Baked in |
+| `ListFieldsMixin` — automatic `.only()` on changelist querysets | Yes | Baked in |
 | `SmartPaginatorMixin` — PostgreSQL estimated counts | Yes | Baked in |
 | `EstimatedCountPaginator` — `pg_class.reltuples` paginator | Yes | Baked in |
 | Jinja2 admin templates (all 50) | — | Yes |

@@ -75,9 +75,9 @@ INSTALLED_APPS = [
 
 ```python
 from django.contrib.admin import ModelAdmin
-from django_admin_boost import ListOnlyFieldsMixin, EstimatedCountPaginator
+from django_admin_boost import ListFieldsMixin, EstimatedCountPaginator
 
-class MyModelAdmin(ListOnlyFieldsMixin, ModelAdmin):
+class MyModelAdmin(ListFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name", "status"]
     paginator = EstimatedCountPaginator
 ```

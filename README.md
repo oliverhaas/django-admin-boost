@@ -10,7 +10,7 @@ Drop-in replacement for `django.contrib.admin` that works with Jinja2 (and DTL).
 
 - **Jinja2 admin templates** — all 50 admin templates converted, with DTL fallback
 - **Full drop-in replacement** — swap `django.contrib.admin` for `django_admin_boost.admin` and everything just works
-- **Standalone performance mixins** — use `ListOnlyFieldsMixin` or `EstimatedCountPaginator` with stock Django admin, no full replacement needed
+- **Standalone performance mixins** — use `ListFieldsMixin` or `EstimatedCountPaginator` with stock Django admin, no full replacement needed
 - **`list_only_fields`** — automatic `.only()` on changelist querysets
 - **Smart paginator** — uses PostgreSQL's `pg_class.reltuples` for fast estimated counts on large tables
 
@@ -74,9 +74,9 @@ INSTALLED_APPS = ["django.contrib.admin", ...]
 ```python
 # admin.py
 from django.contrib.admin import ModelAdmin
-from django_admin_boost import ListOnlyFieldsMixin, EstimatedCountPaginator
+from django_admin_boost import ListFieldsMixin, EstimatedCountPaginator
 
-class MyModelAdmin(ListOnlyFieldsMixin, ModelAdmin):
+class MyModelAdmin(ListFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name", "status"]
     paginator = EstimatedCountPaginator
 ```
