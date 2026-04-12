@@ -808,7 +808,7 @@
 <h2 id="what-you-get">What you get<a class="headerlink" href="#what-you-get" title="Permanent link">&para;</a></h2>
 <ul>
 <li>All admin pages rendered via Jinja2 (faster template rendering)</li>
-<li><code>ListOnlyFieldsMixin</code> baked into <code>ModelAdmin</code> — set <code>list_only_fields</code> to optimize changelist queries</li>
+<li><code>ListFieldsMixin</code> baked into <code>ModelAdmin</code> — set <code>list_only_fields</code> to optimize changelist queries</li>
 <li><code>EstimatedCountPaginator</code> baked in — fast <code>pg_class.reltuples</code> counts on PostgreSQL</li>
 <li>DTL fallback for any template that doesn't have a Jinja2 version yet</li>
 </ul>
@@ -822,9 +822,9 @@ They register automatically on our admin site via the monkey-patched singleton. 
 <p><strong>Can I use django-admin-boost's mixins without the full replacement?</strong>
 Yes. Just <code>pip install django-admin-boost</code> (no <code>[jinja2]</code> extra needed) and use the mixins directly with stock Django admin:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelAdmin</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_admin_boost</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListOnlyFieldsMixin</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django_admin_boost</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListFieldsMixin</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyAdmin</span><span class="p">(</span><span class="n">ListOnlyFieldsMixin</span><span class="p">,</span> <span class="n">ModelAdmin</span><span class="p">):</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyAdmin</span><span class="p">(</span><span class="n">ListFieldsMixin</span><span class="p">,</span> <span class="n">ModelAdmin</span><span class="p">):</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">list_only_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
 </code></pre></div>
 
