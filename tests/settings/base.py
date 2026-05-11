@@ -11,6 +11,7 @@ INSTALLED_APPS = [
     "django_admin_boost.admin.contrib.inlines",
     "django_admin_boost.admin.contrib.forms",
     "tests.testapp",
+    "tests.unmanagedapp",
 ]
 
 DATABASES = {

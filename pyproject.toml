@@ -84,6 +84,13 @@ ignore = ["COM812", "D", "E501", "EM", "TRY003"]
   "SIM110",
   "TC002",
 ]
+"django_admin_boost/unmanaged/*.py" = [
+  "ANN401",
+  "ARG002",
+  "FBT001",
+  "FBT002",
+  "SLF001",
+]
 "tests/**" = [
   "ANN",
   "ARG",
@@ -103,6 +110,7 @@ ignore = ["COM812", "D", "E501", "EM", "TRY003"]
   "S101",
   "S105",
   "S106",
+  "SLF001",
 ]
 
 [tool.mypy]

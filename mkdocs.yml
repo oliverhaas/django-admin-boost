@@ -47,4 +47,5 @@ nav:
       - Installation: getting-started/installation.md
       - Migrating from django.contrib.admin: getting-started/migrating.md
   - Reference:
+      - Unmanaged Admin: reference/unmanaged.md
       - Changelog: reference/changelog.md
