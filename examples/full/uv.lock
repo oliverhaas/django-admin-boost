@@ -35,7 +35,7 @@ wheels = [
 ]
 
 [[package]]
-name = "django-adminx"
+name = "django-admin-boost"
 version = "0.1.0a1"
 source = { editable = "../../" }
 dependencies = [
@@ -58,36 +58,36 @@ provides-extras = ["jinja2"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "beautifulsoup4", specifier = ">=4.14.3" },
-    { name = "django-stubs", specifier = "==6.0.1" },
-    { name = "jinja2", specifier = ">=3.1" },
-    { name = "mypy", specifier = "==1.19.1" },
-    { name = "pre-commit", specifier = "==4.5.1" },
-    { name = "pytest", specifier = "==9.0.2" },
+    { name = "beautifulsoup4", specifier = "==4.14.3" },
+    { name = "django-stubs", specifier = "==6.0.4" },
+    { name = "jinja2", specifier = "==3.1.6" },
+    { name = "mypy", specifier = "==2.0.0" },
+    { name = "pre-commit", specifier = "==4.6.0" },
+    { name = "pytest", specifier = "==9.0.3" },
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "pytest-django", specifier = "==4.12.0" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
-    { name = "ruff", specifier = "==0.15.8" },
+    { name = "ruff", specifier = "==0.15.12" },
 ]
 docs = [
-    { name = "mike", specifier = "==2.1.4" },
+    { name = "mike", specifier = "==2.2.0" },
     { name = "mkdocs", specifier = "==1.6.1" },
     { name = "mkdocs-material", specifier = "==9.7.6" },
 ]
 
 [[package]]
-name = "django-adminx-example-full"
+name = "django-admin-boost-example-full"
 version = "0.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "django-adminx", extra = ["jinja2"] },
+    { name = "django-admin-boost", extra = ["jinja2"] },
     { name = "django-import-export" },
     { name = "django-modeltranslation" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "django-adminx", extras = ["jinja2"], editable = "../../" },
+    { name = "django-admin-boost", extras = ["jinja2"], editable = "../../" },
     { name = "django-import-export", specifier = ">=4.0" },
     { name = "django-modeltranslation", specifier = ">=0.20.2" },
 ]

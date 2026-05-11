@@ -2,6 +2,7 @@ import django_admin_boost.admin as admin
 from import_export.admin import ImportExportModelAdmin
 from modeltranslation.admin import TranslationAdmin
 
+from . import unmanaged  # noqa: F401  # registers RecentSearchAdmin
 from .models import Category, Product
 from .resources import CategoryResource, ProductResource
 

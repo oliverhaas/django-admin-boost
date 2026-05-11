@@ -5,6 +5,7 @@
 - **django-import-export** — CSV/Excel import & export from the admin
 - **django-modeltranslation** — translatable fields with tabbed UI
 - **django-simple-history** — full model change history with revert
+- **django_admin_boost.unmanaged** — admin pages over non-DB data
 
 ## Setup
 
@@ -24,3 +25,6 @@ Open http://localhost:8000/admin/ — log in with **admin / admin**.
 - **Translations**: Edit a product — you'll see tabbed name/description fields for English and German
 - **History**: Edit a product, save, then click "History" to see changes with revert option
 - **list_only_fields**: Products changelist uses optimized queries
+- **Unmanaged admin**: Open *Recent searches* under Catalog — the data lives in
+  an in-memory list, not the database. See [catalog/unmanaged.py](catalog/unmanaged.py)
+  for the three pieces: `UnmanagedModel`, `UnmanagedQuerySet`, `UnmanagedModelAdmin`.
