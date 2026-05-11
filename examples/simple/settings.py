@@ -11,6 +11,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
+    "django.contrib.admin",
     "django_admin_boost.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
