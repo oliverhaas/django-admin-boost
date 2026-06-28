@@ -36,7 +36,7 @@ Repository = "https://github.com/oliverhaas/django-admin-boost.git"
 [dependency-groups]
 dev = [
   "beautifulsoup4==4.15.0",
-  "django-stubs==6.0.5",
+  "django-stubs==6.0.6",
   "Jinja2==3.1.6",
   "mypy==2.1.0",
   "pre-commit==4.6.0",
@@ -44,7 +44,7 @@ dev = [
   "pytest-django==4.12.0",
   "pytest-xdist==3.8.0",
   "pytest==9.1.1",
-  "ruff==0.15.18",
+  "ruff==0.15.20",
 ]
 docs = ["mike==2.2.0", "mkdocs==1.6.1", "mkdocs-material==9.7.6"]
 
