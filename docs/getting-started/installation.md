@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    ...
+    ...,
 ]
 
 TEMPLATES = [
@@ -57,6 +57,7 @@ Then use `django_admin_boost.admin` instead of `django.contrib.admin` in your ad
 ```python
 import django_admin_boost.admin as admin
 
+
 @admin.register(MyModel)
 class MyModelAdmin(admin.ModelAdmin):
     list_display = ["name", "status", "created_at"]
@@ -67,15 +68,13 @@ class MyModelAdmin(admin.ModelAdmin):
 If you just want the performance mixins with stock Django admin:
 
 ```python
-INSTALLED_APPS = [
-    "django.contrib.admin",
-    ...
-]
+INSTALLED_APPS = ["django.contrib.admin", ...]
 ```
 
 ```python
 from django.contrib.admin import ModelAdmin
 from django_admin_boost import ListFieldsMixin, EstimatedCountPaginator
+
 
 class MyModelAdmin(ListFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name", "status"]

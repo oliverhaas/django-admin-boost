@@ -70,7 +70,7 @@ extend-exclude = [
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["COM812", "D", "E501", "EM", "TRY003"]
+ignore = ["COM812", "CPY", "D", "E501", "EM", "TRY003"]
 
 [tool.ruff.lint.per-file-ignores]
 "django_admin_boost/boost/*.py" = [

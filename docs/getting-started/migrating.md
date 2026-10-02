@@ -15,13 +15,13 @@ Replace `django.contrib.admin` with `django_admin_boost.admin` in `INSTALLED_APP
 ```python
 INSTALLED_APPS = [
     # "django.contrib.admin",       # remove this
-    "django_admin_boost.admin",          # add this
+    "django_admin_boost.admin",  # add this
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    ...
+    ...,
 ]
 ```
 
@@ -117,6 +117,7 @@ Yes. Just `pip install django-admin-boost` (no `[jinja2]` extra needed) and use 
 ```python
 from django.contrib.admin import ModelAdmin
 from django_admin_boost import ListFieldsMixin
+
 
 class MyAdmin(ListFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name"]

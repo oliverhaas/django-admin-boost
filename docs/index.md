@@ -15,6 +15,7 @@ INSTALLED_APPS = ["django_admin_boost.admin", ...]
 ```python
 import django_admin_boost.admin as admin
 
+
 @admin.register(MyModel)
 class MyModelAdmin(admin.ModelAdmin):
     list_only_fields = ["id", "name", "status"]
@@ -27,6 +28,7 @@ Keep stock Django admin, just add performance optimizations.
 ```python
 from django.contrib.admin import ModelAdmin
 from django_admin_boost import ListFieldsMixin, EstimatedCountPaginator
+
 
 class MyModelAdmin(ListFieldsMixin, ModelAdmin):
     list_only_fields = ["id", "name", "status"]
